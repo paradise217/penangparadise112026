@@ -1,0 +1,513 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Penang — Nov 2026</title>
+<link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=DM+Sans:opsz,wght@9..40,300;9..40,400;9..40,500&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"/>
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+:root{
+  --cream:#F5F0E8;--sand:#E8E0D0;--terracotta:#C4622D;--terracotta-light:#E8835A;
+  --teal:#2A6B5E;--ink:#1A1714;--ink-soft:#3D3830;--muted:#8A8070;
+  --card:#FDFCFA;--border:rgba(26,23,20,0.1);
+  --food:#C4622D;--activity:#2A6B5E;--shop:#9A6B10;--cafe:#6040A0;--hotel:#5A5550;
+}
+body{font-family:'DM Sans',sans-serif;background:var(--cream);color:var(--ink);min-height:100vh;overflow-x:hidden}
+.hero{background:var(--ink);padding:2.5rem 1.5rem 2rem;position:relative;overflow:hidden}
+.hb{position:absolute;border-radius:50%;pointer-events:none}
+.hb1{width:260px;height:260px;background:var(--terracotta);opacity:.12;top:-80px;right:-60px}
+.hb2{width:180px;height:180px;background:var(--teal);opacity:.18;bottom:-60px;left:-40px}
+.hi{max-width:1100px;margin:0 auto;position:relative;z-index:1}
+.he{font-size:11px;font-weight:500;letter-spacing:.12em;text-transform:uppercase;color:var(--terracotta-light);margin-bottom:.6rem}
+.hero h1{font-family:'DM Serif Display',serif;font-size:clamp(2rem,6vw,3rem);color:var(--cream);line-height:1.05;margin-bottom:.4rem}
+.hero h1 em{color:var(--terracotta-light);font-style:italic}
+.hm{font-size:13px;color:var(--muted);display:flex;gap:1.5rem;flex-wrap:wrap;margin-top:.75rem}
+.alerts{max-width:1100px;margin:1.25rem auto;padding:0 1.25rem;display:flex;gap:10px;flex-wrap:wrap}
+.alert{flex:1;min-width:260px;background:#FEF3ED;border-left:3px solid var(--terracotta);border-radius:0 8px 8px 0;padding:.75rem 1rem;font-size:13px;line-height:1.5;color:var(--ink-soft)}
+.alert strong{color:var(--terracotta);font-weight:500}
+.app{max-width:1100px;margin:0 auto;padding:0 1.25rem 3rem;display:flex;flex-direction:column;gap:14px}
+.tabs{display:flex;gap:6px;overflow-x:auto;scrollbar-width:none;padding-bottom:2px}
+.tabs::-webkit-scrollbar{display:none}
+.tab{flex-shrink:0;padding:7px 16px;border-radius:100px;border:1.5px solid var(--border);background:var(--card);font-size:13px;color:var(--muted);cursor:pointer;transition:all .18s;white-space:nowrap;font-family:'DM Sans',sans-serif}
+.tab:hover{border-color:var(--terracotta);color:var(--terracotta)}
+.tab.active{background:var(--ink);border-color:var(--ink);color:var(--cream);font-weight:500}
+.map-wrap{display:flex;border-radius:14px;overflow:hidden;border:1px solid var(--border);height:460px}
+#map{flex:1;min-width:0}
+.panel{width:290px;flex-shrink:0;background:var(--card);display:flex;flex-direction:column;border-left:1px solid var(--border);overflow:hidden}
+.ph{padding:13px 13px 9px;border-bottom:1px solid var(--border);flex-shrink:0}
+.ph-title{font-family:'DM Serif Display',serif;font-size:16px;color:var(--ink);margin-bottom:2px}
+.ph-sub{font-size:11px;color:var(--muted)}
+.ps{flex:1;overflow-y:auto;scrollbar-width:thin}
+.ps::-webkit-scrollbar{width:3px}
+.ps::-webkit-scrollbar-thumb{background:var(--sand);border-radius:4px}
+.si{display:flex;gap:9px;padding:10px 13px;border-bottom:1px solid var(--border);cursor:pointer;transition:background .15s;align-items:flex-start}
+.si:hover,.si.active{background:var(--cream)}
+.sil{flex-shrink:0;display:flex;flex-direction:column;align-items:center;gap:3px;padding-top:1px}
+.sit{font-size:10px;font-weight:500;color:var(--muted);white-space:nowrap}
+.sid{width:9px;height:9px;border-radius:50%}
+.sib{flex:1;min-width:0}
+.sin{font-size:12px;font-weight:500;color:var(--ink);line-height:1.3;margin-bottom:3px}
+.sitags{display:flex;gap:3px;flex-wrap:wrap;margin-bottom:3px}
+.sinote{font-size:11px;color:var(--muted);line-height:1.4;display:none}
+.simaps{font-size:11px;color:var(--teal);text-decoration:none;font-weight:500;margin-top:3px;display:none}
+.si.active .sinote,.si.active .simaps{display:block}
+.legend{display:flex;gap:12px;flex-wrap:wrap;padding:2px 0}
+.li{display:flex;align-items:center;gap:5px;font-size:11px;color:var(--muted)}
+.ld{width:9px;height:9px;border-radius:50%}
+.day-section{display:none;flex-direction:column;gap:10px}
+.day-section.active{display:flex}
+.sl{font-size:10px;font-weight:500;letter-spacing:.1em;text-transform:uppercase;color:var(--muted);display:flex;align-items:center;gap:8px;padding:2px 0}
+.sl::after{content:'';flex:1;height:1px;background:var(--border)}
+.sc{background:var(--card);border:1px solid var(--border);border-radius:14px;overflow:hidden}
+.scp{display:flex;gap:3px;height:115px;overflow:hidden}
+.scp img{flex:1;min-width:0;object-fit:cover;background:var(--sand)}
+.scp img:nth-child(n+4){display:none}
+.scb{padding:.8rem .95rem}
+.scn{font-size:15px;font-weight:500;color:var(--ink);margin-bottom:5px;line-height:1.3}
+.sctags{display:flex;gap:5px;flex-wrap:wrap;margin-bottom:6px}
+.scnote{font-size:13px;color:var(--ink-soft);line-height:1.55;margin-bottom:4px}
+.schr{font-size:12px;color:var(--muted)}
+.scf{border-top:1px solid var(--border);padding:7px .95rem;display:flex;justify-content:space-between;align-items:center}
+.sca{font-size:12px;color:var(--muted);flex:1;padding-right:8px;line-height:1.4}
+.mb{font-size:12px;font-weight:500;color:var(--teal);text-decoration:none;padding:4px 11px;border:1px solid var(--teal);border-radius:100px;transition:all .18s;white-space:nowrap;flex-shrink:0}
+.mb:hover{background:var(--teal);color:white}
+.stag{font-size:10px;font-weight:500;padding:2px 7px;border-radius:100px}
+.stag-food{background:#FEF0EA;color:var(--terracotta)}
+.stag-activity{background:#E8F4F1;color:var(--teal)}
+.stag-shop{background:#FBF4E5;color:#8A5C12}
+.stag-cafe{background:#F2EEF8;color:#6040A0}
+.stag-hotel{background:#F0F0EE;color:var(--muted)}
+.stag-michelin{background:#FFF0E0;color:#C05000}
+.stag-reserve{background:#FEE8E8;color:#B02020}
+.abox{background:#EAF4F1;border:1px solid #B0D8CE;border-radius:12px;padding:.9rem 1rem}
+.abox-t{font-size:13px;font-weight:500;color:var(--teal);margin-bottom:3px}
+.abox-b{font-size:13px;color:var(--ink-soft);line-height:1.55}
+.leaflet-popup-content-wrapper{border-radius:10px;border:1px solid var(--border);box-shadow:none;font-family:'DM Sans',sans-serif}
+.leaflet-popup-content{margin:9px 13px;font-size:13px;line-height:1.5}
+.leaflet-popup-content strong{display:block;font-weight:500;color:var(--ink);margin-bottom:1px}
+.leaflet-popup-content span{color:var(--muted);font-size:11px}
+.leaflet-popup-tip-container{display:none}
+.leaflet-container{font-family:'DM Sans',sans-serif}
+@media(max-width:700px){
+  .map-wrap{flex-direction:column;height:auto}
+  #map{height:280px}
+  .panel{width:100%;height:220px;border-left:none;border-top:1px solid var(--border)}
+  .alerts{flex-direction:column}
+}
+</style>
+</head>
+<body>
+<div class="hero">
+  <div class="hb hb1"></div><div class="hb hb2"></div>
+  <div class="hi">
+    <p class="he">Travel itinerary</p>
+    <h1>Penang, <em>Malaysia</em></h1>
+    <div class="hm"><span>10 – 13 Nov 2026</span><span>3 nights</span><span>Citadines Connect Bertam</span></div>
+  </div>
+</div>
+<div class="alerts">
+  <div class="alert"><strong>Reserve now —</strong> BaBa Phang: +60 14-741 9839 · RASA SAYANG: +60 12-854 8799. Both fill up days in advance.</div>
+  <div class="alert"><strong>Penang Hill —</strong> Buy express funicular tickets at penanghill.gov.my before you go. Walk-up queues can be 90+ min.</div>
+</div>
+<div class="app">
+  <div class="tabs" id="tabs">
+    <button class="tab active" onclick="switchDay(0)">Tue 10 Nov</button>
+    <button class="tab" onclick="switchDay(1)">Wed 11 Nov</button>
+    <button class="tab" onclick="switchDay(2)">Thu 12 Nov</button>
+    <button class="tab" onclick="switchDay(3)">Fri 13 Nov</button>
+  </div>
+  <div class="map-wrap">
+    <div id="map"></div>
+    <div class="panel">
+      <div class="ph"><div class="ph-title" id="pt">Day 1 · Arrival</div><div class="ph-sub" id="ps">George Town hawker evening</div></div>
+      <div class="ps" id="panel-stops"></div>
+    </div>
+  </div>
+  <div class="legend">
+    <div class="li"><div class="ld" style="background:var(--food)"></div>Food</div>
+    <div class="li"><div class="ld" style="background:var(--activity)"></div>Activity</div>
+    <div class="li"><div class="ld" style="background:var(--shop)"></div>Shopping</div>
+    <div class="li"><div class="ld" style="background:var(--cafe)"></div>Cafe</div>
+    <div class="li"><div class="ld" style="background:var(--hotel)"></div>Hotel</div>
+  </div>
+
+  <!-- DAY 1 -->
+  <div class="day-section active" id="s0">
+    <div class="sl">Afternoon</div>
+    <div class="sc">
+      <div class="scp">
+        <img src="https://lh3.googleusercontent.com/places/ANXAkqF9OblYorluX7ZWSjuu-gn7613ta8cEOrrmiramiS8U9y7LE-CcCpGjbBh0mTUUs7gZZPp8Xu5aPzhNNy7S2NrqqPGGqxOWw8w=s800-w800-h600" loading="lazy" alt="">
+        <img src="https://lh3.googleusercontent.com/places/ANXAkqEWxlI0B4yteeyogCybt6V7zuECbQCMyS6BvXIuvbjHzj_7lNq-1GA0MXvjzKUmY01QMXNGY3ipn00U0zNJQO7zDKCqPVUS0LI=s800-w800-h600" loading="lazy" alt="">
+        <img src="https://lh3.googleusercontent.com/places/ANXAkqHHY_wwNqtZi2j5eWlhZ4rGTp5Gzziqfu96smXzY1H0kqGtk2EU3jGz8NUpM9-uwG5pzh_sJXmGDDdSN2N8XopO57nY5vXymLs=s800-w800-h600" loading="lazy" alt="">
+      </div>
+      <div class="scb">
+        <div class="scn">3:30 PM · Citadines Connect Bertam Georgetown</div>
+        <div class="sctags"><span class="stag stag-hotel">Hotel</span></div>
+        <p class="scnote">Check in and freshen up. Central George Town — most spots are walkable. Complimentary nutmeg juice on arrival. 4.8 stars.</p>
+        <div class="schr">24-hour front desk · +60 4-202 0111</div>
+      </div>
+      <div class="scf"><span class="sca">428, Jalan Penang, George Town</span><a class="mb" href="https://maps.google.com/?cid=10225322812764014476" target="_blank">Maps</a></div>
+    </div>
+    <div class="sc">
+      <div class="scp">
+        <img src="https://lh3.googleusercontent.com/place-photos/AJRVUZMfbMHUapk2ILRfbGFrbcVf0kteYHuWEaMa88YsRfGzz0Zu_JEGMe0L4mtvDAkw7eMmaXU8bLSCyfaIVNANIsQ8eXsqpz80f6xUqnr4QFuhQCpx5R1Sf-t1CYtih9tIMmyez9drH6WUmXmw1VeSgZJBAA=s800-w800-h600" loading="lazy" alt="">
+        <img src="https://lh3.googleusercontent.com/places/ANXAkqFAeOGDPyu4kdxz8dXqZJT1ZNbPDa2Knmvd03rD0uz9gmSeB4f9EUFpwKz4sfZgnhbdeIrW8GRi-HZaXCd7fD_O-0HMpcisHKw=s800-w800-h600" loading="lazy" alt="">
+        <img src="https://lh3.googleusercontent.com/place-photos/AJRVUZOlgaJiodqCXWtSDz7FoE21gu4zyZBaQqZSIYlu1RmniTW7SDYdNugjfEQ9sb7lutOUJrBXfxDTMPiGCcg4sJMfm-T59e1SKQiuStHD8UXQYaT1hEerCDM99m83i924BufBnf0Uk88clUDpKEPAzYSA=s800-w800-h600" loading="lazy" alt="">
+      </div>
+      <div class="scb">
+        <div class="scn">5:00 PM · Jing Si Books & Cafe</div>
+        <div class="sctags"><span class="stag stag-cafe">Cafe</span></div>
+        <p class="scnote">Calm cafe run by the Tzu Chi Foundation. Organic drinks, good tea. Perfect to decompress after the flight before the evening eats.</p>
+        <div class="schr">Daily 9am – 6pm</div>
+      </div>
+      <div class="scf"><span class="sca">31 Beach Street, George Town</span><a class="mb" href="https://maps.google.com/?cid=7738219335417321972" target="_blank">Maps</a></div>
+    </div>
+    <div class="sl">Evening</div>
+    <div class="sc">
+      <div class="scp">
+        <img src="https://lh3.googleusercontent.com/places/ANXAkqFUMb0Cf7DfgoG0NRIFo8jmMUubyA45vIuieboU-zATylkGBxAkYT-JMvMWKcieqFhILxGRIZU6y9i4233_ED5nA8qmVw41dMY=s800-w720-h600" loading="lazy" alt="">
+        <img src="https://lh3.googleusercontent.com/place-photos/AJRVUZPMen_KKn1HzMxVu85JpnafYJuYczEXpDDxOVw-Ze_-AD5L5prUXkXwk6pbHPfOj298eKIhVamRnRJa0vOL44CZlZIxdgxD_OlIRb9NFHJDsVQpLj1WCoIe4bNdd1YgXDwNveJJAz-h_tB6n7L-GaRa=s800-w800-h600" loading="lazy" alt="">
+        <img src="https://lh3.googleusercontent.com/place-photos/AJRVUZNjOBkVWZeFVXc0lNcYhVhWm40lAUit_b0k4WOGaBMkkLzhIGRFQcw0Cyw02SZ5ZI_zNHzLguT0_9laNZbIbHQXbPSKiCmPAHduG6iv68EhUuZwGaQkha6yQmGlEY2itcakUxn05k5W2pQJY1JvJTF32A=s800-w800-h600" loading="lazy" alt="">
+      </div>
+      <div class="scb">
+        <div class="scn">5:00 PM · CHONG Charcoal Seafood Char Koay Teow</div>
+        <div class="sctags"><span class="stag stag-food">Hawker</span></div>
+        <p class="scnote">Opens 4:30pm sharp. Go early or expect a queue. Order the CKT — skip the fried rice. Duck egg and cockles recommended. Cooked over real charcoal.</p>
+        <div class="schr">Mon–Tue, Thu–Sun: 4:30–10:30pm · Closed Wed</div>
+      </div>
+      <div class="scf"><span class="sca">35, Lorong Baru, George Town</span><a class="mb" href="https://maps.google.com/?cid=15741183335894796147" target="_blank">Maps</a></div>
+    </div>
+    <div class="sc">
+      <div class="scp">
+        <img src="https://lh3.googleusercontent.com/place-photos/AJRVUZM5p91MSAdRqrvULVmylbaoL08KrID8NOIM-TDxNuScRctcqiih7r-4w1ATfXRNNRwLKKint68EPrZ8ECBFm8SNTVWb-KB7hzVsffBwrhtohKJt2y9ROrR5C_7U1OXeZ0MB3yr4JedvipY_gFKPEOww=s800-w800-h600" loading="lazy" alt="">
+        <img src="https://lh3.googleusercontent.com/place-photos/AJRVUZMKtzQ37T_eWFn431oX3uhAy7n17Omo8PX0rEasgMJRuM5UmuzRcPmlSnveMZ96d8l4-BP15N05hvnYMque8bhUpkaAPBtueuEENNoO0Jjzq1ck-qivgyHPVsQhauHbQldvvvuptXOawJiKKxiQixse3Q=s800-w800-h600" loading="lazy" alt="">
+        <img src="https://lh3.googleusercontent.com/place-photos/AJRVUZOa9UNuyUBcE9Zk1ekSvSb5w7BugR8UEXblNnHUGpu8CPE8JYPZ-u2r-B9FONcWsQADBUJvocUgTiBQUCF2rqPkaZV6SsyklojJonl3qJ3aMev09fCiom7mdXtWBVLv7xE40k5omAy2j0xkBsU9aDGpLg=s800-w800-h600" loading="lazy" alt="">
+      </div>
+      <div class="scb">
+        <div class="scn">8:00 PM · BaBa Phang</div>
+        <div class="sctags"><span class="stag stag-food">Nyonya</span><span class="stag stag-reserve">Reserve ahead</span></div>
+        <p class="scnote">Authentic Peranakan dinner. Tables fill before they open — arrive early if no reservation. Nasi Ulam, Otah, Cincalok Pork are standouts. +60 14-741 9839</p>
+        <div class="schr">Mon–Tue, Thu–Sun: 11:30am–2:30pm, 6–9:30pm · Closed Wed</div>
+      </div>
+      <div class="scf"><span class="sca">6, Jalan Perak, George Town</span><a class="mb" href="https://maps.google.com/?cid=15996838652564424036" target="_blank">Maps</a></div>
+    </div>
+  </div>
+
+  <!-- DAY 2 -->
+  <div class="day-section" id="s1">
+    <div class="sl">Morning</div>
+    <div class="sc">
+      <div class="scp">
+        <img src="https://lh3.googleusercontent.com/places/ANXAkqGmnuOnexIK7c6XjAC3U-PfnziyoywOOuIDkjK5ag3a3h9vh7QKQHDTV5RvlSawMDT0pDL3Q3PoZnUredMs3SZjJIuzfiGgfSE=s800-w800-h575" loading="lazy" alt="">
+        <img src="https://lh3.googleusercontent.com/place-photos/AJRVUZM0KdDlbJ3tUKfGTRz0-XHcz-R2ek8V5l7tXXB5ppw8pVEYGvzzFu8clC75LDj0XbOkz1NybpO_rRLgwIzBtiTeSgngvczEm5SnBKDu5A6oEKeVVJ9Nm5-WAcmlrMWAc0DgSVEIfFM2ZupF_CpKQXccJA=s800-w800-h600" loading="lazy" alt="">
+        <img src="https://lh3.googleusercontent.com/place-photos/AJRVUZPPtdmqwlhzIdmYYkH2SMmpma_QeRXChdqXJNR4Zf3P1Q8V1qthmrn2WxKWkkktGInJt3aqv3KA1XgQvycMeLRcutBL-qWDfUIQZUldMDeSMUz9tfjIfJmw9Tn1u3vier5Jk9PjPzPUUqn-zOhgTMlh=s800-w800-h600" loading="lazy" alt="">
+      </div>
+      <div class="scb">
+        <div class="scn">7:15 AM · Ali Nasi Lemak Daun Pisang</div>
+        <div class="sctags"><span class="stag stag-food">Breakfast</span><span class="stag stag-michelin">Michelin Guide</span></div>
+        <p class="scnote">Opens 7am. Go early — sells out by mid-morning. RM3 a plate. The sambal is potent. Order rice + sambal first before adding extras.</p>
+        <div class="schr">Mon–Fri: 7am–2pm · Sat: 7am–1pm · Closed Sun</div>
+      </div>
+      <div class="scf"><span class="sca">Sri Weld Food Court, Beach Street</span><a class="mb" href="https://maps.google.com/?cid=6348670730682531118" target="_blank">Maps</a></div>
+    </div>
+    <div class="sc">
+      <div class="scp">
+        <img src="https://lh3.googleusercontent.com/place-photos/AJRVUZP5LBWWS__ZE7nR09fV_sITO30kDKtbjfukjHldxQv0sIXqk5OUFU0F-Hb5OKqIUKUPytQ8kZXwd7svTR2v8dLXnAcwVVulBQVWC6dibMwisusHgZzrKEVlv25LwBH-UuvXRIniHlhsa7ZQfg=s800-w800-h600" loading="lazy" alt="">
+        <img src="https://lh3.googleusercontent.com/place-photos/AJRVUZNb1p0AYRvT5PPPBhPq2OzPz7wvPKxCRu6zBQI91FDBqbwFGRzqNtx2bfFhAoWxwd4gxJy7PBWUCNcqvb8eFEG0iu-3acjMYdYxbygX0pZ20pAsJa8RzzsjJvaQ-85_Ax8Npssktu-GvTL-Msg3E5pgPA=s800-w800-h600" loading="lazy" alt="">
+        <img src="https://lh3.googleusercontent.com/place-photos/AJRVUZNScxgaXQwJ4pin26MuSwWmzIPYAqqQyU7vp3M76lkGnmWiDy_L6gMt160RZYp1PhfMQfJbzurdFjbzaKGwY3OVN6P7EkaOk5VlSzlRJmwFxPHk59AGWXc5XOliGR9G8bTBH9F3XY98NOTuKkAzxtBIrA=s800-w800-h600" loading="lazy" alt="">
+      </div>
+      <div class="scb">
+        <div class="scn">9:00 AM · Penang Hill Heritage Trail</div>
+        <div class="sctags"><span class="stag stag-activity">Hike</span></div>
+        <p class="scnote">Hike up takes 2–2.5 hrs. Steep stairs + jungle trekking. Bring water, wear proper shoes. Mostly shaded. Go before 10am to beat the heat. Views over George Town at the top are spectacular.</p>
+        <div class="schr">Open 24 hours · Start early</div>
+      </div>
+      <div class="scf"><span class="sca">478, Jalan Pokok Ceri, Ayer Itam</span><a class="mb" href="https://maps.google.com/?cid=12969436852212952995" target="_blank">Maps</a></div>
+    </div>
+    <div class="sc">
+      <div class="scp">
+        <img src="https://lh3.googleusercontent.com/place-photos/AJRVUZO6fPVsOT_vF16RBjKBhk-P5e2REg4EmsNQA4ksgQRNk9H9dD7bEQE1ahOrrUf9hNfhVzr27_5m7kU5YcuGeBGQX2i7c75u37TBVtYAhtYtB5VhvkSQTspq1VGcYv87FSjAUiJNdb8PG-yP4A=s800-w800-h600" loading="lazy" alt="">
+        <img src="https://lh3.googleusercontent.com/place-photos/AJRVUZO4oNXwIwIYWZXgmhPuZQ-q5N982H1hmeFUOpp6TTEYGLrNTNtro3lMkvF0dVH45U2T6jVAaQtGn53O6KpON0lBQTCXSc_0urCOMcgJR3vem8BnQx5JlSCa_yOF3sK4ckqZn83_wHVY9a2w=s800-w800-h600" loading="lazy" alt="">
+        <img src="https://lh3.googleusercontent.com/place-photos/AJRVUZNLp8HFuuyb1rmFLzD0aROUii8UlhigEn67uVJ2bSmHke7txcxXtSQPLCMa6oX-n9yIoSiJHupH4c6q1iB1FGN29LrRwkZTDqbqN6SfD_ysVG1DGlu33H_gT3-bROSKbI3sCD2qpkB3uUOKCQ=s800-w800-h600" loading="lazy" alt="">
+      </div>
+      <div class="scb">
+        <div class="scn">12:00 PM · Funicular Service Penang Hill</div>
+        <div class="sctags"><span class="stag stag-activity">Transport down</span></div>
+        <p class="scnote">Take the funicular back down — only 4 minutes. Pre-book express tickets at penanghill.gov.my to skip the queue. The ride itself is worth experiencing.</p>
+        <div class="schr">Daily 6:30am – 11pm</div>
+      </div>
+      <div class="scf"><span class="sca">422, Jalan Bukit Bendera</span><a class="mb" href="https://maps.google.com/?cid=9139778477464223867" target="_blank">Maps</a></div>
+    </div>
+    <div class="sl">Afternoon</div>
+    <div class="sc">
+      <div class="scp">
+        <img src="https://lh3.googleusercontent.com/place-photos/AJRVUZMIyL3So4lxMcTHJgwgFXz-VnvwjIQb9FfsofFNcC1mb3G4PmG5zbQ7xD9_rmWyFwAZ0bF5PD98kfeq7ghKGBfJQw97FZKAi25evP0FWkOF88_rFWRmC3OD_YSp1kyt1DpkuJ9n5IloDmR5NjJLiPTMqA=s800-w800-h600" loading="lazy" alt="">
+        <img src="https://lh3.googleusercontent.com/place-photos/AJRVUZOvnjiAVx8OJsU32kEymp9hzhrZXdFpV4JPg08zBj8hu4rulJfyDp-ZMWTy1Cm_GphRnx_J_ERHefixhpWhaEWLwPJ4NaDypR51BAGnxo_vILn_vOdnDXbJS6vm0LMESeL69LuwBEVfi-Wh1Q=s800-w800-h600" loading="lazy" alt="">
+        <img src="https://lh3.googleusercontent.com/place-photos/AJRVUZMtVdCfCCSgoFXuWJVgyZyBKy--uPXWTw4VG3O5ryEw2JqKuYNzC_jJUvee9afWni8-y1Z7-tkNDi-oLQ_cf_w05aOX7Es7v0wulcOXMrHSj_eyIPMyGpdZPUzy6jPxRIHSU-AEt-YPR5A006q7fRxEPQ=s800-w800-h600" loading="lazy" alt="">
+      </div>
+      <div class="scb">
+        <div class="scn">2:00 PM · Laksalicious</div>
+        <div class="sctags"><span class="stag stag-food">Laksa</span><span class="stag stag-michelin">Michelin Guide</span></div>
+        <p class="scnote">Air-conditioned — a relief after the hike. Order the assam version. Generous fish-to-noodle ratio. The asam laksa mojito is a fun novelty worth trying.</p>
+        <div class="schr">Tue–Sun: 11:30am–7pm · Closed Mon</div>
+      </div>
+      <div class="scf"><span class="sca">117–117A, Jalan Hutton, George Town</span><a class="mb" href="https://maps.google.com/?cid=834969466285114595" target="_blank">Maps</a></div>
+    </div>
+    <div class="sc">
+      <div class="scp">
+        <img src="https://lh3.googleusercontent.com/places/ANXAkqFRYLasX_elESHjOFWEn-nu4YlWPSXCg5ORdIMKSwy87W2C_xElG6lAUCsvJQqGfMBXe49QRDELDS8KgBrWB1s8fpSRzqxXKec=s800-w800-h600" loading="lazy" alt="">
+        <img src="https://lh3.googleusercontent.com/places/ANXAkqFYV8P_mBEqa_-whUz9KsRu2mE2SqlL6e0OXzNNuEi9vvHDuWRC5GoCsSUYaBBcZx5J9mLobZJ1fljn47Muj5Po5zOYYRsizh4=s800-w800-h600" loading="lazy" alt="">
+        <img src="https://lh3.googleusercontent.com/place-photos/AJRVUZMC3T7dskRCi7EQQONLMRPyYy7XSfF3fwxzTWj90GQbxOMm08_Qj4pE9ceNsemKSL0q5m4hlj9i72pBmhEdvl49EOkTE6oOTGPJJNsES11Y6jrn-ca5XlKAiaj9DtzdnUihy-ZaaT72BDei53YQ3Qq0=s800-w800-h600" loading="lazy" alt="">
+      </div>
+      <div class="scb">
+        <div class="scn">3:30 PM · Le Petit Four Pâtisserie</div>
+        <div class="sctags"><span class="stag stag-cafe">Pastries</span></div>
+        <p class="scnote">French-Asian pastry shop. The almond croissant and canel&eacute; are outstanding. Cosy spot to sit for an hour after the hike. Piccolo coffee is solid.</p>
+        <div class="schr">Mon–Wed, Fri–Sun: 9am–6pm · Closed Thu</div>
+      </div>
+      <div class="scf"><span class="sca">310, Lebuh Pantai, George Town</span><a class="mb" href="https://maps.google.com/?cid=7169884917205022526" target="_blank">Maps</a></div>
+    </div>
+    <div class="sl">Evening</div>
+    <div class="sc">
+      <div class="scp">
+        <img src="https://lh3.googleusercontent.com/place-photos/AJRVUZMizJwt3hT-Ckntyhg7mLfSWqSzPM4QYfjLeEw52Qi-GLkcLfmszCyZvFn42BGGlvwktPqVXQj9Dvb7rcnzOzR7d2GlyDkAw126HWRNxeGe3BldT20snuUoGcUk_i1UZqvW_ZVZp7Wc-ai2Hw=s800-w800-h600" loading="lazy" alt="">
+        <img src="https://lh3.googleusercontent.com/place-photos/AJRVUZO5FTrtpyb7S3nCu2LMKMYyCDpUzdKIKxP-yGpGcIOu8Dgb816H88c9Fal98kjEggjEUpWZqBAebHePQo-iL-_6xuNtYZo6rEHv2bFQ9NlYjvWWXUlIaFxwmd--Lxn-LSMnxi9f6MxTy9_S9lUkLBi3Vg=s800-w800-h600" loading="lazy" alt="">
+        <img src="https://lh3.googleusercontent.com/place-photos/AJRVUZPq_GK1rjK5KUzENOlD-JoSTPRrcRFeWPx-TxN4FOuyWyX3IMkYU_2BOtGOlFLUUx6yztVaZ5VlBX8H1agpAAbF2LcppKJJwPGWq35CNskNib4ZeJAKojoFqQ5gemOf41180oWRSBsDZumVGVyrBXfzjg=s800-w800-h600" loading="lazy" alt="">
+      </div>
+      <div class="scb">
+        <div class="scn">7:00 PM · RASA SAYANG Nyonya Cuisine</div>
+        <div class="sctags"><span class="stag stag-food">Nyonya</span><span class="stag stag-reserve">Reserve ahead</span></div>
+        <p class="scnote">4.8 stars. Best Nyonya food in Penang by most accounts. Assam Pedas Stingray, Nyonya Kari Bak Kut, blue pea fragrant rice. Don't be late — time-limited seating. +60 12-854 8799</p>
+        <div class="schr">Mon–Tue, Thu–Sun: 11am–3pm, 5:30–9:30pm · Closed Wed</div>
+      </div>
+      <div class="scf"><span class="sca">64, Jalan Moulmein, Pulau Tikus</span><a class="mb" href="https://maps.google.com/?cid=10225322812764014476" target="_blank">Maps</a></div>
+    </div>
+  </div>
+
+  <!-- DAY 3 -->
+  <div class="day-section" id="s2">
+    <div class="sl">Morning</div>
+    <div class="sc">
+      <div class="scp">
+        <img src="https://lh3.googleusercontent.com/place-photos/AJRVUZOL8juLF1K4rrOefOaD_-TGuEanWzHgf-hgxOOIF8sUpH5stbo5ZnKZ-ipfxO5oZ-d4OObaqRan26h2HHXsuth7-8P1zyL3aBPXT27p2cbpyzWD3N70Qu0hpLPmYqsOIkftTnhjVxOIZ9q_2g=s800-w800-h600" loading="lazy" alt="">
+        <img src="https://lh3.googleusercontent.com/place-photos/AJRVUZPpX5fRZpLdRzvwPlpWkYBuXdE7fNW7IF1SP5aOf29UT0vAg38QQwRVficW-NQFhrtfVy9NwNFaaD2dvMKMVdWkSDNo-2sUYYJKJN_gU82oquh03M0JNV634p_TrCRw0dfaX5tsgpiaGFDi8w=s800-w800-h600" loading="lazy" alt="">
+        <img src="https://lh3.googleusercontent.com/place-photos/AJRVUZMig5xkvJANp6mceLuBOH8h5-RAECewhOFNbNe72CH_On0MTc64s9j3yaJs5CjpDTSryNCqgh8HP-GUgjckzP-1PeGJng2_rK_rrdRzyvpe_CyyOyGusCsbew61V0SxsoO9beeRjfMGeRKXjw=s800-w800-h600" loading="lazy" alt="">
+      </div>
+      <div class="scb">
+        <div class="scn">9:00 AM · Batu Ferringhi Beach</div>
+        <div class="sctags"><span class="stag stag-activity">Beach</span></div>
+        <p class="scnote">About 30 min by Grab from George Town. Long sandy stretch. Water sports available (parasailing, jet skis). Sunsets here are excellent — consider returning in the evening.</p>
+        <div class="schr">Open 24 hours · Best before noon</div>
+      </div>
+      <div class="scf"><span class="sca">Jalan Batu Ferringhi, Penang</span><a class="mb" href="https://maps.google.com/?cid=2956641074386871952" target="_blank">Maps</a></div>
+    </div>
+    <div class="sl">Afternoon</div>
+    <div class="sc">
+      <div class="scp">
+        <img src="https://lh3.googleusercontent.com/place-photos/AJRVUZNub_SdU_PxBNjncLrZLsZ9FxD2gS_SYdP1zvrRLlwKTAJjZz5X0tkFs8TJz9WDAKqafA5HU8VNVuVuIMPSJ4b8jhjpx2XmVpYPxfH1qIysUjiEWVBivDps6CYJ6HilJmiJy7iypiLIlNm9UQ=s800-w800-h600" loading="lazy" alt="">
+        <img src="https://lh3.googleusercontent.com/place-photos/AJRVUZOj9_G-CFO4HCxp9ljs8b5EAJDy2kmqScEqMhetHgwMcD7dEUF0x_EsCzK9mUavAyzZr-ZjaANrKLzgJSafgHH-uvF3xW-9ic_XTyIIHCkov_rRwmsXP_dOrnTfdXS8-JSgSdU0R4EmZGiquz5etzFEZQ=s800-w800-h600" loading="lazy" alt="">
+        <img src="https://lh3.googleusercontent.com/place-photos/AJRVUZPj-48BSbOXff53M_Sj5oD6dS6aEUKwPPb--hTQuxT2NzgYRVPk6axM0nf87-XlrhH8i16f2k-Z5ZdVlJUB9jQYR960A0Wfl54tJFJtoGl8Z544as56e7whS9h6Gvv8Fumj7bhWfAxJPX3moFg=s800-w800-h600" loading="lazy" alt="">
+      </div>
+      <div class="scb">
+        <div class="scn">3:00 PM · Laksa Mamu Famous Sungai Pinang</div>
+        <div class="sctags"><span class="stag stag-food">Laksa</span></div>
+        <p class="scnote">Opens at 3pm. Worth the Grab ride to Jelutong (~15 min). One of the best assam laksa in Penang — balanced tartness. The uncle running the stall is very friendly.</p>
+        <div class="schr">Mon–Sat: 3pm–9pm · Closed Sun</div>
+      </div>
+      <div class="scf"><span class="sca">Taman Lita, Jelutong, Penang</span><a class="mb" href="https://maps.google.com/?cid=10445095134458840476" target="_blank">Maps</a></div>
+    </div>
+    <div class="sc">
+      <div class="scp">
+        <img src="https://lh3.googleusercontent.com/place-photos/AJRVUZNZ2bUCZhnUiqJsViTtW5MXlvuJ0PewzM2DlYwBTmJBNZPFvPgDOiOQo66Xe8Cm1ZksBfL-M2yemCSkkuCAc53OCDIkSSpYRXUpr-JIKpjuSWSlfuNcgwhlLDMerypR93fsAHsA7n2PahnY=s800-w800-h600" loading="lazy" alt="">
+        <img src="https://lh3.googleusercontent.com/place-photos/AJRVUZMXlMNTy1roVvgk6HjbFY3ZCJf1ZdvfL-X79PW8DhZHdTxEWRDS_25RtnfZGDoAP8sxSFjTGkUNlePanxIeEXhpXJ_CAi9eAxptTir-zPzGxCNheXoGF7zdxawvhI-w6D1uYna6eiKZ5QC_BxKs=s800-w800-h600" loading="lazy" alt="">
+        <img src="https://lh3.googleusercontent.com/place-photos/AJRVUZPvpMm-NC7RhEvMQAymArpxwLdhoLRBfzLaQixyav_ohjupNxyp6FN_vrUYvy-sbM_J39HsCr17oCx2hKh4HeizEBCwhFUAdQCJK6tM8ScHTUGc_cqhZWxtk0X5CeOdbBIfUHoSb_E-L2-DEzM=s800-w800-h600" loading="lazy" alt="">
+      </div>
+      <div class="scb">
+        <div class="scn">4:30 PM · Sixth Sense</div>
+        <div class="sctags"><span class="stag stag-shop">Clothing</span></div>
+        <p class="scnote">Affordable linen and cotton pieces. Good starting point for Beach Street shopping. More accessible price point than Warehouse 129 next door.</p>
+        <div class="schr">Mon–Sat: 10am–5:30pm · Sun: 12pm–4:45pm</div>
+      </div>
+      <div class="scf"><span class="sca">157, Lebuh Pantai, George Town</span><a class="mb" href="https://maps.google.com/?cid=8747951626966440676" target="_blank">Maps</a></div>
+    </div>
+    <div class="sc">
+      <div class="scp">
+        <img src="https://lh3.googleusercontent.com/place-photos/AJRVUZM1WvEbGDx2WX3j0OGCSBDSTuZTLkepA_PO3DST43acbr6dG4cSUMoKamq30TI1CC7RL1mHi9o4GySneC9DIDOxCAi9eAxptTir-zPzGxCNheXoGF7zdxawvhI-w6D1uYna6eiKZ5QC_BxKs=s800-w800-h600" loading="lazy" alt="">
+        <img src="https://lh3.googleusercontent.com/place-photos/AJRVUZMCXCbZMExB3xNkwr1F1brVsXt085_xZk_IVVRUPEm5kNq59lhJMKzG4h5Ao8sxSFjTGkUNlePanxIeEXhpXJ_CAi9eAxptTir-zPzGxCNheXoGF7zdxawvhI-w6D1uYna6eiKZ5QC_BxKs=s800-w800-h600" loading="lazy" alt="">
+        <img src="https://lh3.googleusercontent.com/place-photos/AJRVUZNmCtAy7cACY7bo8EbxPIKZF6aJOYdbLFhbrheRjAs8mJa3bcBP2R4cFaL7tGFRII9TVZ0bybDJL5BE1-LUS8txyK17ZAHjwM4x8W7GfbtJ5efIDm2ow1TKkJ3Z_KjsvDl2HJi7MCeUfcDh=s800-w800-h600" loading="lazy" alt="">
+      </div>
+      <div class="scb">
+        <div class="scn">5:15 PM · Warehouse 129</div>
+        <div class="sctags"><span class="stag stag-shop">Clothing</span></div>
+        <p class="scnote">Premium linen pieces around RM200. Beautiful fabrics — worth browsing even if you don't buy. Higher-end sibling of Sixth Sense, same block.</p>
+        <div class="schr">Mon–Sat: 11am–5:30pm · Sun: 12pm–5pm</div>
+      </div>
+      <div class="scf"><span class="sca">129, Lebuh Pantai, George Town</span><a class="mb" href="https://maps.google.com/?cid=5985802180757766645" target="_blank">Maps</a></div>
+    </div>
+    <div class="sc">
+      <div class="scp">
+        <img src="https://lh3.googleusercontent.com/place-photos/AJRVUZMRGNamvZyUGOc7thOz_BUFnklRkamPExCA-qdz9TuutuK6f0rVA50vUKX2LvebhQQg5Ph_KZku5ktkgRZDyp5mDSSuvniP3HLC5GMsRC5jbcMW6DtdqNuLklkECSRBdQozbE_8cMkbEEjpXg=s800-w800-h600" loading="lazy" alt="">
+        <img src="https://lh3.googleusercontent.com/place-photos/AJRVUZNoAbviUvQpsLxzyHZ1o0_ExCpBdhCTFNe_6hH3RX4-hr_j4Pm7u-56ab5PeHeKiSBqIdARvuHrhT7O7IR54LKJ4GJ6hkNgNeLdH8NqFAxt5cRDQQSZAEGWa_l64nmFtR-14YQSWJglB7l_jg=s800-w800-h600" loading="lazy" alt="">
+        <img src="https://lh3.googleusercontent.com/place-photos/AJRVUZNjUi95j4o_vCAd-VJSWjeaxdJAV5yZpvMZWPe0Vhu_68_GZxiVr1oc_fBmkfjrfgkyf4QLPGWn2-o4D1i1oxEwLUkmTmh5sut1WYjDtcHsQCcANADTTSjhSivsfB7qaKSIhb2VjLNhc74-fvU=s800-w800-h600" loading="lazy" alt="">
+      </div>
+      <div class="scb">
+        <div class="scn">6:00 PM · Nala Penang Beach Street</div>
+        <div class="sctags"><span class="stag stag-shop">Clothing</span></div>
+        <p class="scnote">Bold graphic prints, high-quality fabrics. Very different aesthetic to the other two — more statement pieces. A few doors down on the same street.</p>
+        <div class="schr">Daily: 10am–6pm</div>
+      </div>
+      <div class="scf"><span class="sca">230, Beach Street, George Town</span><a class="mb" href="https://maps.google.com/?cid=11042297117850927207" target="_blank">Maps</a></div>
+    </div>
+    <div class="sl">Evening</div>
+    <div class="sc">
+      <div class="scp">
+        <img src="https://lh3.googleusercontent.com/place-photos/AJRVUZMizJwt3hT-Ckntyhg7mLfSWqSzPM4QYfjLeEw52Qi-GLkcLfmszCyZvFn42BGGlvwktPqVXQj9Dvb7rcnzOzR7d2GlyDkAw126HWRNxeGe3BldT20snuUoGcUk_i1UZqvW_ZVZp7Wc-ai2Hw=s800-w800-h600" loading="lazy" alt="">
+        <img src="https://lh3.googleusercontent.com/place-photos/AJRVUZO5FTrtpyb7S3nCu2LMKMYyCDpUzdKIKxP-yGpGcIOu8Dgb816H88c9Fal98kjEggjEUpWZqBAebHePQo-iL-_6xuNtYZo6rEHv2bFQ9NlYjvWWXUlIaFxwmd--Lxn-LSMnxi9f6MxTy9_S9lUkLBi3Vg=s800-w800-h600" loading="lazy" alt="">
+        <img src="https://lh3.googleusercontent.com/place-photos/AJRVUZPq_GK1rjK5KUzENOlD-JoSTPRrcRFeWPx-TxN4FOuyWyX3IMkYU_2BOtGOlFLUUx6yztVaZ5VlBX8H1agpAAbF2LcppKJJwPGWq35CNskNib4ZeJAKojoFqQ5gemOf41180oWRSBsDZumVGVyrBXfzjg=s800-w800-h600" loading="lazy" alt="">
+      </div>
+      <div class="scb">
+        <div class="scn">7:30 PM · 888 Hokkien Mee</div>
+        <div class="sctags"><span class="stag stag-food">Hokkien Mee</span><span class="stag stag-michelin">Michelin Bib Gourmand</span></div>
+        <p class="scnote">Rich prawn broth — add roast pork. Lor mee and oyster omelette also good. Grab a table first, then order. Queue moves fast once you're in.</p>
+        <div class="schr">Mon–Wed, Fri–Sun: 3–9:30pm · Closed Thu</div>
+      </div>
+      <div class="scf"><span class="sca">67A, Lebuh Presgrave, George Town</span><a class="mb" href="https://maps.google.com/?cid=16953154920432182119" target="_blank">Maps</a></div>
+    </div>
+  </div>
+
+  <!-- DAY 4 -->
+  <div class="day-section" id="s3">
+    <div class="sl">Morning</div>
+    <div class="sc">
+      <div class="scp">
+        <img src="https://lh3.googleusercontent.com/places/ANXAkqGmnuOnexIK7c6XjAC3U-PfnziyoywOOuIDkjK5ag3a3h9vh7QKQHDTV5RvlSawMDT0pDL3Q3PoZnUredMs3SZjJIuzfiGgfSE=s800-w800-h575" loading="lazy" alt="">
+        <img src="https://lh3.googleusercontent.com/place-photos/AJRVUZM0KdDlbJ3tUKfGTRz0-XHcz-R2ek8V5l7tXXB5ppw8pVEYGvzzFu8clC75LDj0XbOkz1NybpO_rRLgwIzBtiTeSgngvczEm5SnBKDu5A6oEKeVVJ9Nm5-WAcmlrMWAc0DgSVEIfFM2ZupF_CpKQXccJA=s800-w800-h600" loading="lazy" alt="">
+        <img src="https://lh3.googleusercontent.com/place-photos/AJRVUZPPtdmqwlhzIdmYYkH2SMmpma_QeRXChdqXJNR4Zf3P1Q8V1qthmrn2WxKWkkktGInJt3aqv3KA1XgQvycMeLRcutBL-qWDfUIQZUldMDeSMUz9tfjIfJmw9Tn1u3vier5Jk9PjPzPUUqn-zOhgTMlh=s800-w800-h600" loading="lazy" alt="">
+      </div>
+      <div class="scb">
+        <div class="scn">7:00 AM · Ali Nasi Lemak Daun Pisang</div>
+        <div class="sctags"><span class="stag stag-food">Breakfast</span><span class="stag stag-michelin">Michelin Guide</span></div>
+        <p class="scnote">Last Penang breakfast. Goes fast — be there early. RM3 a plate. One final hit of that sambal before the flight home.</p>
+        <div class="schr">Fri: 7am–2pm ✓</div>
+      </div>
+      <div class="scf"><span class="sca">Sri Weld Food Court, Beach Street</span><a class="mb" href="https://maps.google.com/?cid=6348670730682531118" target="_blank">Maps</a></div>
+    </div>
+    <div class="sc">
+      <div class="scp">
+        <img src="https://lh3.googleusercontent.com/places/ANXAkqFRYLasX_elESHjOFWEn-nu4YlWPSXCg5ORdIMKSwy87W2C_xElG6lAUCsvJQqGfMBXe49QRDELDS8KgBrWB1s8fpSRzqxXKec=s800-w800-h600" loading="lazy" alt="">
+        <img src="https://lh3.googleusercontent.com/places/ANXAkqFYV8P_mBEqa_-whUz9KsRu2mE2SqlL6e0OXzNNuEi9vvHDuWRC5GoCsSUYaBBcZx5J9mLobZJ1fljn47Muj5Po5zOYYRsizh4=s800-w800-h600" loading="lazy" alt="">
+        <img src="https://lh3.googleusercontent.com/place-photos/AJRVUZMC3T7dskRCi7EQQONLMRPyYy7XSfF3fwxzTWj90GQbxOMm08_Qj4pE9ceNsemKSL0q5m4hlj9i72pBmhEdvl49EOkTE6oOTGPJJNsES11Y6jrn-ca5XlKAiaj9DtzdnUihy-ZaaT72BDei53YQ3Qq0=s800-w800-h600" loading="lazy" alt="">
+      </div>
+      <div class="scb">
+        <div class="scn">9:00 AM · Le Petit Four Pâtisserie</div>
+        <div class="sctags"><span class="stag stag-cafe">Pastries</span></div>
+        <p class="scnote">Grab a croissant or canel&eacute; for the road. Pick up a box to take back to Singapore — they hold up well for the flight.</p>
+        <div class="schr">Fri: 9am–6pm ✓</div>
+      </div>
+      <div class="scf"><span class="sca">310, Lebuh Pantai, George Town</span><a class="mb" href="https://maps.google.com/?cid=7169884917205022526" target="_blank">Maps</a></div>
+    </div>
+    <div class="abox">
+      <div class="abox-t">Airport timing</div>
+      <div class="abox-b">Flight departs 13:40. Penang Airport (PEN) is 20–25 min by Grab from George Town. Leave the hotel by 11:00–11:15am to be comfortable.</div>
+    </div>
+  </div>
+
+</div>
+
+<script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+<script>
+var markers=[];
+var map;
+
+const DAYS=[
+  {title:"Day 1 · Arrival",sub:"George Town hawker evening",stops:[
+    {name:"Citadines Connect Bertam",time:"3:30 PM",type:"hotel",lat:5.4156,lng:100.3292,note:"Check in. Central George Town.",url:"https://maps.google.com/?cid=10225322812764014476"},
+    {name:"Jing Si Books & Cafe",time:"5:00 PM",type:"cafe",lat:5.4170,lng:100.3422,note:"Calm cafe. Good tea to decompress.",url:"https://maps.google.com/?cid=7738219335417321972"},
+    {name:"CHONG Charcoal CKT",time:"5:00 PM",type:"food",lat:5.4149,lng:100.3265,note:"Opens 4:30pm. Go early.",url:"https://maps.google.com/?cid=15741183335894796147"},
+    {name:"BaBa Phang",time:"8:00 PM",type:"food",lat:5.4263,lng:100.3166,note:"Reserve ahead. Best Nyonya dinner.",url:"https://maps.google.com/?cid=15996838652564424036",reserve:true}
+  ]},
+  {title:"Day 2 · Penang Hill",sub:"Hike up · Funicular down · Laksa · Nyonya",stops:[
+    {name:"Ali Nasi Lemak",time:"7:15 AM",type:"food",lat:5.4178,lng:100.3428,note:"Michelin. Opens 7am. RM3.",url:"https://maps.google.com/?cid=6348670730682531118"},
+    {name:"Penang Hill Heritage Trail",time:"9:00 AM",type:"activity",lat:5.4105,lng:100.2761,note:"Hike up. 2–2.5 hrs. Start early.",url:"https://maps.google.com/?cid=12969436852212952995"},
+    {name:"Funicular Penang Hill",time:"12:00 PM",type:"activity",lat:5.4085,lng:100.2772,note:"Funicular down. Buy express tickets.",url:"https://maps.google.com/?cid=9139778477464223867"},
+    {name:"Laksalicious",time:"2:00 PM",type:"food",lat:5.4201,lng:100.3301,note:"Michelin laksa. A/C inside.",url:"https://maps.google.com/?cid=834969466285114595"},
+    {name:"Le Petit Four Pâtisserie",time:"3:30 PM",type:"cafe",lat:5.4138,lng:100.3376,note:"French-Asian pastries. Great canel\u00e9.",url:"https://maps.google.com/?cid=7169884917205022526"},
+    {name:"RASA SAYANG Nyonya",time:"7:00 PM",type:"food",lat:5.4291,lng:100.3116,note:"Reserve ahead. 4.8 stars.",url:"https://maps.google.com/?cid=10225322812764014476",reserve:true}
+  ]},
+  {title:"Day 3 · Beach + Shopping",sub:"Batu Ferringhi · Laksa Mamu · Beach Street",stops:[
+    {name:"Batu Ferringhi Beach",time:"9:00 AM",type:"activity",lat:5.4734,lng:100.2461,note:"Beach. ~30 min Grab from town.",url:"https://maps.google.com/?cid=2956641074386871952"},
+    {name:"Laksa Mamu",time:"3:00 PM",type:"food",lat:5.4023,lng:100.3230,note:"Opens 3pm. Best assam laksa.",url:"https://maps.google.com/?cid=10445095134458840476"},
+    {name:"Sixth Sense",time:"4:30 PM",type:"shop",lat:5.4148,lng:100.3387,note:"Affordable linen clothing.",url:"https://maps.google.com/?cid=8747951626966440676"},
+    {name:"Warehouse 129",time:"5:15 PM",type:"shop",lat:5.4149,lng:100.3393,note:"Premium linen. Same block.",url:"https://maps.google.com/?cid=5985802180757766645"},
+    {name:"Nala Beach Street",time:"6:00 PM",type:"shop",lat:5.4150,lng:100.3388,note:"Bold graphic prints.",url:"https://maps.google.com/?cid=11042297117850927207"},
+    {name:"888 Hokkien Mee",time:"7:30 PM",type:"food",lat:5.4111,lng:100.3307,note:"Michelin Bib Gourmand. Rich prawn broth.",url:"https://maps.google.com/?cid=16953154920432182119"}
+  ]},
+  {title:"Day 4 · Departure",sub:"Flight 13:40 · Leave hotel by 11:15am",stops:[
+    {name:"Ali Nasi Lemak",time:"7:00 AM",type:"food",lat:5.4178,lng:100.3428,note:"Last Penang breakfast. RM3.",url:"https://maps.google.com/?cid=6348670730682531118"},
+    {name:"Le Petit Four Pâtisserie",time:"9:00 AM",type:"cafe",lat:5.4138,lng:100.3376,note:"Grab pastries for the flight.",url:"https://maps.google.com/?cid=7169884917205022526"},
+    {name:"Penang Airport (PEN)",time:"11:15 AM",type:"activity",lat:5.2971,lng:100.2767,note:"20–25 min Grab from George Town.",url:"https://maps.google.com/?q=Penang+International+Airport"}
+  ]}
+];
+
+const COLORS={food:"#C4622D",activity:"#2A6B5E",shop:"#9A6B10",cafe:"#6040A0",hotel:"#5A5550"};
+
+function mkIcon(type){
+  const c=COLORS[type]||"#888";
+  const svg=`<svg xmlns="http://www.w3.org/2000/svg" width="26" height="32" viewBox="0 0 26 32"><path d="M13 0C8.03 0 4 4.03 4 9c0 7 9 23 9 23s9-16 9-23c0-4.97-4.03-9-9-9z" fill="${c}" stroke="white" stroke-width="1.5"/><circle cx="13" cy="9" r="4" fill="white"/></svg>`;
+  return L.divIcon({html:svg,className:'',iconSize:[26,32],iconAnchor:[13,32],popupAnchor:[0,-34]});
+}
+
+map=L.map('map',{zoomControl:true,scrollWheelZoom:false});
+L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png',{attribution:'© <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a>',maxZoom:19}).addTo(map);
+
+function renderPanel(idx){
+  const d=DAYS[idx];
+  document.getElementById('pt').textContent=d.title;
+  document.getElementById('ps').textContent=d.sub;
+  const c=document.getElementById('panel-stops');
+  c.innerHTML='';
+  d.stops.forEach((s,i)=>{
+    const div=document.createElement('div');
+    div.className='si'+(i===0?' active':'');
+    div.innerHTML=`<div class="sil"><div class="sit">${s.time}</div><div class="sid" style="background:${COLORS[s.type]||'#888'}"></div></div><div class="sib"><div class="sin">${s.name}</div><div class="sitags"><span class="stag stag-${s.type}">${s.type.charAt(0).toUpperCase()+s.type.slice(1)}</span>${s.reserve?'<span class="stag stag-reserve">Reserve</span>':''}</div><div class="sinote">${s.note}</div><a class="simaps" href="${s.url}" target="_blank">Open in Maps</a></div>`;
+    div.addEventListener('click',()=>{
+      c.querySelectorAll('.si').forEach(el=>el.classList.remove('active'));
+      div.classList.add('active');
+      if(markers[i]){markers[i].openPopup();map.panTo([s.lat,s.lng],{animate:true});}
+    });
+    c.appendChild(div);
+  });
+}
+
+function renderMap(idx){
+  markers.forEach(m=>map.removeLayer(m));
+  markers=[];
+  const d=DAYS[idx];
+  const bounds=[];
+  d.stops.forEach((s,i)=>{
+    const m=L.marker([s.lat,s.lng],{icon:mkIcon(s.type)}).addTo(map).bindPopup(`<strong>${s.name}</strong><span>${s.time}</span>`);
+    m.on('click',()=>{
+      const items=document.getElementById('panel-stops').querySelectorAll('.si');
+      items.forEach(el=>el.classList.remove('active'));
+      if(items[i]){items[i].classList.add('active');items[i].scrollIntoView({behavior:'smooth',block:'nearest'});}
+    });
+    markers.push(m);
+    bounds.push([s.lat,s.lng]);
+  });
+  if(bounds.length) map.fitBounds(bounds,{padding:[40,40],maxZoom:15,animate:false});
+}
+
+function switchDay(idx){
+  document.querySelectorAll('.tab').forEach((t,i)=>t.classList.toggle('active',i===idx));
+  document.querySelectorAll('.day-section').forEach((s,i)=>s.classList.toggle('active',i===idx));
+  renderPanel(idx);
+  renderMap(idx);
+}
+
+renderPanel(0);
+renderMap(0);
+</script>
+</body>
+</html>
