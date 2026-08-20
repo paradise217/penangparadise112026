@@ -219,6 +219,33 @@ body{font-family:'DM Sans',sans-serif;background:var(--cream);color:var(--ink);m
 .tj-route-arrow{flex-shrink:0;color:var(--muted)}
 .tj-route-duration{font-size:10px;color:var(--muted);text-align:center}
 
+/* DAY LOGISTICS (fixed-time flight/train/hotel items surfaced inside a day
+   tab — visually distinct from anchor blocks via the coloured left border +
+   "Fixed" tag, since these times aren't flexible the way a cafe pick is) */
+.day-logistics{display:flex;flex-direction:column;gap:8px}
+.dl-item{display:flex;gap:10px;align-items:center;background:var(--card);border:1px solid var(--border);border-left:3px solid #185FA5;border-radius:12px;padding:9px 12px}
+.dl-item.hotel{border-left-color:#5A5550}
+.dl-item.train{border-left-color:#6040A0}
+.dl-item .tj-icon{width:30px;height:30px;border-radius:8px}
+.dl-item .tj-icon svg{width:15px;height:15px}
+.dl-body{flex:1;min-width:0}
+.dl-label{font-size:12.5px;font-weight:500;color:var(--ink);line-height:1.3}
+.dl-time{font-size:12px;color:var(--muted);margin-top:1px}
+.dl-fixed{flex-shrink:0;font-size:9.5px;font-weight:500;letter-spacing:.05em;text-transform:uppercase;padding:3px 8px;border-radius:100px;background:#F0F0EE;color:var(--muted)}
+
+/* SEAT MAP (illustrative sample only — a rough cabin schematic, not a
+   seat-by-seat grid, since no seats are assigned on this booking. Reuses
+   the .cat-header/.cat-list collapse pattern from anchor-block "nearby"
+   sublists for the toggle) */
+.sm-caption{font-size:11px;color:var(--muted);font-style:italic;padding:9px 15px 2px}
+.sm-summary{font-size:12px;color:var(--ink-soft);padding:0 15px 10px;font-weight:500}
+.sm-schematic{padding:2px 15px 14px;display:flex;flex-direction:column;align-items:center;gap:6px}
+.sm-end{font-size:10px;font-weight:500;letter-spacing:.06em;text-transform:uppercase;color:var(--muted)}
+.sm-mini-row{display:flex;align-items:center;gap:5px}
+.sm-seat{width:16px;height:16px;background:#EBF2FB;border:1px solid #185FA5;border-radius:4px}
+.sm-aisle{width:10px}
+.sm-wc{font-size:10px;color:var(--muted);background:var(--sand);border-radius:100px;padding:2px 10px}
+
 /* LEAFLET */
 .leaflet-popup-content-wrapper{border-radius:10px;border:1px solid var(--border);box-shadow:none;font-family:'DM Sans',sans-serif}
 .leaflet-popup-content{margin:9px 13px;font-size:13px;line-height:1.5}
@@ -532,7 +559,7 @@ body{font-family:'DM Sans',sans-serif;background:var(--cream);color:var(--ink);m
           <div class="tj-route-from">
             <div class="tj-route-code">SIN</div>
             <div class="tj-route-city">Singapore Changi T2</div>
-            <div class="tj-route-time">13:20</div>
+            <div class="tj-route-time">13:05</div>
           </div>
           <div class="tj-route-mid">
             <div class="tj-route-line">
@@ -542,7 +569,7 @@ body{font-family:'DM Sans',sans-serif;background:var(--cream);color:var(--ink);m
               <div class="tj-route-dash"></div>
               <div class="tj-route-dot"></div>
             </div>
-            <div class="tj-route-duration">1 hr 25 min</div>
+            <div class="tj-route-duration">1 hr 40 min</div>
           </div>
           <div class="tj-route-to">
             <div class="tj-route-code" style="text-align:right">PEN</div>
@@ -551,6 +578,16 @@ body{font-family:'DM Sans',sans-serif;background:var(--cream);color:var(--ink);m
           </div>
         </div>
         <div class="tj-body">
+          <div class="tj-row">
+            <div class="tj-cell">
+              <div class="tj-cell-label">Flight</div>
+              <div class="tj-cell-value mono">SQ 136</div>
+            </div>
+            <div class="tj-cell">
+              <div class="tj-cell-label">Aircraft</div>
+              <div class="tj-cell-value">Boeing 737-8 MAX</div>
+            </div>
+          </div>
           <div class="tj-row">
             <div class="tj-cell">
               <div class="tj-cell-label">Booking ref</div>
@@ -567,6 +604,11 @@ body{font-family:'DM Sans',sans-serif;background:var(--cream);color:var(--ink);m
               <div class="tj-cell-value muted">Lands 2:45pm — no touring until hotel check-in. Online check-in opens 48hrs before departure.</div>
             </div>
           </div>
+          <div class="cat-header seatmap-toggle" data-target="seatmap-outbound">
+            <span class="cat-header-label">View seat map</span>
+            <svg class="cat-chevron" viewBox="0 0 10 10" fill="none"><path d="M2 3l3 3 3-3" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+          </div>
+          <div class="cat-list collapsed seatmap-body" id="seatmap-outbound"></div>
         </div>
       </div>
 
@@ -651,6 +693,16 @@ body{font-family:'DM Sans',sans-serif;background:var(--cream);color:var(--ink);m
         <div class="tj-body">
           <div class="tj-row">
             <div class="tj-cell">
+              <div class="tj-cell-label">Flight</div>
+              <div class="tj-cell-value mono">SQ 133</div>
+            </div>
+            <div class="tj-cell">
+              <div class="tj-cell-label">Aircraft</div>
+              <div class="tj-cell-value">Boeing 737-8 MAX</div>
+            </div>
+          </div>
+          <div class="tj-row">
+            <div class="tj-cell">
               <div class="tj-cell-label">Booking ref</div>
               <div class="tj-cell-value mono">FRODW3</div>
             </div>
@@ -665,6 +717,11 @@ body{font-family:'DM Sans',sans-serif;background:var(--cream);color:var(--ink);m
               <div class="tj-cell-value muted">Leave hotel by ~10am — no time for a morning activity. Online check-in opens 48hrs before departure.</div>
             </div>
           </div>
+          <div class="cat-header seatmap-toggle" data-target="seatmap-return">
+            <span class="cat-header-label">View seat map</span>
+            <svg class="cat-chevron" viewBox="0 0 10 10" fill="none"><path d="M2 3l3 3 3-3" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+          </div>
+          <div class="cat-list collapsed seatmap-body" id="seatmap-return"></div>
         </div>
       </div>
 
@@ -687,6 +744,8 @@ body{font-family:'DM Sans',sans-serif;background:var(--cream);color:var(--ink);m
         <div class="ps" id="panel-stops"></div>
       </div>
     </div>
+
+    <div id="day-logistics" class="day-logistics"></div>
 
     <div id="legend" class="legend">
       <div class="li"><div class="ld" style="background:var(--food)"></div>Food</div>
@@ -1117,6 +1176,96 @@ const ROUTES=[
 var activeRoute=null; // null or a ROUTES[].key
 var routeLine=null;
 
+/* ---- DAY LOGISTICS ----
+   Fixed-time logistics events (flight/train departure or arrival, hotel
+   check-in/out) surfaced inside their relevant day tab, in addition to the
+   full cards on the Transport tab. This is the single source for that
+   day-tab surfacing — when a flight/hotel time changes, update the
+   Transport tab card AND this array so they can't drift out of sync; don't
+   add a second data source for the same fact.
+   Each entry: {date, icon, label, time}
+   - date must exactly match the `label` of the DAY_SCHEDULE day it belongs
+     to (e.g. 'Tue 10 Nov') — that's how an item gets matched to its day tab.
+   - icon: 'flight' | 'hotel' | 'train' — reuses the Transport tab's
+     .tj-icon colour/svg styling, not a new icon set.
+   - label / time: short strings, e.g. label:'Flight lands', time:'2:45pm'.
+   Source: Transport tab — flight FRODW3 (SIN→PEN Tue 10 Nov 13:05→14:45,
+   PEN→SIN Fri 13 Nov 12:05→13:40), hotel Citadines Connect Bertam
+   Georgetown (check-in Tue 10 Nov, check-out Fri 13 Nov). */
+const LOGISTICS=[
+  {date:'Tue 10 Nov', icon:'flight', label:'Flight lands', time:'2:45pm'},
+  {date:'Tue 10 Nov', icon:'hotel',  label:'Hotel check-in', time:'Citadines Connect Bertam Georgetown'},
+  {date:'Fri 13 Nov', icon:'hotel',  label:'Hotel check-out', time:'Citadines Connect Bertam Georgetown'},
+  {date:'Fri 13 Nov', icon:'flight', label:'Flight departs', time:'12:05pm'}
+];
+
+const LOGISTICS_ICONS={
+  flight:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M22 16.92v3a2 2 0 01-2.18 2 19.79 19.79 0 01-8.63-3.07A19.5 19.5 0 013.4 10.82 19.79 19.79 0 01.34 2.18 2 2 0 012.33 0h3a2 2 0 012 1.72c.127.96.361 1.903.7 2.81a2 2 0 01-.45 2.11L6.91 7.91a16 16 0 006.18 6.18l1.27-1.27a2 2 0 012.11-.45c.907.339 1.85.573 2.81.7A2 2 0 0122 16.92z"/></svg>',
+  hotel:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M3 9l9-7 9 7v11a2 2 0 01-2 2H5a2 2 0 01-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg>',
+  train:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="4" y="3" width="16" height="14" rx="3"/><path d="M4 11h16M8 17l-2 4M16 17l2 4"/><circle cx="8.5" cy="14" r="1"/><circle cx="15.5" cy="14" r="1"/></svg>'
+};
+
+// Renders the fixed-time logistics strip for the active day tab, or hides
+// it entirely when that day has no logistics events (never show an empty
+// card — see "Common mistakes to avoid" in CLAUDE.md).
+function renderDayLogistics(day){
+  const container=document.getElementById('day-logistics');
+  if(!container) return;
+  const items=LOGISTICS.filter(l=>l.date===day.label);
+  if(!items.length){ container.innerHTML=''; container.style.display='none'; return; }
+  container.style.display='flex';
+  container.innerHTML=items.map(l=>`<div class="dl-item ${l.icon}">
+    <div class="tj-icon ${l.icon}">${LOGISTICS_ICONS[l.icon]||''}</div>
+    <div class="dl-body">
+      <div class="dl-label">${escapeHtml(l.label)}</div>
+      <div class="dl-time">${escapeHtml(l.time)}</div>
+    </div>
+    <span class="dl-fixed">Fixed</span>
+  </div>`).join('');
+}
+
+/* ---- SEAT MAP (Transport tab) ----
+   Sample-only illustrative cabin layout — no real seats are assigned on
+   this booking. 3-3 single-aisle economy layout typical of a 737-8 MAX,
+   30 rows (simplified, not SQ's exact config). Same render function is
+   reused for both the outbound and return flight cards so the markup
+   isn't duplicated; the toggle button reuses the .cat-header/.cat-list
+   collapse pattern from the anchor-block "nearby" sublists rather than
+   inventing a new expand/collapse interaction. */
+function renderSeatMapHtml(){
+  const miniRow=()=>{
+    let r='<div class="sm-mini-row">';
+    for(let i=0;i<3;i++) r+='<div class="sm-seat"></div>';
+    r+='<div class="sm-aisle"></div>';
+    for(let i=0;i<3;i++) r+='<div class="sm-seat"></div>';
+    return r+'</div>';
+  };
+  return `<div class="sm-caption">Sample cabin layout — seats not yet assigned</div>
+    <div class="sm-summary">Single aisle · 3–3 seating · ~30 rows · Boeing 737-8 MAX</div>
+    <div class="sm-schematic">
+      <div class="sm-end">Cockpit</div>
+      ${miniRow()}
+      <div class="sm-wc">Toilets</div>
+      ${miniRow()}
+      ${miniRow()}
+      <div class="sm-wc">Toilets</div>
+      <div class="sm-end">Tail</div>
+    </div>`;
+}
+
+document.querySelectorAll('.seatmap-toggle').forEach(el=>{
+  el.addEventListener('click',()=>{
+    const body=document.getElementById(el.getAttribute('data-target'));
+    if(!body) return;
+    const isOpen=el.classList.toggle('open');
+    body.classList.toggle('collapsed',!isOpen);
+    if(isOpen && !body.dataset.rendered){
+      body.innerHTML=renderSeatMapHtml();
+      body.dataset.rendered='1';
+    }
+  });
+});
+
 function renderChips(){
   const tc=document.getElementById('type-chips');
   tc.innerHTML=TYPE_CHIPS.map(c=>`<button class="chip${activeType===c.key?' active':''}" data-type="${c.key}">${c.label}</button>`).join('');
@@ -1469,6 +1618,7 @@ function render(){
     if(map) renderMarkers(items);
   }
 
+  renderDayLogistics(day);
   renderAnchorBlocks(day,dIdx);
 }
 
