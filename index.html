@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+﻿<!DOCTYPE html>
 <html lang="en">
 <head>
 <meta charset="UTF-8">
@@ -15,6 +15,8 @@
   --food:#C4622D;--activity:#2A6B5E;--shop:#9A6B10;--cafe:#6040A0;--hotel:#5A5550;
 }
 body{font-family:'DM Sans',sans-serif;background:var(--cream);color:var(--ink);min-height:100vh;overflow-x:hidden}
+
+/* HERO */
 .hero{background:var(--ink);padding:2.5rem 1.5rem 2rem;position:relative;overflow:hidden}
 .hb{position:absolute;border-radius:50%;pointer-events:none}
 .hb1{width:260px;height:260px;background:var(--terracotta);opacity:.12;top:-80px;right:-60px}
@@ -24,434 +26,1132 @@ body{font-family:'DM Sans',sans-serif;background:var(--cream);color:var(--ink);m
 .hero h1{font-family:'DM Serif Display',serif;font-size:clamp(2rem,6vw,3rem);color:var(--cream);line-height:1.05;margin-bottom:.4rem}
 .hero h1 em{color:var(--terracotta-light);font-style:italic}
 .hm{font-size:13px;color:var(--muted);display:flex;gap:1.5rem;flex-wrap:wrap;margin-top:.75rem}
-.alerts{max-width:1100px;margin:1.25rem auto;padding:0 1.25rem;display:flex;gap:10px;flex-wrap:wrap}
-.alert{flex:1;min-width:260px;background:#FEF3ED;border-left:3px solid var(--terracotta);border-radius:0 8px 8px 0;padding:.75rem 1rem;font-size:13px;line-height:1.5;color:var(--ink-soft)}
-.alert strong{color:var(--terracotta);font-weight:500}
+
+/* MAIN */
 .app{max-width:1100px;margin:0 auto;padding:0 1.25rem 3rem;display:flex;flex-direction:column;gap:14px}
-.tabs{display:flex;gap:6px;overflow-x:auto;scrollbar-width:none;padding-bottom:2px}
+
+/* TABS */
+.tabs{display:flex;gap:6px;overflow-x:auto;scrollbar-width:none;padding-bottom:2px;margin-top:1.25rem}
 .tabs::-webkit-scrollbar{display:none}
 .tab{flex-shrink:0;padding:7px 16px;border-radius:100px;border:1.5px solid var(--border);background:var(--card);font-size:13px;color:var(--muted);cursor:pointer;transition:all .18s;white-space:nowrap;font-family:'DM Sans',sans-serif}
 .tab:hover{border-color:var(--terracotta);color:var(--terracotta)}
 .tab.active{background:var(--ink);border-color:var(--ink);color:var(--cream);font-weight:500}
-.map-wrap{display:flex;border-radius:14px;overflow:hidden;border:1px solid var(--border);height:460px}
+.tab.checklist-tab.active{background:var(--terracotta);border-color:var(--terracotta)}
+
+/* MAP + PANEL */
+.map-wrap{display:flex;border-radius:14px;overflow:hidden;border:1px solid var(--border);height:460px;position:relative}
 #map{flex:1;min-width:0}
 .panel{width:290px;flex-shrink:0;background:var(--card);display:flex;flex-direction:column;border-left:1px solid var(--border);overflow:hidden}
-.ph{padding:13px 13px 9px;border-bottom:1px solid var(--border);flex-shrink:0}
+.ph{padding:11px 13px;border-bottom:1px solid var(--border);flex-shrink:0;display:flex;flex-direction:column;gap:7px}
 .ph-title{font-family:'DM Serif Display',serif;font-size:16px;color:var(--ink);margin-bottom:2px}
 .ph-sub{font-size:11px;color:var(--muted)}
 .ps{flex:1;overflow-y:auto;scrollbar-width:thin}
 .ps::-webkit-scrollbar{width:3px}
 .ps::-webkit-scrollbar-thumb{background:var(--sand);border-radius:4px}
-.si{display:flex;gap:9px;padding:10px 13px;border-bottom:1px solid var(--border);cursor:pointer;transition:background .15s;align-items:flex-start}
-.si:hover,.si.active{background:var(--cream)}
-.sil{flex-shrink:0;display:flex;flex-direction:column;align-items:center;gap:3px;padding-top:1px}
-.sit{font-size:10px;font-weight:500;color:var(--muted);white-space:nowrap}
-.sid{width:9px;height:9px;border-radius:50%}
-.sib{flex:1;min-width:0}
-.sin{font-size:12px;font-weight:500;color:var(--ink);line-height:1.3;margin-bottom:3px}
-.sitags{display:flex;gap:3px;flex-wrap:wrap;margin-bottom:3px}
-.sinote{font-size:11px;color:var(--muted);line-height:1.4;display:none}
-.simaps{font-size:11px;color:var(--teal);text-decoration:none;font-weight:500;margin-top:3px;display:none}
-.si.active .sinote,.si.active .simaps{display:block}
+
+/* FILTER CHIPS */
+.chip-row{display:flex;gap:5px;flex-wrap:wrap}
+.chip{font-size:10.5px;font-weight:500;padding:4px 10px;border-radius:100px;border:1px solid var(--border);background:var(--cream);color:var(--muted);cursor:pointer;white-space:nowrap;font-family:'DM Sans',sans-serif;transition:all .15s}
+.chip:hover{border-color:var(--terracotta);color:var(--terracotta)}
+.chip.active{background:var(--ink);border-color:var(--ink);color:var(--cream)}
+
+/* RECENTER BUTTON */
+.recenter-btn{position:absolute;bottom:10px;right:10px;z-index:400;background:var(--card);border:1px solid var(--border);border-radius:100px;padding:6px 13px;font-size:11.5px;font-weight:500;color:var(--ink);cursor:pointer;box-shadow:0 2px 8px rgba(0,0,0,.18);font-family:'DM Sans',sans-serif}
+
+/* LIST ROWS */
+.si{display:flex;flex-direction:column;padding:10px 13px;border-bottom:1px solid var(--border);cursor:pointer;transition:background .15s}
+.si:hover{background:var(--cream)}
+.si-main-row{display:flex;gap:9px;align-items:center;min-height:44px}
+.si-thumb{width:40px;height:40px;border-radius:8px;flex-shrink:0;background-size:cover;background-position:center;background-color:var(--sand)}
+.si-body{flex:1;min-width:0}
+.si-name{font-size:12.5px;font-weight:500;color:var(--ink);line-height:1.3;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.si-sub{font-size:11px;color:var(--muted);line-height:1.4;margin-top:2px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.si-sub .open{color:var(--teal);font-weight:500}
+.si-sub .closed{color:#B02020;font-weight:500}
+.si-sub .unverified{color:var(--shop);font-weight:500}
+.si-right{display:flex;flex-direction:column;align-items:flex-end;gap:5px;flex-shrink:0}
+.si-dist{font-size:10.5px;color:var(--muted);white-space:nowrap}
+.si-heart{background:none;border:none;cursor:pointer;font-size:15px;color:var(--border);padding:8px;margin:-8px -8px -8px 0;line-height:1}
+.si-heart.active{color:var(--terracotta)}
+.si-detail{display:none;margin-top:9px;padding-top:9px;border-top:1px solid var(--border)}
+.si.expanded .si-detail{display:block}
+.si-detail-photos{display:flex;gap:3px;height:90px;overflow:hidden;border-radius:8px;margin-bottom:7px}
+.si-detail-photos img{flex:1;min-width:0;object-fit:cover;background:var(--sand)}
+.si-detail-note{font-size:12px;color:var(--ink-soft);line-height:1.55;margin-bottom:5px}
+.si-detail-hours{font-size:11px;color:var(--muted);margin-bottom:4px}
+.si-detail-addr{font-size:11px;color:var(--muted);margin-bottom:7px}
+.si.si-nearby{opacity:.55}
+.si-nearby-tag{font-size:9px;color:var(--muted);font-weight:400;text-transform:uppercase;letter-spacing:.05em;margin-left:4px}
+/* LEGEND */
 .legend{display:flex;gap:12px;flex-wrap:wrap;padding:2px 0}
 .li{display:flex;align-items:center;gap:5px;font-size:11px;color:var(--muted)}
 .ld{width:9px;height:9px;border-radius:50%}
+
+/* DAY SECTIONS */
 .day-section{display:none;flex-direction:column;gap:10px}
 .day-section.active{display:flex}
 .sl{font-size:10px;font-weight:500;letter-spacing:.1em;text-transform:uppercase;color:var(--muted);display:flex;align-items:center;gap:8px;padding:2px 0}
 .sl::after{content:'';flex:1;height:1px;background:var(--border)}
-.sc{background:var(--card);border:1px solid var(--border);border-radius:14px;overflow:hidden}
-.scp{display:flex;gap:3px;height:115px;overflow:hidden}
-.scp img{flex:1;min-width:0;object-fit:cover;background:var(--sand)}
-.scp img:nth-child(n+4){display:none}
-.scb{padding:.8rem .95rem}
-.scn{font-size:15px;font-weight:500;color:var(--ink);margin-bottom:5px;line-height:1.3}
-.sctags{display:flex;gap:5px;flex-wrap:wrap;margin-bottom:6px}
-.scnote{font-size:13px;color:var(--ink-soft);line-height:1.55;margin-bottom:4px}
-.schr{font-size:12px;color:var(--muted)}
-.scf{border-top:1px solid var(--border);padding:7px .95rem;display:flex;justify-content:space-between;align-items:center}
-.sca{font-size:12px;color:var(--muted);flex:1;padding-right:8px;line-height:1.4}
-.mb{font-size:12px;font-weight:500;color:var(--teal);text-decoration:none;padding:4px 11px;border:1px solid var(--teal);border-radius:100px;transition:all .18s;white-space:nowrap;flex-shrink:0}
+
+/* ANCHOR BLOCKS (bottom of each day tab — one per scheduled food/activity stop) */
+.anchor-blocks{display:flex;flex-direction:column;gap:16px}
+.anchor-block{background:var(--card);border:1px solid var(--border);border-radius:14px;overflow:hidden}
+.anchor-card{padding:14px 15px;border-bottom:1px solid var(--border);cursor:pointer}
+.anchor-card-name{font-family:'DM Serif Display',serif;font-size:18px;color:var(--ink);margin-bottom:3px}
+.anchor-card-sub{font-size:12px;color:var(--muted);margin-bottom:9px}
+.anchor-nearby-list{display:flex;flex-direction:column}
+.anchor-nearby-list .sl{padding-left:15px;padding-right:15px}
+.cat-header{display:flex;align-items:center;justify-content:space-between;gap:8px;padding:11px 15px;cursor:pointer;font-size:10px;font-weight:500;letter-spacing:.1em;text-transform:uppercase;color:var(--muted);border-bottom:1px solid var(--border);-webkit-tap-highlight-color:transparent;min-height:20px}
+.cat-header:hover{color:var(--ink)}
+.cat-header-label{white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.cat-chevron{width:9px;height:9px;flex-shrink:0;transition:transform .18s;transform:rotate(-90deg)}
+.cat-header.open .cat-chevron{transform:rotate(0deg)}
+.cat-list{display:flex;flex-direction:column}
+.cat-list.collapsed{display:none}
+
+.mb{font-size:12px;font-weight:500;color:var(--teal);text-decoration:none;padding:4px 11px;border:1px solid var(--teal);border-radius:100px;transition:all .18s;white-space:nowrap;flex-shrink:0;display:inline-block}
 .mb:hover{background:var(--teal);color:white}
-.stag{font-size:10px;font-weight:500;padding:2px 7px;border-radius:100px}
-.stag-food{background:#FEF0EA;color:var(--terracotta)}
-.stag-activity{background:#E8F4F1;color:var(--teal)}
-.stag-shop{background:#FBF4E5;color:#8A5C12}
-.stag-cafe{background:#F2EEF8;color:#6040A0}
-.stag-hotel{background:#F0F0EE;color:var(--muted)}
-.stag-michelin{background:#FFF0E0;color:#C05000}
-.stag-reserve{background:#FEE8E8;color:#B02020}
+
+/* INFO BOX */
 .abox{background:#EAF4F1;border:1px solid #B0D8CE;border-radius:12px;padding:.9rem 1rem}
 .abox-t{font-size:13px;font-weight:500;color:var(--teal);margin-bottom:3px}
 .abox-b{font-size:13px;color:var(--ink-soft);line-height:1.55}
+
+/* =============================================
+   CHECKLIST STYLES
+   ============================================= */
+.checklist-wrap{display:flex;flex-direction:column;gap:10px}
+
+.checklist-progress{background:var(--card);border:1px solid var(--border);border-radius:14px;padding:1rem 1.1rem}
+.cp-top{display:flex;justify-content:space-between;align-items:center;margin-bottom:10px}
+.cp-label{font-size:13px;color:var(--muted)}
+.cp-count{font-family:'DM Serif Display',serif;font-size:22px;color:var(--ink)}
+.cp-count span{font-size:13px;font-family:'DM Sans',sans-serif;font-weight:400;color:var(--muted);margin-left:2px}
+.cp-bar-track{height:6px;background:var(--sand);border-radius:100px;overflow:hidden}
+.cp-bar-fill{height:100%;background:var(--teal);border-radius:100px;transition:width .4s ease}
+
+.checklist-group{display:flex;flex-direction:column;gap:8px}
+.cg-label{font-size:10px;font-weight:500;letter-spacing:.1em;text-transform:uppercase;color:var(--muted);display:flex;align-items:center;gap:8px;padding:2px 0}
+.cg-label::after{content:'';flex:1;height:1px;background:var(--border)}
+
+.ci{background:var(--card);border:1px solid var(--border);border-radius:12px;overflow:hidden;transition:border-color .2s}
+.ci.done{border-color:rgba(42,107,94,0.25)}
+.ci-main{display:flex;gap:12px;align-items:flex-start;padding:12px 14px;cursor:pointer}
+.ci-checkbox{flex-shrink:0;width:20px;height:20px;border-radius:6px;border:1.5px solid var(--border);display:flex;align-items:center;justify-content:center;margin-top:1px;transition:all .2s;background:transparent}
+.ci.done .ci-checkbox{background:var(--teal);border-color:var(--teal)}
+.ci-check-icon{width:11px;height:11px;opacity:0;transition:opacity .2s}
+.ci.done .ci-check-icon{opacity:1}
+.ci-body{flex:1;min-width:0}
+.ci-name{font-size:14px;font-weight:500;color:var(--ink);margin-bottom:3px;line-height:1.3;transition:color .2s}
+.ci.done .ci-name{color:var(--muted);text-decoration:line-through;text-decoration-color:rgba(138,128,112,0.5)}
+.ci-meta{font-size:12px;color:var(--muted);line-height:1.5}
+.ci-urgency{flex-shrink:0;font-size:10px;font-weight:500;padding:2px 8px;border-radius:100px;align-self:center}
+.urgency-high{background:#FEE8E8;color:#B02020}
+.urgency-med{background:#FFF0E0;color:#C05000}
+.urgency-low{background:#EAF3DE;color:#3B6D11}
+
+.ci-notes{border-top:1px solid var(--border);padding:0 14px}
+.ci-notes-inner{padding:10px 0}
+.ci-notes-saved{font-size:13px;color:var(--ink-soft);line-height:1.55;margin-bottom:8px;display:none;white-space:pre-wrap}
+.ci-notes-saved.has-content{display:block}
+.ci-notes-input{width:100%;border:1px solid var(--border);border-radius:8px;padding:8px 10px;font-size:13px;font-family:'DM Sans',sans-serif;color:var(--ink);background:var(--cream);resize:none;outline:none;min-height:60px;transition:border-color .2s;display:none}
+.ci-notes-input:focus{border-color:var(--teal)}
+.ci-notes-input.visible{display:block}
+.ci-notes-actions{display:flex;gap:8px;margin-top:8px;display:none}
+.ci-notes-actions.visible{display:flex}
+.ci-btn{font-size:12px;font-weight:500;padding:4px 12px;border-radius:100px;border:1px solid var(--border);background:transparent;cursor:pointer;font-family:'DM Sans',sans-serif;color:var(--muted);transition:all .18s}
+.ci-btn:hover{border-color:var(--teal);color:var(--teal)}
+.ci-btn.save{background:var(--teal);border-color:var(--teal);color:white}
+.ci-btn.save:hover{background:var(--teal)}
+.ci-add-note-btn{font-size:11px;font-weight:500;color:var(--teal);background:none;border:none;cursor:pointer;padding:0;font-family:'DM Sans',sans-serif;display:flex;align-items:center;gap:4px}
+.ci-add-note-btn:hover{opacity:.7}
+.ci.done .ci-add-note-btn{color:var(--muted)}
+
+/* =============================================
+   TRANSPORT TAB STYLES
+   ============================================= */
+.tab.transport-tab.active{background:#2A4A7E;border-color:#2A4A7E}
+
+.transport-wrap{display:flex;flex-direction:column;gap:10px}
+
+.tj{background:var(--card);border:1px solid var(--border);border-radius:14px;overflow:hidden}
+.tj-header{display:flex;gap:12px;align-items:center;padding:13px 14px 12px}
+.tj-icon{width:36px;height:36px;border-radius:10px;display:flex;align-items:center;justify-content:center;flex-shrink:0}
+.tj-icon svg{width:18px;height:18px}
+.tj-icon.flight{background:#EBF2FB;color:#185FA5}
+.tj-icon.transfer{background:#E8F4F1;color:#2A6B5E}
+.tj-icon.train{background:#F2EEF8;color:#6040A0}
+.tj-icon.hotel{background:#F0F0EE;color:#5A5550}
+.tj-icon.custom{background:#FBF4E5;color:#9A6B10}
+.tj-header-body{flex:1;min-width:0}
+.tj-title{font-size:14px;font-weight:500;color:var(--ink);line-height:1.3;margin-bottom:2px}
+.tj-subtitle{font-size:12px;color:var(--muted)}
+.tj-badge{flex-shrink:0;font-size:10px;font-weight:500;padding:3px 9px;border-radius:100px;align-self:flex-start;margin-top:2px}
+.tj-badge.outbound{background:#EBF2FB;color:#185FA5}
+.tj-badge.return{background:#FEF0EA;color:var(--terracotta)}
+.tj-badge.transfer{background:#E8F4F1;color:#2A6B5E}
+.tj-badge.checkin{background:#F0F0EE;color:#5A5550}
+.tj-badge.custom{background:#FBF4E5;color:#9A6B10}
+
+.tj-body{border-top:1px solid var(--border)}
+.tj-row{display:flex;gap:0;border-bottom:1px solid var(--border)}
+.tj-row:last-child{border-bottom:none}
+.tj-cell{flex:1;padding:10px 14px}
+.tj-cell+.tj-cell{border-left:1px solid var(--border)}
+.tj-cell-label{font-size:10px;font-weight:500;letter-spacing:.06em;text-transform:uppercase;color:var(--muted);margin-bottom:3px}
+.tj-cell-value{font-size:13px;color:var(--ink);line-height:1.4}
+.tj-cell-value.mono{font-family:var(--font-mono,monospace);font-size:13px;letter-spacing:.03em}
+.tj-cell-value.large{font-size:18px;font-weight:500;font-family:'DM Serif Display',serif}
+.tj-cell-value.muted{color:var(--muted)}
+.tj-cell-note{font-size:11px;color:var(--muted);margin-top:2px;line-height:1.4}
+
+.tj-route{display:flex;align-items:center;gap:0;padding:14px 14px 12px;border-top:1px solid var(--border)}
+.tj-route-from,.tj-route-to{flex:1}
+.tj-route-from{text-align:left}
+.tj-route-to{text-align:right}
+.tj-route-code{font-family:'DM Serif Display',serif;font-size:24px;color:var(--ink);line-height:1}
+.tj-route-city{font-size:11px;color:var(--muted);margin-top:2px}
+.tj-route-time{font-size:15px;font-weight:500;color:var(--ink);margin-top:4px}
+.tj-route-mid{flex:1;display:flex;flex-direction:column;align-items:center;gap:4px;padding:0 8px}
+.tj-route-line{width:100%;display:flex;align-items:center;gap:4px}
+.tj-route-dot{width:6px;height:6px;border-radius:50%;background:var(--muted);flex-shrink:0}
+.tj-route-dash{flex:1;height:1px;background:var(--border)}
+.tj-route-arrow{flex-shrink:0;color:var(--muted)}
+.tj-route-duration{font-size:10px;color:var(--muted);text-align:center}
+
+/* LEAFLET */
 .leaflet-popup-content-wrapper{border-radius:10px;border:1px solid var(--border);box-shadow:none;font-family:'DM Sans',sans-serif}
 .leaflet-popup-content{margin:9px 13px;font-size:13px;line-height:1.5}
 .leaflet-popup-content strong{display:block;font-weight:500;color:var(--ink);margin-bottom:1px}
 .leaflet-popup-content span{color:var(--muted);font-size:11px}
 .leaflet-popup-tip-container{display:none}
 .leaflet-container{font-family:'DM Sans',sans-serif}
+
+/* RESPONSIVE */
 @media(max-width:700px){
   .map-wrap{flex-direction:column;height:auto}
-  #map{height:280px}
+  #map{flex:0 0 280px;height:280px}
   .panel{width:100%;height:220px;border-left:none;border-top:1px solid var(--border)}
-  .alerts{flex-direction:column}
 }
+
+/* MAP-OPTIONAL FALLBACK (tiles failed to load / no network) */
+.map-wrap.map-collapsed{height:auto;flex-direction:column}
+.map-wrap.map-collapsed .panel{width:100%;height:420px;border-left:none}
 </style>
 </head>
 <body>
+
+<!-- HERO -->
 <div class="hero">
   <div class="hb hb1"></div><div class="hb hb2"></div>
   <div class="hi">
     <p class="he">Travel itinerary</p>
     <h1>Penang, <em>Malaysia</em></h1>
-    <div class="hm"><span>10 – 13 Nov 2026</span><span>3 nights</span><span>Citadines Connect Bertam</span></div>
+    <div class="hm">
+      <span>10 – 13 Nov 2026</span>
+      <span>3 nights</span>
+      <span>Citadines Connect Bertam Georgetown</span>
+    </div>
   </div>
 </div>
-<div class="alerts">
-  <div class="alert"><strong>Reserve now —</strong> BaBa Phang: +60 14-741 9839 · RASA SAYANG: +60 12-854 8799. Both fill up days in advance.</div>
-  <div class="alert"><strong>Penang Hill —</strong> Buy express funicular tickets at penanghill.gov.my before you go. Walk-up queues can be 90+ min.</div>
-</div>
+
 <div class="app">
+
+  <!-- TABS -->
   <div class="tabs" id="tabs">
-    <button class="tab active" onclick="switchDay(0)">Tue 10 Nov</button>
-    <button class="tab" onclick="switchDay(1)">Wed 11 Nov</button>
-    <button class="tab" onclick="switchDay(2)">Thu 12 Nov</button>
-    <button class="tab" onclick="switchDay(3)">Fri 13 Nov</button>
-  </div>
-  <div class="map-wrap">
-    <div id="map"></div>
-    <div class="panel">
-      <div class="ph"><div class="ph-title" id="pt">Day 1 · Arrival</div><div class="ph-sub" id="ps">George Town hawker evening</div></div>
-      <div class="ps" id="panel-stops"></div>
-    </div>
-  </div>
-  <div class="legend">
-    <div class="li"><div class="ld" style="background:var(--food)"></div>Food</div>
-    <div class="li"><div class="ld" style="background:var(--activity)"></div>Activity</div>
-    <div class="li"><div class="ld" style="background:var(--shop)"></div>Shopping</div>
-    <div class="li"><div class="ld" style="background:var(--cafe)"></div>Cafe</div>
-    <div class="li"><div class="ld" style="background:var(--hotel)"></div>Hotel</div>
+    <button class="tab checklist-tab active" id="tab-checklist" onclick="switchTab('checklist')">Checklist</button>
+    <button class="tab transport-tab" id="tab-transport" onclick="switchTab('transport')">Transport</button>
+    <button class="tab day-tab" id="tab-day1" onclick="switchTab('day','day1')">Tue 10 Nov</button>
+    <button class="tab day-tab" id="tab-day2" onclick="switchTab('day','day2')">Wed 11 Nov</button>
+    <button class="tab day-tab" id="tab-day3" onclick="switchTab('day','day3')">Thu 12 Nov</button>
+    <button class="tab day-tab" id="tab-day4" onclick="switchTab('day','day4')">Fri 13 Nov</button>
   </div>
 
-  <!-- DAY 1 -->
-  <div class="day-section active" id="s0">
-    <div class="sl">Afternoon</div>
-    <div class="sc">
-      <div class="scp">
-        <img src="https://lh3.googleusercontent.com/places/ANXAkqF9OblYorluX7ZWSjuu-gn7613ta8cEOrrmiramiS8U9y7LE-CcCpGjbBh0mTUUs7gZZPp8Xu5aPzhNNy7S2NrqqPGGqxOWw8w=s800-w800-h600" loading="lazy" alt="">
-        <img src="https://lh3.googleusercontent.com/places/ANXAkqEWxlI0B4yteeyogCybt6V7zuECbQCMyS6BvXIuvbjHzj_7lNq-1GA0MXvjzKUmY01QMXNGY3ipn00U0zNJQO7zDKCqPVUS0LI=s800-w800-h600" loading="lazy" alt="">
-        <img src="https://lh3.googleusercontent.com/places/ANXAkqHHY_wwNqtZi2j5eWlhZ4rGTp5Gzziqfu96smXzY1H0kqGtk2EU3jGz8NUpM9-uwG5pzh_sJXmGDDdSN2N8XopO57nY5vXymLs=s800-w800-h600" loading="lazy" alt="">
-      </div>
-      <div class="scb">
-        <div class="scn">3:30 PM · Citadines Connect Bertam Georgetown</div>
-        <div class="sctags"><span class="stag stag-hotel">Hotel</span></div>
-        <p class="scnote">Check in and freshen up. Central George Town — most spots are walkable. Complimentary nutmeg juice on arrival. 4.8 stars.</p>
-        <div class="schr">24-hour front desk · +60 4-202 0111</div>
-      </div>
-      <div class="scf"><span class="sca">428, Jalan Penang, George Town</span><a class="mb" href="https://maps.google.com/?cid=10225322812764014476" target="_blank">Maps</a></div>
-    </div>
-    <div class="sc">
-      <div class="scp">
-        <img src="https://lh3.googleusercontent.com/place-photos/AJRVUZMfbMHUapk2ILRfbGFrbcVf0kteYHuWEaMa88YsRfGzz0Zu_JEGMe0L4mtvDAkw7eMmaXU8bLSCyfaIVNANIsQ8eXsqpz80f6xUqnr4QFuhQCpx5R1Sf-t1CYtih9tIMmyez9drH6WUmXmw1VeSgZJBAA=s800-w800-h600" loading="lazy" alt="">
-        <img src="https://lh3.googleusercontent.com/places/ANXAkqFAeOGDPyu4kdxz8dXqZJT1ZNbPDa2Knmvd03rD0uz9gmSeB4f9EUFpwKz4sfZgnhbdeIrW8GRi-HZaXCd7fD_O-0HMpcisHKw=s800-w800-h600" loading="lazy" alt="">
-        <img src="https://lh3.googleusercontent.com/place-photos/AJRVUZOlgaJiodqCXWtSDz7FoE21gu4zyZBaQqZSIYlu1RmniTW7SDYdNugjfEQ9sb7lutOUJrBXfxDTMPiGCcg4sJMfm-T59e1SKQiuStHD8UXQYaT1hEerCDM99m83i924BufBnf0Uk88clUDpKEPAzYSA=s800-w800-h600" loading="lazy" alt="">
-      </div>
-      <div class="scb">
-        <div class="scn">5:00 PM · Jing Si Books & Cafe</div>
-        <div class="sctags"><span class="stag stag-cafe">Cafe</span></div>
-        <p class="scnote">Calm cafe run by the Tzu Chi Foundation. Organic drinks, good tea. Perfect to decompress after the flight before the evening eats.</p>
-        <div class="schr">Daily 9am – 6pm</div>
-      </div>
-      <div class="scf"><span class="sca">31 Beach Street, George Town</span><a class="mb" href="https://maps.google.com/?cid=7738219335417321972" target="_blank">Maps</a></div>
-    </div>
-    <div class="sl">Evening</div>
-    <div class="sc">
-      <div class="scp">
-        <img src="https://lh3.googleusercontent.com/places/ANXAkqFUMb0Cf7DfgoG0NRIFo8jmMUubyA45vIuieboU-zATylkGBxAkYT-JMvMWKcieqFhILxGRIZU6y9i4233_ED5nA8qmVw41dMY=s800-w720-h600" loading="lazy" alt="">
-        <img src="https://lh3.googleusercontent.com/place-photos/AJRVUZPMen_KKn1HzMxVu85JpnafYJuYczEXpDDxOVw-Ze_-AD5L5prUXkXwk6pbHPfOj298eKIhVamRnRJa0vOL44CZlZIxdgxD_OlIRb9NFHJDsVQpLj1WCoIe4bNdd1YgXDwNveJJAz-h_tB6n7L-GaRa=s800-w800-h600" loading="lazy" alt="">
-        <img src="https://lh3.googleusercontent.com/place-photos/AJRVUZNjOBkVWZeFVXc0lNcYhVhWm40lAUit_b0k4WOGaBMkkLzhIGRFQcw0Cyw02SZ5ZI_zNHzLguT0_9laNZbIbHQXbPSKiCmPAHduG6iv68EhUuZwGaQkha6yQmGlEY2itcakUxn05k5W2pQJY1JvJTF32A=s800-w800-h600" loading="lazy" alt="">
-      </div>
-      <div class="scb">
-        <div class="scn">5:00 PM · CHONG Charcoal Seafood Char Koay Teow</div>
-        <div class="sctags"><span class="stag stag-food">Hawker</span></div>
-        <p class="scnote">Opens 4:30pm sharp. Go early or expect a queue. Order the CKT — skip the fried rice. Duck egg and cockles recommended. Cooked over real charcoal.</p>
-        <div class="schr">Mon–Tue, Thu–Sun: 4:30–10:30pm · Closed Wed</div>
-      </div>
-      <div class="scf"><span class="sca">35, Lorong Baru, George Town</span><a class="mb" href="https://maps.google.com/?cid=15741183335894796147" target="_blank">Maps</a></div>
-    </div>
-    <div class="sc">
-      <div class="scp">
-        <img src="https://lh3.googleusercontent.com/place-photos/AJRVUZM5p91MSAdRqrvULVmylbaoL08KrID8NOIM-TDxNuScRctcqiih7r-4w1ATfXRNNRwLKKint68EPrZ8ECBFm8SNTVWb-KB7hzVsffBwrhtohKJt2y9ROrR5C_7U1OXeZ0MB3yr4JedvipY_gFKPEOww=s800-w800-h600" loading="lazy" alt="">
-        <img src="https://lh3.googleusercontent.com/place-photos/AJRVUZMKtzQ37T_eWFn431oX3uhAy7n17Omo8PX0rEasgMJRuM5UmuzRcPmlSnveMZ96d8l4-BP15N05hvnYMque8bhUpkaAPBtueuEENNoO0Jjzq1ck-qivgyHPVsQhauHbQldvvvuptXOawJiKKxiQixse3Q=s800-w800-h600" loading="lazy" alt="">
-        <img src="https://lh3.googleusercontent.com/place-photos/AJRVUZOa9UNuyUBcE9Zk1ekSvSb5w7BugR8UEXblNnHUGpu8CPE8JYPZ-u2r-B9FONcWsQADBUJvocUgTiBQUCF2rqPkaZV6SsyklojJonl3qJ3aMev09fCiom7mdXtWBVLv7xE40k5omAy2j0xkBsU9aDGpLg=s800-w800-h600" loading="lazy" alt="">
-      </div>
-      <div class="scb">
-        <div class="scn">8:00 PM · BaBa Phang</div>
-        <div class="sctags"><span class="stag stag-food">Nyonya</span><span class="stag stag-reserve">Reserve ahead</span></div>
-        <p class="scnote">Authentic Peranakan dinner. Tables fill before they open — arrive early if no reservation. Nasi Ulam, Otah, Cincalok Pork are standouts. +60 14-741 9839</p>
-        <div class="schr">Mon–Tue, Thu–Sun: 11:30am–2:30pm, 6–9:30pm · Closed Wed</div>
-      </div>
-      <div class="scf"><span class="sca">6, Jalan Perak, George Town</span><a class="mb" href="https://maps.google.com/?cid=15996838652564424036" target="_blank">Maps</a></div>
-    </div>
-  </div>
+  <!-- =============================================
+    CHECKLIST TAB
+    ============================================= -->
+  <div id="checklist-section" class="day-section active">
+    <div class="checklist-wrap">
 
-  <!-- DAY 2 -->
-  <div class="day-section" id="s1">
-    <div class="sl">Morning</div>
-    <div class="sc">
-      <div class="scp">
-        <img src="https://lh3.googleusercontent.com/places/ANXAkqGmnuOnexIK7c6XjAC3U-PfnziyoywOOuIDkjK5ag3a3h9vh7QKQHDTV5RvlSawMDT0pDL3Q3PoZnUredMs3SZjJIuzfiGgfSE=s800-w800-h575" loading="lazy" alt="">
-        <img src="https://lh3.googleusercontent.com/place-photos/AJRVUZM0KdDlbJ3tUKfGTRz0-XHcz-R2ek8V5l7tXXB5ppw8pVEYGvzzFu8clC75LDj0XbOkz1NybpO_rRLgwIzBtiTeSgngvczEm5SnBKDu5A6oEKeVVJ9Nm5-WAcmlrMWAc0DgSVEIfFM2ZupF_CpKQXccJA=s800-w800-h600" loading="lazy" alt="">
-        <img src="https://lh3.googleusercontent.com/place-photos/AJRVUZPPtdmqwlhzIdmYYkH2SMmpma_QeRXChdqXJNR4Zf3P1Q8V1qthmrn2WxKWkkktGInJt3aqv3KA1XgQvycMeLRcutBL-qWDfUIQZUldMDeSMUz9tfjIfJmw9Tn1u3vier5Jk9PjPzPUUqn-zOhgTMlh=s800-w800-h600" loading="lazy" alt="">
+      <div class="checklist-progress">
+        <div class="cp-top">
+          <span class="cp-label">Pre-trip checklist</span>
+          <div class="cp-count"><span id="done-count">0</span> <span>/ <span id="total-count">0</span> done</span></div>
+        </div>
+        <div class="cp-bar-track"><div class="cp-bar-fill" id="progress-bar" style="width:0%"></div></div>
       </div>
-      <div class="scb">
-        <div class="scn">7:15 AM · Ali Nasi Lemak Daun Pisang</div>
-        <div class="sctags"><span class="stag stag-food">Breakfast</span><span class="stag stag-michelin">Michelin Guide</span></div>
-        <p class="scnote">Opens 7am. Go early — sells out by mid-morning. RM3 a plate. The sambal is potent. Order rice + sambal first before adding extras.</p>
-        <div class="schr">Mon–Fri: 7am–2pm · Sat: 7am–1pm · Closed Sun</div>
-      </div>
-      <div class="scf"><span class="sca">Sri Weld Food Court, Beach Street</span><a class="mb" href="https://maps.google.com/?cid=6348670730682531118" target="_blank">Maps</a></div>
-    </div>
-    <div class="sc">
-      <div class="scp">
-        <img src="https://lh3.googleusercontent.com/place-photos/AJRVUZP5LBWWS__ZE7nR09fV_sITO30kDKtbjfukjHldxQv0sIXqk5OUFU0F-Hb5OKqIUKUPytQ8kZXwd7svTR2v8dLXnAcwVVulBQVWC6dibMwisusHgZzrKEVlv25LwBH-UuvXRIniHlhsa7ZQfg=s800-w800-h600" loading="lazy" alt="">
-        <img src="https://lh3.googleusercontent.com/place-photos/AJRVUZNb1p0AYRvT5PPPBhPq2OzPz7wvPKxCRu6zBQI91FDBqbwFGRzqNtx2bfFhAoWxwd4gxJy7PBWUCNcqvb8eFEG0iu-3acjMYdYxbygX0pZ20pAsJa8RzzsjJvaQ-85_Ax8Npssktu-GvTL-Msg3E5pgPA=s800-w800-h600" loading="lazy" alt="">
-        <img src="https://lh3.googleusercontent.com/place-photos/AJRVUZNScxgaXQwJ4pin26MuSwWmzIPYAqqQyU7vp3M76lkGnmWiDy_L6gMt160RZYp1PhfMQfJbzurdFjbzaKGwY3OVN6P7EkaOk5VlSzlRJmwFxPHk59AGWXc5XOliGR9G8bTBH9F3XY98NOTuKkAzxtBIrA=s800-w800-h600" loading="lazy" alt="">
-      </div>
-      <div class="scb">
-        <div class="scn">9:00 AM · Penang Hill Heritage Trail</div>
-        <div class="sctags"><span class="stag stag-activity">Hike</span></div>
-        <p class="scnote">Hike up takes 2–2.5 hrs. Steep stairs + jungle trekking. Bring water, wear proper shoes. Mostly shaded. Go before 10am to beat the heat. Views over George Town at the top are spectacular.</p>
-        <div class="schr">Open 24 hours · Start early</div>
-      </div>
-      <div class="scf"><span class="sca">478, Jalan Pokok Ceri, Ayer Itam</span><a class="mb" href="https://maps.google.com/?cid=12969436852212952995" target="_blank">Maps</a></div>
-    </div>
-    <div class="sc">
-      <div class="scp">
-        <img src="https://lh3.googleusercontent.com/place-photos/AJRVUZO6fPVsOT_vF16RBjKBhk-P5e2REg4EmsNQA4ksgQRNk9H9dD7bEQE1ahOrrUf9hNfhVzr27_5m7kU5YcuGeBGQX2i7c75u37TBVtYAhtYtB5VhvkSQTspq1VGcYv87FSjAUiJNdb8PG-yP4A=s800-w800-h600" loading="lazy" alt="">
-        <img src="https://lh3.googleusercontent.com/place-photos/AJRVUZO4oNXwIwIYWZXgmhPuZQ-q5N982H1hmeFUOpp6TTEYGLrNTNtro3lMkvF0dVH45U2T6jVAaQtGn53O6KpON0lBQTCXSc_0urCOMcgJR3vem8BnQx5JlSCa_yOF3sK4ckqZn83_wHVY9a2w=s800-w800-h600" loading="lazy" alt="">
-        <img src="https://lh3.googleusercontent.com/place-photos/AJRVUZNLp8HFuuyb1rmFLzD0aROUii8UlhigEn67uVJ2bSmHke7txcxXtSQPLCMa6oX-n9yIoSiJHupH4c6q1iB1FGN29LrRwkZTDqbqN6SfD_ysVG1DGlu33H_gT3-bROSKbI3sCD2qpkB3uUOKCQ=s800-w800-h600" loading="lazy" alt="">
-      </div>
-      <div class="scb">
-        <div class="scn">12:00 PM · Funicular Service Penang Hill</div>
-        <div class="sctags"><span class="stag stag-activity">Transport down</span></div>
-        <p class="scnote">Take the funicular back down — only 4 minutes. Pre-book express tickets at penanghill.gov.my to skip the queue. The ride itself is worth experiencing.</p>
-        <div class="schr">Daily 6:30am – 11pm</div>
-      </div>
-      <div class="scf"><span class="sca">422, Jalan Bukit Bendera</span><a class="mb" href="https://maps.google.com/?cid=9139778477464223867" target="_blank">Maps</a></div>
-    </div>
-    <div class="sl">Afternoon</div>
-    <div class="sc">
-      <div class="scp">
-        <img src="https://lh3.googleusercontent.com/place-photos/AJRVUZMIyL3So4lxMcTHJgwgFXz-VnvwjIQb9FfsofFNcC1mb3G4PmG5zbQ7xD9_rmWyFwAZ0bF5PD98kfeq7ghKGBfJQw97FZKAi25evP0FWkOF88_rFWRmC3OD_YSp1kyt1DpkuJ9n5IloDmR5NjJLiPTMqA=s800-w800-h600" loading="lazy" alt="">
-        <img src="https://lh3.googleusercontent.com/place-photos/AJRVUZOvnjiAVx8OJsU32kEymp9hzhrZXdFpV4JPg08zBj8hu4rulJfyDp-ZMWTy1Cm_GphRnx_J_ERHefixhpWhaEWLwPJ4NaDypR51BAGnxo_vILn_vOdnDXbJS6vm0LMESeL69LuwBEVfi-Wh1Q=s800-w800-h600" loading="lazy" alt="">
-        <img src="https://lh3.googleusercontent.com/place-photos/AJRVUZMtVdCfCCSgoFXuWJVgyZyBKy--uPXWTw4VG3O5ryEw2JqKuYNzC_jJUvee9afWni8-y1Z7-tkNDi-oLQ_cf_w05aOX7Es7v0wulcOXMrHSj_eyIPMyGpdZPUzy6jPxRIHSU-AEt-YPR5A006q7fRxEPQ=s800-w800-h600" loading="lazy" alt="">
-      </div>
-      <div class="scb">
-        <div class="scn">2:00 PM · Laksalicious</div>
-        <div class="sctags"><span class="stag stag-food">Laksa</span><span class="stag stag-michelin">Michelin Guide</span></div>
-        <p class="scnote">Air-conditioned — a relief after the hike. Order the assam version. Generous fish-to-noodle ratio. The asam laksa mojito is a fun novelty worth trying.</p>
-        <div class="schr">Tue–Sun: 11:30am–7pm · Closed Mon</div>
-      </div>
-      <div class="scf"><span class="sca">117–117A, Jalan Hutton, George Town</span><a class="mb" href="https://maps.google.com/?cid=834969466285114595" target="_blank">Maps</a></div>
-    </div>
-    <div class="sc">
-      <div class="scp">
-        <img src="https://lh3.googleusercontent.com/places/ANXAkqFRYLasX_elESHjOFWEn-nu4YlWPSXCg5ORdIMKSwy87W2C_xElG6lAUCsvJQqGfMBXe49QRDELDS8KgBrWB1s8fpSRzqxXKec=s800-w800-h600" loading="lazy" alt="">
-        <img src="https://lh3.googleusercontent.com/places/ANXAkqFYV8P_mBEqa_-whUz9KsRu2mE2SqlL6e0OXzNNuEi9vvHDuWRC5GoCsSUYaBBcZx5J9mLobZJ1fljn47Muj5Po5zOYYRsizh4=s800-w800-h600" loading="lazy" alt="">
-        <img src="https://lh3.googleusercontent.com/place-photos/AJRVUZMC3T7dskRCi7EQQONLMRPyYy7XSfF3fwxzTWj90GQbxOMm08_Qj4pE9ceNsemKSL0q5m4hlj9i72pBmhEdvl49EOkTE6oOTGPJJNsES11Y6jrn-ca5XlKAiaj9DtzdnUihy-ZaaT72BDei53YQ3Qq0=s800-w800-h600" loading="lazy" alt="">
-      </div>
-      <div class="scb">
-        <div class="scn">3:30 PM · Le Petit Four Pâtisserie</div>
-        <div class="sctags"><span class="stag stag-cafe">Pastries</span></div>
-        <p class="scnote">French-Asian pastry shop. The almond croissant and canel&eacute; are outstanding. Cosy spot to sit for an hour after the hike. Piccolo coffee is solid.</p>
-        <div class="schr">Mon–Wed, Fri–Sun: 9am–6pm · Closed Thu</div>
-      </div>
-      <div class="scf"><span class="sca">310, Lebuh Pantai, George Town</span><a class="mb" href="https://maps.google.com/?cid=7169884917205022526" target="_blank">Maps</a></div>
-    </div>
-    <div class="sl">Evening</div>
-    <div class="sc">
-      <div class="scp">
-        <img src="https://lh3.googleusercontent.com/place-photos/AJRVUZMizJwt3hT-Ckntyhg7mLfSWqSzPM4QYfjLeEw52Qi-GLkcLfmszCyZvFn42BGGlvwktPqVXQj9Dvb7rcnzOzR7d2GlyDkAw126HWRNxeGe3BldT20snuUoGcUk_i1UZqvW_ZVZp7Wc-ai2Hw=s800-w800-h600" loading="lazy" alt="">
-        <img src="https://lh3.googleusercontent.com/place-photos/AJRVUZO5FTrtpyb7S3nCu2LMKMYyCDpUzdKIKxP-yGpGcIOu8Dgb816H88c9Fal98kjEggjEUpWZqBAebHePQo-iL-_6xuNtYZo6rEHv2bFQ9NlYjvWWXUlIaFxwmd--Lxn-LSMnxi9f6MxTy9_S9lUkLBi3Vg=s800-w800-h600" loading="lazy" alt="">
-        <img src="https://lh3.googleusercontent.com/place-photos/AJRVUZPq_GK1rjK5KUzENOlD-JoSTPRrcRFeWPx-TxN4FOuyWyX3IMkYU_2BOtGOlFLUUx6yztVaZ5VlBX8H1agpAAbF2LcppKJJwPGWq35CNskNib4ZeJAKojoFqQ5gemOf41180oWRSBsDZumVGVyrBXfzjg=s800-w800-h600" loading="lazy" alt="">
-      </div>
-      <div class="scb">
-        <div class="scn">7:00 PM · RASA SAYANG Nyonya Cuisine</div>
-        <div class="sctags"><span class="stag stag-food">Nyonya</span><span class="stag stag-reserve">Reserve ahead</span></div>
-        <p class="scnote">4.8 stars. Best Nyonya food in Penang by most accounts. Assam Pedas Stingray, Nyonya Kari Bak Kut, blue pea fragrant rice. Don't be late — time-limited seating. +60 12-854 8799</p>
-        <div class="schr">Mon–Tue, Thu–Sun: 11am–3pm, 5:30–9:30pm · Closed Wed</div>
-      </div>
-      <div class="scf"><span class="sca">64, Jalan Moulmein, Pulau Tikus</span><a class="mb" href="https://maps.google.com/?cid=10225322812764014476" target="_blank">Maps</a></div>
-    </div>
-  </div>
 
-  <!-- DAY 3 -->
-  <div class="day-section" id="s2">
-    <div class="sl">Morning</div>
-    <div class="sc">
-      <div class="scp">
-        <img src="https://lh3.googleusercontent.com/place-photos/AJRVUZOL8juLF1K4rrOefOaD_-TGuEanWzHgf-hgxOOIF8sUpH5stbo5ZnKZ-ipfxO5oZ-d4OObaqRan26h2HHXsuth7-8P1zyL3aBPXT27p2cbpyzWD3N70Qu0hpLPmYqsOIkftTnhjVxOIZ9q_2g=s800-w800-h600" loading="lazy" alt="">
-        <img src="https://lh3.googleusercontent.com/place-photos/AJRVUZPpX5fRZpLdRzvwPlpWkYBuXdE7fNW7IF1SP5aOf29UT0vAg38QQwRVficW-NQFhrtfVy9NwNFaaD2dvMKMVdWkSDNo-2sUYYJKJN_gU82oquh03M0JNV634p_TrCRw0dfaX5tsgpiaGFDi8w=s800-w800-h600" loading="lazy" alt="">
-        <img src="https://lh3.googleusercontent.com/place-photos/AJRVUZMig5xkvJANp6mceLuBOH8h5-RAECewhOFNbNe72CH_On0MTc64s9j3yaJs5CjpDTSryNCqgh8HP-GUgjckzP-1PeGJng2_rK_rrdRzyvpe_CyyOyGusCsbew61V0SxsoO9beeRjfMGeRKXjw=s800-w800-h600" loading="lazy" alt="">
-      </div>
-      <div class="scb">
-        <div class="scn">9:00 AM · Batu Ferringhi Beach</div>
-        <div class="sctags"><span class="stag stag-activity">Beach</span></div>
-        <p class="scnote">About 30 min by Grab from George Town. Long sandy stretch. Water sports available (parasailing, jet skis). Sunsets here are excellent — consider returning in the evening.</p>
-        <div class="schr">Open 24 hours · Best before noon</div>
-      </div>
-      <div class="scf"><span class="sca">Jalan Batu Ferringhi, Penang</span><a class="mb" href="https://maps.google.com/?cid=2956641074386871952" target="_blank">Maps</a></div>
-    </div>
-    <div class="sl">Afternoon</div>
-    <div class="sc">
-      <div class="scp">
-        <img src="https://lh3.googleusercontent.com/place-photos/AJRVUZNub_SdU_PxBNjncLrZLsZ9FxD2gS_SYdP1zvrRLlwKTAJjZz5X0tkFs8TJz9WDAKqafA5HU8VNVuVuIMPSJ4b8jhjpx2XmVpYPxfH1qIysUjiEWVBivDps6CYJ6HilJmiJy7iypiLIlNm9UQ=s800-w800-h600" loading="lazy" alt="">
-        <img src="https://lh3.googleusercontent.com/place-photos/AJRVUZOj9_G-CFO4HCxp9ljs8b5EAJDy2kmqScEqMhetHgwMcD7dEUF0x_EsCzK9mUavAyzZr-ZjaANrKLzgJSafgHH-uvF3xW-9ic_XTyIIHCkov_rRwmsXP_dOrnTfdXS8-JSgSdU0R4EmZGiquz5etzFEZQ=s800-w800-h600" loading="lazy" alt="">
-        <img src="https://lh3.googleusercontent.com/place-photos/AJRVUZPj-48BSbOXff53M_Sj5oD6dS6aEUKwPPb--hTQuxT2NzgYRVPk6axM0nf87-XlrhH8i16f2k-Z5ZdVlJUB9jQYR960A0Wfl54tJFJtoGl8Z544as56e7whS9h6Gvv8Fumj7bhWfAxJPX3moFg=s800-w800-h600" loading="lazy" alt="">
-      </div>
-      <div class="scb">
-        <div class="scn">3:00 PM · Laksa Mamu Famous Sungai Pinang</div>
-        <div class="sctags"><span class="stag stag-food">Laksa</span></div>
-        <p class="scnote">Opens at 3pm. Worth the Grab ride to Jelutong (~15 min). One of the best assam laksa in Penang — balanced tartness. The uncle running the stall is very friendly.</p>
-        <div class="schr">Mon–Sat: 3pm–9pm · Closed Sun</div>
-      </div>
-      <div class="scf"><span class="sca">Taman Lita, Jelutong, Penang</span><a class="mb" href="https://maps.google.com/?cid=10445095134458840476" target="_blank">Maps</a></div>
-    </div>
-    <div class="sc">
-      <div class="scp">
-        <img src="https://lh3.googleusercontent.com/place-photos/AJRVUZNZ2bUCZhnUiqJsViTtW5MXlvuJ0PewzM2DlYwBTmJBNZPFvPgDOiOQo66Xe8Cm1ZksBfL-M2yemCSkkuCAc53OCDIkSSpYRXUpr-JIKpjuSWSlfuNcgwhlLDMerypR93fsAHsA7n2PahnY=s800-w800-h600" loading="lazy" alt="">
-        <img src="https://lh3.googleusercontent.com/place-photos/AJRVUZMXlMNTy1roVvgk6HjbFY3ZCJf1ZdvfL-X79PW8DhZHdTxEWRDS_25RtnfZGDoAP8sxSFjTGkUNlePanxIeEXhpXJ_CAi9eAxptTir-zPzGxCNheXoGF7zdxawvhI-w6D1uYna6eiKZ5QC_BxKs=s800-w800-h600" loading="lazy" alt="">
-        <img src="https://lh3.googleusercontent.com/place-photos/AJRVUZPvpMm-NC7RhEvMQAymArpxwLdhoLRBfzLaQixyav_ohjupNxyp6FN_vrUYvy-sbM_J39HsCr17oCx2hKh4HeizEBCwhFUAdQCJK6tM8ScHTUGc_cqhZWxtk0X5CeOdbBIfUHoSb_E-L2-DEzM=s800-w800-h600" loading="lazy" alt="">
-      </div>
-      <div class="scb">
-        <div class="scn">4:30 PM · Sixth Sense</div>
-        <div class="sctags"><span class="stag stag-shop">Clothing</span></div>
-        <p class="scnote">Affordable linen and cotton pieces. Good starting point for Beach Street shopping. More accessible price point than Warehouse 129 next door.</p>
-        <div class="schr">Mon–Sat: 10am–5:30pm · Sun: 12pm–4:45pm</div>
-      </div>
-      <div class="scf"><span class="sca">157, Lebuh Pantai, George Town</span><a class="mb" href="https://maps.google.com/?cid=8747951626966440676" target="_blank">Maps</a></div>
-    </div>
-    <div class="sc">
-      <div class="scp">
-        <img src="https://lh3.googleusercontent.com/place-photos/AJRVUZM1WvEbGDx2WX3j0OGCSBDSTuZTLkepA_PO3DST43acbr6dG4cSUMoKamq30TI1CC7RL1mHi9o4GySneC9DIDOxCAi9eAxptTir-zPzGxCNheXoGF7zdxawvhI-w6D1uYna6eiKZ5QC_BxKs=s800-w800-h600" loading="lazy" alt="">
-        <img src="https://lh3.googleusercontent.com/place-photos/AJRVUZMCXCbZMExB3xNkwr1F1brVsXt085_xZk_IVVRUPEm5kNq59lhJMKzG4h5Ao8sxSFjTGkUNlePanxIeEXhpXJ_CAi9eAxptTir-zPzGxCNheXoGF7zdxawvhI-w6D1uYna6eiKZ5QC_BxKs=s800-w800-h600" loading="lazy" alt="">
-        <img src="https://lh3.googleusercontent.com/place-photos/AJRVUZNmCtAy7cACY7bo8EbxPIKZF6aJOYdbLFhbrheRjAs8mJa3bcBP2R4cFaL7tGFRII9TVZ0bybDJL5BE1-LUS8txyK17ZAHjwM4x8W7GfbtJ5efIDm2ow1TKkJ3Z_KjsvDl2HJi7MCeUfcDh=s800-w800-h600" loading="lazy" alt="">
-      </div>
-      <div class="scb">
-        <div class="scn">5:15 PM · Warehouse 129</div>
-        <div class="sctags"><span class="stag stag-shop">Clothing</span></div>
-        <p class="scnote">Premium linen pieces around RM200. Beautiful fabrics — worth browsing even if you don't buy. Higher-end sibling of Sixth Sense, same block.</p>
-        <div class="schr">Mon–Sat: 11am–5:30pm · Sun: 12pm–5pm</div>
-      </div>
-      <div class="scf"><span class="sca">129, Lebuh Pantai, George Town</span><a class="mb" href="https://maps.google.com/?cid=5985802180757766645" target="_blank">Maps</a></div>
-    </div>
-    <div class="sc">
-      <div class="scp">
-        <img src="https://lh3.googleusercontent.com/place-photos/AJRVUZMRGNamvZyUGOc7thOz_BUFnklRkamPExCA-qdz9TuutuK6f0rVA50vUKX2LvebhQQg5Ph_KZku5ktkgRZDyp5mDSSuvniP3HLC5GMsRC5jbcMW6DtdqNuLklkECSRBdQozbE_8cMkbEEjpXg=s800-w800-h600" loading="lazy" alt="">
-        <img src="https://lh3.googleusercontent.com/place-photos/AJRVUZNoAbviUvQpsLxzyHZ1o0_ExCpBdhCTFNe_6hH3RX4-hr_j4Pm7u-56ab5PeHeKiSBqIdARvuHrhT7O7IR54LKJ4GJ6hkNgNeLdH8NqFAxt5cRDQQSZAEGWa_l64nmFtR-14YQSWJglB7l_jg=s800-w800-h600" loading="lazy" alt="">
-        <img src="https://lh3.googleusercontent.com/place-photos/AJRVUZNjUi95j4o_vCAd-VJSWjeaxdJAV5yZpvMZWPe0Vhu_68_GZxiVr1oc_fBmkfjrfgkyf4QLPGWn2-o4D1i1oxEwLUkmTmh5sut1WYjDtcHsQCcANADTTSjhSivsfB7qaKSIhb2VjLNhc74-fvU=s800-w800-h600" loading="lazy" alt="">
-      </div>
-      <div class="scb">
-        <div class="scn">6:00 PM · Nala Penang Beach Street</div>
-        <div class="sctags"><span class="stag stag-shop">Clothing</span></div>
-        <p class="scnote">Bold graphic prints, high-quality fabrics. Very different aesthetic to the other two — more statement pieces. A few doors down on the same street.</p>
-        <div class="schr">Daily: 10am–6pm</div>
-      </div>
-      <div class="scf"><span class="sca">230, Beach Street, George Town</span><a class="mb" href="https://maps.google.com/?cid=11042297117850927207" target="_blank">Maps</a></div>
-    </div>
-    <div class="sl">Evening</div>
-    <div class="sc">
-      <div class="scp">
-        <img src="https://lh3.googleusercontent.com/place-photos/AJRVUZMizJwt3hT-Ckntyhg7mLfSWqSzPM4QYfjLeEw52Qi-GLkcLfmszCyZvFn42BGGlvwktPqVXQj9Dvb7rcnzOzR7d2GlyDkAw126HWRNxeGe3BldT20snuUoGcUk_i1UZqvW_ZVZp7Wc-ai2Hw=s800-w800-h600" loading="lazy" alt="">
-        <img src="https://lh3.googleusercontent.com/place-photos/AJRVUZO5FTrtpyb7S3nCu2LMKMYyCDpUzdKIKxP-yGpGcIOu8Dgb816H88c9Fal98kjEggjEUpWZqBAebHePQo-iL-_6xuNtYZo6rEHv2bFQ9NlYjvWWXUlIaFxwmd--Lxn-LSMnxi9f6MxTy9_S9lUkLBi3Vg=s800-w800-h600" loading="lazy" alt="">
-        <img src="https://lh3.googleusercontent.com/place-photos/AJRVUZPq_GK1rjK5KUzENOlD-JoSTPRrcRFeWPx-TxN4FOuyWyX3IMkYU_2BOtGOlFLUUx6yztVaZ5VlBX8H1agpAAbF2LcppKJJwPGWq35CNskNib4ZeJAKojoFqQ5gemOf41180oWRSBsDZumVGVyrBXfzjg=s800-w800-h600" loading="lazy" alt="">
-      </div>
-      <div class="scb">
-        <div class="scn">7:30 PM · 888 Hokkien Mee</div>
-        <div class="sctags"><span class="stag stag-food">Hokkien Mee</span><span class="stag stag-michelin">Michelin Bib Gourmand</span></div>
-        <p class="scnote">Rich prawn broth — add roast pork. Lor mee and oyster omelette also good. Grab a table first, then order. Queue moves fast once you're in.</p>
-        <div class="schr">Mon–Wed, Fri–Sun: 3–9:30pm · Closed Thu</div>
-      </div>
-      <div class="scf"><span class="sca">67A, Lebuh Presgrave, George Town</span><a class="mb" href="https://maps.google.com/?cid=16953154920432182119" target="_blank">Maps</a></div>
-    </div>
-  </div>
+      <!-- GROUP: RESERVATIONS -->
+      <div class="checklist-group">
+        <div class="cg-label">Reservations</div>
 
-  <!-- DAY 4 -->
-  <div class="day-section" id="s3">
-    <div class="sl">Morning</div>
-    <div class="sc">
-      <div class="scp">
-        <img src="https://lh3.googleusercontent.com/places/ANXAkqGmnuOnexIK7c6XjAC3U-PfnziyoywOOuIDkjK5ag3a3h9vh7QKQHDTV5RvlSawMDT0pDL3Q3PoZnUredMs3SZjJIuzfiGgfSE=s800-w800-h575" loading="lazy" alt="">
-        <img src="https://lh3.googleusercontent.com/place-photos/AJRVUZM0KdDlbJ3tUKfGTRz0-XHcz-R2ek8V5l7tXXB5ppw8pVEYGvzzFu8clC75LDj0XbOkz1NybpO_rRLgwIzBtiTeSgngvczEm5SnBKDu5A6oEKeVVJ9Nm5-WAcmlrMWAc0DgSVEIfFM2ZupF_CpKQXccJA=s800-w800-h600" loading="lazy" alt="">
-        <img src="https://lh3.googleusercontent.com/place-photos/AJRVUZPPtdmqwlhzIdmYYkH2SMmpma_QeRXChdqXJNR4Zf3P1Q8V1qthmrn2WxKWkkktGInJt3aqv3KA1XgQvycMeLRcutBL-qWDfUIQZUldMDeSMUz9tfjIfJmw9Tn1u3vier5Jk9PjPzPUUqn-zOhgTMlh=s800-w800-h600" loading="lazy" alt="">
+        <div class="ci" id="ci-0">
+          <div class="ci-main" onclick="toggleItem('ci-0')">
+            <div class="ci-checkbox">
+              <svg class="ci-check-icon" viewBox="0 0 11 11" fill="none">
+                <path d="M1.5 5.5L4.5 8.5L9.5 2.5" stroke="white" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/>
+              </svg>
+            </div>
+            <div class="ci-body">
+              <div class="ci-name">RASA SAYANG NYONYA CUISINE reservation</div>
+              <div class="ci-meta">Call +60 12-854 8799 · Needed for dinner Day 1 (Tue) · No online booking found</div>
+            </div>
+            <span class="ci-urgency urgency-high">Book now</span>
+          </div>
+          <div class="ci-notes">
+            <div class="ci-notes-inner">
+              <div class="ci-notes-saved" id="ci-0-saved"></div>
+              <button class="ci-add-note-btn" onclick="showNoteInput('ci-0')" id="ci-0-addbtn">
+                <svg width="12" height="12" viewBox="0 0 12 12" fill="none"><path d="M6 1v10M1 6h10" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></svg>
+                Add note
+              </button>
+              <textarea class="ci-notes-input" id="ci-0-input" placeholder="e.g. Reservation confirmed · Table for 2 at 7pm" rows="3"></textarea>
+              <div class="ci-notes-actions" id="ci-0-actions">
+                <button class="ci-btn save" onclick="saveNote('ci-0')">Save</button>
+                <button class="ci-btn" onclick="cancelNote('ci-0')">Cancel</button>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="ci" id="ci-1">
+          <div class="ci-main" onclick="toggleItem('ci-1')">
+            <div class="ci-checkbox">
+              <svg class="ci-check-icon" viewBox="0 0 11 11" fill="none">
+                <path d="M1.5 5.5L4.5 8.5L9.5 2.5" stroke="white" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/>
+              </svg>
+            </div>
+            <div class="ci-body">
+              <div class="ci-name">BaBa Phang — backup reservation</div>
+              <div class="ci-meta">Call +60 14-741 9839 · Backup if RASA SAYANG unavailable Day 1 · No online booking found</div>
+            </div>
+            <span class="ci-urgency urgency-med">Book soon</span>
+          </div>
+          <div class="ci-notes">
+            <div class="ci-notes-inner">
+              <div class="ci-notes-saved" id="ci-1-saved"></div>
+              <button class="ci-add-note-btn" onclick="showNoteInput('ci-1')" id="ci-1-addbtn">
+                <svg width="12" height="12" viewBox="0 0 12 12" fill="none"><path d="M6 1v10M1 6h10" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></svg>
+                Add note
+              </button>
+              <textarea class="ci-notes-input" id="ci-1-input" placeholder="Add details" rows="3"></textarea>
+              <div class="ci-notes-actions" id="ci-1-actions">
+                <button class="ci-btn save" onclick="saveNote('ci-1')">Save</button>
+                <button class="ci-btn" onclick="cancelNote('ci-1')">Cancel</button>
+              </div>
+            </div>
+          </div>
+        </div>
+
       </div>
-      <div class="scb">
-        <div class="scn">7:00 AM · Ali Nasi Lemak Daun Pisang</div>
-        <div class="sctags"><span class="stag stag-food">Breakfast</span><span class="stag stag-michelin">Michelin Guide</span></div>
-        <p class="scnote">Last Penang breakfast. Goes fast — be there early. RM3 a plate. One final hit of that sambal before the flight home.</p>
-        <div class="schr">Fri: 7am–2pm ✓</div>
+      <!-- END GROUP: RESERVATIONS -->
+
+      <!-- GROUP: TICKETS -->
+      <div class="checklist-group">
+        <div class="cg-label">Tickets & bookings</div>
+
+        <div class="ci" id="ci-2">
+          <div class="ci-main" onclick="toggleItem('ci-2')">
+            <div class="ci-checkbox">
+              <svg class="ci-check-icon" viewBox="0 0 11 11" fill="none">
+                <path d="M1.5 5.5L4.5 8.5L9.5 2.5" stroke="white" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/>
+              </svg>
+            </div>
+            <div class="ci-body">
+              <div class="ci-name">Penang Hill funicular — express tickets</div>
+              <div class="ci-meta">Book at penanghill.gov.my · Needed Day 3 (Thu) morning · Walk-up queues can be 90+ min</div>
+            </div>
+            <span class="ci-urgency urgency-med">Book soon</span>
+          </div>
+          <div class="ci-notes">
+            <div class="ci-notes-inner">
+              <div class="ci-notes-saved" id="ci-2-saved"></div>
+              <button class="ci-add-note-btn" onclick="showNoteInput('ci-2')" id="ci-2-addbtn">
+                <svg width="12" height="12" viewBox="0 0 12 12" fill="none"><path d="M6 1v10M1 6h10" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></svg>
+                Add note
+              </button>
+              <textarea class="ci-notes-input" id="ci-2-input" placeholder="Add details" rows="3"></textarea>
+              <div class="ci-notes-actions" id="ci-2-actions">
+                <button class="ci-btn save" onclick="saveNote('ci-2')">Save</button>
+                <button class="ci-btn" onclick="cancelNote('ci-2')">Cancel</button>
+              </div>
+            </div>
+          </div>
+        </div>
+
       </div>
-      <div class="scf"><span class="sca">Sri Weld Food Court, Beach Street</span><a class="mb" href="https://maps.google.com/?cid=6348670730682531118" target="_blank">Maps</a></div>
-    </div>
-    <div class="sc">
-      <div class="scp">
-        <img src="https://lh3.googleusercontent.com/places/ANXAkqFRYLasX_elESHjOFWEn-nu4YlWPSXCg5ORdIMKSwy87W2C_xElG6lAUCsvJQqGfMBXe49QRDELDS8KgBrWB1s8fpSRzqxXKec=s800-w800-h600" loading="lazy" alt="">
-        <img src="https://lh3.googleusercontent.com/places/ANXAkqFYV8P_mBEqa_-whUz9KsRu2mE2SqlL6e0OXzNNuEi9vvHDuWRC5GoCsSUYaBBcZx5J9mLobZJ1fljn47Muj5Po5zOYYRsizh4=s800-w800-h600" loading="lazy" alt="">
-        <img src="https://lh3.googleusercontent.com/place-photos/AJRVUZMC3T7dskRCi7EQQONLMRPyYy7XSfF3fwxzTWj90GQbxOMm08_Qj4pE9ceNsemKSL0q5m4hlj9i72pBmhEdvl49EOkTE6oOTGPJJNsES11Y6jrn-ca5XlKAiaj9DtzdnUihy-ZaaT72BDei53YQ3Qq0=s800-w800-h600" loading="lazy" alt="">
+      <!-- END GROUP: TICKETS -->
+
+      <!-- GROUP: LOGISTICS -->
+      <div class="checklist-group">
+        <div class="cg-label">Logistics</div>
+
+        <div class="ci" id="ci-3">
+          <div class="ci-main" onclick="toggleItem('ci-3')">
+            <div class="ci-checkbox">
+              <svg class="ci-check-icon" viewBox="0 0 11 11" fill="none">
+                <path d="M1.5 5.5L4.5 8.5L9.5 2.5" stroke="white" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/>
+              </svg>
+            </div>
+            <div class="ci-body">
+              <div class="ci-name">Online check-in — SIN→PEN (FRODW3)</div>
+              <div class="ci-meta">Opens 48h before · From ~08:00 Sun 8 Nov</div>
+            </div>
+            <span class="ci-urgency urgency-med">Before trip</span>
+          </div>
+          <div class="ci-notes">
+            <div class="ci-notes-inner">
+              <div class="ci-notes-saved" id="ci-3-saved"></div>
+              <button class="ci-add-note-btn" onclick="showNoteInput('ci-3')" id="ci-3-addbtn">
+                <svg width="12" height="12" viewBox="0 0 12 12" fill="none"><path d="M6 1v10M1 6h10" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></svg>
+                Add note
+              </button>
+              <textarea class="ci-notes-input" id="ci-3-input" placeholder="Add details" rows="3"></textarea>
+              <div class="ci-notes-actions" id="ci-3-actions">
+                <button class="ci-btn save" onclick="saveNote('ci-3')">Save</button>
+                <button class="ci-btn" onclick="cancelNote('ci-3')">Cancel</button>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="ci" id="ci-4">
+          <div class="ci-main" onclick="toggleItem('ci-4')">
+            <div class="ci-checkbox">
+              <svg class="ci-check-icon" viewBox="0 0 11 11" fill="none">
+                <path d="M1.5 5.5L4.5 8.5L9.5 2.5" stroke="white" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/>
+              </svg>
+            </div>
+            <div class="ci-body">
+              <div class="ci-name">Online check-in — PEN→SIN (FRODW3)</div>
+              <div class="ci-meta">Opens 48h before · From ~12:05 Wed 11 Nov</div>
+            </div>
+            <span class="ci-urgency urgency-med">During trip</span>
+          </div>
+          <div class="ci-notes">
+            <div class="ci-notes-inner">
+              <div class="ci-notes-saved" id="ci-4-saved"></div>
+              <button class="ci-add-note-btn" onclick="showNoteInput('ci-4')" id="ci-4-addbtn">
+                <svg width="12" height="12" viewBox="0 0 12 12" fill="none"><path d="M6 1v10M1 6h10" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></svg>
+                Add note
+              </button>
+              <textarea class="ci-notes-input" id="ci-4-input" placeholder="Add details" rows="3"></textarea>
+              <div class="ci-notes-actions" id="ci-4-actions">
+                <button class="ci-btn save" onclick="saveNote('ci-4')">Save</button>
+                <button class="ci-btn" onclick="cancelNote('ci-4')">Cancel</button>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="ci" id="ci-5">
+          <div class="ci-main" onclick="toggleItem('ci-5')">
+            <div class="ci-checkbox">
+              <svg class="ci-check-icon" viewBox="0 0 11 11" fill="none">
+                <path d="M1.5 5.5L4.5 8.5L9.5 2.5" stroke="white" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/>
+              </svg>
+            </div>
+            <div class="ci-body">
+              <div class="ci-name">Cash (RM) for hawker stalls</div>
+              <div class="ci-meta">Many hawker stalls don't take cards</div>
+            </div>
+            <span class="ci-urgency urgency-low">Before trip</span>
+          </div>
+          <div class="ci-notes">
+            <div class="ci-notes-inner">
+              <div class="ci-notes-saved" id="ci-5-saved"></div>
+              <button class="ci-add-note-btn" onclick="showNoteInput('ci-5')" id="ci-5-addbtn">
+                <svg width="12" height="12" viewBox="0 0 12 12" fill="none"><path d="M6 1v10M1 6h10" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></svg>
+                Add note
+              </button>
+              <textarea class="ci-notes-input" id="ci-5-input" placeholder="Add details" rows="3"></textarea>
+              <div class="ci-notes-actions" id="ci-5-actions">
+                <button class="ci-btn save" onclick="saveNote('ci-5')">Save</button>
+                <button class="ci-btn" onclick="cancelNote('ci-5')">Cancel</button>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="ci" id="ci-6">
+          <div class="ci-main" onclick="toggleItem('ci-6')">
+            <div class="ci-checkbox">
+              <svg class="ci-check-icon" viewBox="0 0 11 11" fill="none">
+                <path d="M1.5 5.5L4.5 8.5L9.5 2.5" stroke="white" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/>
+              </svg>
+            </div>
+            <div class="ci-body">
+              <div class="ci-name">Pack rain jacket / umbrella</div>
+              <div class="ci-meta">Nov is Penang's wet season</div>
+            </div>
+            <span class="ci-urgency urgency-low">Before trip</span>
+          </div>
+          <div class="ci-notes">
+            <div class="ci-notes-inner">
+              <div class="ci-notes-saved" id="ci-6-saved"></div>
+              <button class="ci-add-note-btn" onclick="showNoteInput('ci-6')" id="ci-6-addbtn">
+                <svg width="12" height="12" viewBox="0 0 12 12" fill="none"><path d="M6 1v10M1 6h10" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></svg>
+                Add note
+              </button>
+              <textarea class="ci-notes-input" id="ci-6-input" placeholder="Add details" rows="3"></textarea>
+              <div class="ci-notes-actions" id="ci-6-actions">
+                <button class="ci-btn save" onclick="saveNote('ci-6')">Save</button>
+                <button class="ci-btn" onclick="cancelNote('ci-6')">Cancel</button>
+              </div>
+            </div>
+          </div>
+        </div>
+
       </div>
-      <div class="scb">
-        <div class="scn">9:00 AM · Le Petit Four Pâtisserie</div>
-        <div class="sctags"><span class="stag stag-cafe">Pastries</span></div>
-        <p class="scnote">Grab a croissant or canel&eacute; for the road. Pick up a box to take back to Singapore — they hold up well for the flight.</p>
-        <div class="schr">Fri: 9am–6pm ✓</div>
-      </div>
-      <div class="scf"><span class="sca">310, Lebuh Pantai, George Town</span><a class="mb" href="https://maps.google.com/?cid=7169884917205022526" target="_blank">Maps</a></div>
-    </div>
-    <div class="abox">
-      <div class="abox-t">Airport timing</div>
-      <div class="abox-b">Flight departs 13:40. Penang Airport (PEN) is 20–25 min by Grab from George Town. Leave the hotel by 11:00–11:15am to be comfortable.</div>
+      <!-- END GROUP: LOGISTICS -->
+
     </div>
   </div>
+  <!-- END CHECKLIST TAB -->
+
+  <!-- =============================================
+    TRANSPORT TAB
+    ============================================= -->
+  <div id="transport-section" class="day-section">
+    <div class="transport-wrap">
+
+      <div class="sl">Outbound</div>
+
+      <div class="tj">
+        <div class="tj-header">
+          <div class="tj-icon flight">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M22 16.92v3a2 2 0 01-2.18 2 19.79 19.79 0 01-8.63-3.07A19.5 19.5 0 013.4 10.82 19.79 19.79 0 01.34 2.18 2 2 0 012.33 0h3a2 2 0 012 1.72c.127.96.361 1.903.7 2.81a2 2 0 01-.45 2.11L6.91 7.91a16 16 0 006.18 6.18l1.27-1.27a2 2 0 012.11-.45c.907.339 1.85.573 2.81.7A2 2 0 0122 16.92z"/></svg>
+          </div>
+          <div class="tj-header-body">
+            <div class="tj-title">SIN → PEN</div>
+            <div class="tj-subtitle">Tuesday, 10 Nov 2026</div>
+          </div>
+          <span class="tj-badge outbound">Outbound</span>
+        </div>
+        <div class="tj-route">
+          <div class="tj-route-from">
+            <div class="tj-route-code">SIN</div>
+            <div class="tj-route-city">Singapore Changi T2</div>
+            <div class="tj-route-time">13:20</div>
+          </div>
+          <div class="tj-route-mid">
+            <div class="tj-route-line">
+              <div class="tj-route-dot"></div>
+              <div class="tj-route-dash"></div>
+              <svg class="tj-route-arrow" width="14" height="14" viewBox="0 0 14 14" fill="none"><path d="M1 7h12M8 2l5 5-5 5" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+              <div class="tj-route-dash"></div>
+              <div class="tj-route-dot"></div>
+            </div>
+            <div class="tj-route-duration">1 hr 25 min</div>
+          </div>
+          <div class="tj-route-to">
+            <div class="tj-route-code" style="text-align:right">PEN</div>
+            <div class="tj-route-city" style="text-align:right">Penang Intl</div>
+            <div class="tj-route-time" style="text-align:right">14:45</div>
+          </div>
+        </div>
+        <div class="tj-body">
+          <div class="tj-row">
+            <div class="tj-cell">
+              <div class="tj-cell-label">Booking ref</div>
+              <div class="tj-cell-value mono">FRODW3</div>
+            </div>
+            <div class="tj-cell">
+              <div class="tj-cell-label">Travelers</div>
+              <div class="tj-cell-value">Kang Ling Teo, Yi Min Lim</div>
+            </div>
+          </div>
+          <div class="tj-row">
+            <div class="tj-cell" style="flex:2">
+              <div class="tj-cell-label">Notes</div>
+              <div class="tj-cell-value muted">Lands 2:45pm — no touring until hotel check-in. Online check-in opens 48hrs before departure.</div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="sl">Accommodation</div>
+
+      <div class="tj">
+        <div class="tj-header">
+          <div class="tj-icon hotel">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M3 9l9-7 9 7v11a2 2 0 01-2 2H5a2 2 0 01-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg>
+          </div>
+          <div class="tj-header-body">
+            <div class="tj-title">Citadines Connect Bertam Georgetown Penang</div>
+            <div class="tj-subtitle">10 – 13 Nov 2026 · 3 nights · Studio Premier King</div>
+          </div>
+          <span class="tj-badge checkin">Hotel</span>
+        </div>
+        <div class="tj-body">
+          <div class="tj-row">
+            <div class="tj-cell">
+              <div class="tj-cell-label">Check-in</div>
+              <div class="tj-cell-value">Tue 10 Nov</div>
+            </div>
+            <div class="tj-cell">
+              <div class="tj-cell-label">Check-out</div>
+              <div class="tj-cell-value">Fri 13 Nov</div>
+            </div>
+          </div>
+          <div class="tj-row">
+            <div class="tj-cell">
+              <div class="tj-cell-label">Booking no.</div>
+              <div class="tj-cell-value mono">1578949115031443</div>
+            </div>
+            <div class="tj-cell">
+              <div class="tj-cell-label">Phone</div>
+              <div class="tj-cell-value">+60 4-202 0111</div>
+            </div>
+          </div>
+          <div class="tj-row">
+            <div class="tj-cell" style="flex:2">
+              <div class="tj-cell-label">Address</div>
+              <div class="tj-cell-value muted">428, Jalan Penang, George Town, 10000 Penang · S$325.41 total · Booked Aug 10, 2026 · Confirmed · Guest name: Kang Ling Teo</div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="sl">Return</div>
+
+      <div class="tj">
+        <div class="tj-header">
+          <div class="tj-icon flight">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M22 16.92v3a2 2 0 01-2.18 2 19.79 19.79 0 01-8.63-3.07A19.5 19.5 0 013.4 10.82 19.79 19.79 0 01.34 2.18 2 2 0 012.33 0h3a2 2 0 012 1.72c.127.96.361 1.903.7 2.81a2 2 0 01-.45 2.11L6.91 7.91a16 16 0 006.18 6.18l1.27-1.27a2 2 0 012.11-.45c.907.339 1.85.573 2.81.7A2 2 0 0122 16.92z"/></svg>
+          </div>
+          <div class="tj-header-body">
+            <div class="tj-title">PEN → SIN</div>
+            <div class="tj-subtitle">Friday, 13 Nov 2026</div>
+          </div>
+          <span class="tj-badge return">Return</span>
+        </div>
+        <div class="tj-route">
+          <div class="tj-route-from">
+            <div class="tj-route-code">PEN</div>
+            <div class="tj-route-city">Penang Intl</div>
+            <div class="tj-route-time">12:05</div>
+          </div>
+          <div class="tj-route-mid">
+            <div class="tj-route-line">
+              <div class="tj-route-dot"></div>
+              <div class="tj-route-dash"></div>
+              <svg class="tj-route-arrow" width="14" height="14" viewBox="0 0 14 14" fill="none"><path d="M1 7h12M8 2l5 5-5 5" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+              <div class="tj-route-dash"></div>
+              <div class="tj-route-dot"></div>
+            </div>
+            <div class="tj-route-duration">1 hr 35 min</div>
+          </div>
+          <div class="tj-route-to">
+            <div class="tj-route-code" style="text-align:right">SIN</div>
+            <div class="tj-route-city" style="text-align:right">Singapore Changi T2</div>
+            <div class="tj-route-time" style="text-align:right">13:40</div>
+          </div>
+        </div>
+        <div class="tj-body">
+          <div class="tj-row">
+            <div class="tj-cell">
+              <div class="tj-cell-label">Booking ref</div>
+              <div class="tj-cell-value mono">FRODW3</div>
+            </div>
+            <div class="tj-cell">
+              <div class="tj-cell-label">Travelers</div>
+              <div class="tj-cell-value">Kang Ling Teo, Yi Min Lim</div>
+            </div>
+          </div>
+          <div class="tj-row">
+            <div class="tj-cell" style="flex:2">
+              <div class="tj-cell-label">Notes</div>
+              <div class="tj-cell-value muted">Leave hotel by ~10am — no time for a morning activity. Online check-in opens 48hrs before departure.</div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+  <!-- END TRANSPORT TAB -->
+
+  <!-- =============================================
+    DAY TABS (shared map/panel, day-scoped data)
+    ============================================= -->
+  <div id="days-section" class="day-section">
+    <div class="map-wrap" id="map-wrap">
+      <div id="map"></div>
+      <button class="recenter-btn" id="recenter-btn" style="display:none" onclick="recenterMap()">Recenter</button>
+      <div class="panel">
+        <div class="ph">
+          <div class="chip-row" id="type-chips"></div>
+          <div class="chip-row" id="route-chips"></div>
+        </div>
+        <div class="ps" id="panel-stops"></div>
+      </div>
+    </div>
+
+    <div id="legend" class="legend">
+      <div class="li"><div class="ld" style="background:var(--food)"></div>Food</div>
+      <div class="li"><div class="ld" style="background:var(--activity)"></div>Activity</div>
+      <div class="li"><div class="ld" style="background:var(--shop)"></div>Shopping</div>
+      <div class="li"><div class="ld" style="background:var(--cafe)"></div>Cafe</div>
+      <div class="li"><div class="ld" style="background:var(--hotel)"></div>Hotel</div>
+    </div>
+
+    <div id="anchor-blocks" class="anchor-blocks"></div>
+  </div>
+  <!-- END DAY TABS -->
 
 </div>
 
+<!-- =============================================
+  JAVASCRIPT
+  ============================================= -->
 <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
 <script>
 var markers=[];
 var map;
+var mapInitialized=false;
+var userPanned=false;
 
-const DAYS=[
-  {title:"Day 1 · Arrival",sub:"George Town hawker evening",stops:[
-    {name:"Citadines Connect Bertam",time:"3:30 PM",type:"hotel",lat:5.4156,lng:100.3292,note:"Check in. Central George Town.",url:"https://maps.google.com/?cid=10225322812764014476"},
-    {name:"Jing Si Books & Cafe",time:"5:00 PM",type:"cafe",lat:5.4170,lng:100.3422,note:"Calm cafe. Good tea to decompress.",url:"https://maps.google.com/?cid=7738219335417321972"},
-    {name:"CHONG Charcoal CKT",time:"5:00 PM",type:"food",lat:5.4149,lng:100.3265,note:"Opens 4:30pm. Go early.",url:"https://maps.google.com/?cid=15741183335894796147"},
-    {name:"BaBa Phang",time:"8:00 PM",type:"food",lat:5.4263,lng:100.3166,note:"Reserve ahead. Best Nyonya dinner.",url:"https://maps.google.com/?cid=15996838652564424036",reserve:true}
-  ]},
-  {title:"Day 2 · Penang Hill",sub:"Hike up · Funicular down · Laksa · Nyonya",stops:[
-    {name:"Ali Nasi Lemak",time:"7:15 AM",type:"food",lat:5.4178,lng:100.3428,note:"Michelin. Opens 7am. RM3.",url:"https://maps.google.com/?cid=6348670730682531118"},
-    {name:"Penang Hill Heritage Trail",time:"9:00 AM",type:"activity",lat:5.4105,lng:100.2761,note:"Hike up. 2–2.5 hrs. Start early.",url:"https://maps.google.com/?cid=12969436852212952995"},
-    {name:"Funicular Penang Hill",time:"12:00 PM",type:"activity",lat:5.4085,lng:100.2772,note:"Funicular down. Buy express tickets.",url:"https://maps.google.com/?cid=9139778477464223867"},
-    {name:"Laksalicious",time:"2:00 PM",type:"food",lat:5.4201,lng:100.3301,note:"Michelin laksa. A/C inside.",url:"https://maps.google.com/?cid=834969466285114595"},
-    {name:"Le Petit Four Pâtisserie",time:"3:30 PM",type:"cafe",lat:5.4138,lng:100.3376,note:"French-Asian pastries. Great canel\u00e9.",url:"https://maps.google.com/?cid=7169884917205022526"},
-    {name:"RASA SAYANG Nyonya",time:"7:00 PM",type:"food",lat:5.4291,lng:100.3116,note:"Reserve ahead. 4.8 stars.",url:"https://maps.google.com/?cid=10225322812764014476",reserve:true}
-  ]},
-  {title:"Day 3 · Beach + Shopping",sub:"Batu Ferringhi · Laksa Mamu · Beach Street",stops:[
-    {name:"Batu Ferringhi Beach",time:"9:00 AM",type:"activity",lat:5.4734,lng:100.2461,note:"Beach. ~30 min Grab from town.",url:"https://maps.google.com/?cid=2956641074386871952"},
-    {name:"Laksa Mamu",time:"3:00 PM",type:"food",lat:5.4023,lng:100.3230,note:"Opens 3pm. Best assam laksa.",url:"https://maps.google.com/?cid=10445095134458840476"},
-    {name:"Sixth Sense",time:"4:30 PM",type:"shop",lat:5.4148,lng:100.3387,note:"Affordable linen clothing.",url:"https://maps.google.com/?cid=8747951626966440676"},
-    {name:"Warehouse 129",time:"5:15 PM",type:"shop",lat:5.4149,lng:100.3393,note:"Premium linen. Same block.",url:"https://maps.google.com/?cid=5985802180757766645"},
-    {name:"Nala Beach Street",time:"6:00 PM",type:"shop",lat:5.4150,lng:100.3388,note:"Bold graphic prints.",url:"https://maps.google.com/?cid=11042297117850927207"},
-    {name:"888 Hokkien Mee",time:"7:30 PM",type:"food",lat:5.4111,lng:100.3307,note:"Michelin Bib Gourmand. Rich prawn broth.",url:"https://maps.google.com/?cid=16953154920432182119"}
-  ]},
-  {title:"Day 4 · Departure",sub:"Flight 13:40 · Leave hotel by 11:15am",stops:[
-    {name:"Ali Nasi Lemak",time:"7:00 AM",type:"food",lat:5.4178,lng:100.3428,note:"Last Penang breakfast. RM3.",url:"https://maps.google.com/?cid=6348670730682531118"},
-    {name:"Le Petit Four Pâtisserie",time:"9:00 AM",type:"cafe",lat:5.4138,lng:100.3376,note:"Grab pastries for the flight.",url:"https://maps.google.com/?cid=7169884917205022526"},
-    {name:"Penang Airport (PEN)",time:"11:15 AM",type:"activity",lat:5.2971,lng:100.2767,note:"20–25 min Grab from George Town.",url:"https://maps.google.com/?q=Penang+International+Airport"}
-  ]}
+const PLACES = [
+  { id:"citadines-connect-bertam", name:"Citadines Connect Bertam Georgetown", lat:5.4156, lng:100.3292, type:"hotel", area:"Penang Rd & Chowrasta", note:"Check in, drop bags, freshen up. Central George Town — most Zone A/B spots are walkable from here. Complimentary nutmeg juice on arrival.", hours:"24-hour front desk · +60 4-202 0111", address:"428, Jalan Penang, George Town", url:"https://maps.google.com/?cid=10225322812764014476", images:["https://lh3.googleusercontent.com/places/ANXAkqF9OblYorluX7ZWSjuu-gn7613ta8cEOrrmiramiS8U9y7LE-CcCpGjbBh0mTUUs7gZZPp8Xu5aPzhNNy7S2NrqqPGGqxOWw8w=s800-w800-h600","https://lh3.googleusercontent.com/places/ANXAkqEWxlI0B4yteeyogCybt6V7zuECbQCMyS6BvXIuvbjHzj_7lNq-1GA0MXvjzKUmY01QMXNGY3ipn00U0zNJQO7zDKCqPVUS0LI=s800-w800-h600","https://lh3.googleusercontent.com/places/ANXAkqHHY_wwNqtZi2j5eWlhZ4rGTp5Gzziqfu96smXzY1H0kqGtk2EU3jGz8NUpM9-uwG5pzh_sJXmGDDdSN2N8XopO57nY5vXymLs=s800-w800-h600"], reserve:false, fixed:true },
+  { id:"chew-jetty", name:"Clan Jetties (Chew, Lim, Lee & Tan)", lat:5.412717, lng:100.339772, type:"activity", area:"Armenian & Beach St", note:"UNESCO stilt-house water village. Chew Jetty is the main boardwalk entry point, with Lim, Lee, and Tan jetties branching off nearby along Pengkalan Weld — walk all of them as one stop. Free to walk, food/souvenir stalls along the boardwalk.", hours:"Daily 9am–9pm (stalls ~10am–7pm) · +60 11-6246 2884", address:"Weld Quay, 10300 George Town", url:"https://maps.google.com/?cid=17347006713449220", images:[], reserve:false, fixed:false },
+  { id:"sixth-sense", name:"Sixth Sense", lat:5.4148, lng:100.3387, type:"shop", area:"Armenian & Beach St", note:"Affordable linen and cotton pieces. Good starting point for the Beach Street shopping cluster.", hours:"Mon–Sat 10am–5:30pm · Sun 12–4:45pm", address:"157, Lebuh Pantai, George Town", url:"https://maps.google.com/?cid=8747951626966440676", images:["https://lh3.googleusercontent.com/place-photos/AJRVUZNZ2bUCZhnUiqJsViTtW5MXlvuJ0PewzM2DlYwBTmJBNZPFvPgDOiOQo66Xe8Cm1ZksBfL-M2yemCSkkuCAc53OCDIkSSpYRXUpr-JIKpjuSWSlfuNcgwhlLDMerypR93fsAHsA7n2PahnY=s800-w800-h600"], reserve:false, fixed:false },
+  { id:"warehouse-129", name:"Warehouse 129", lat:5.4149, lng:100.3393, type:"shop", area:"Armenian & Beach St", note:"Premium linen pieces, around RM200. Beautiful fabrics — worth browsing even without buying. Same block as Sixth Sense.", hours:"Mon–Sat 11am–5:30pm · Sun 12–5pm", address:"129, Lebuh Pantai, George Town", url:"https://maps.google.com/?cid=5985802180757766645", images:["https://lh3.googleusercontent.com/place-photos/AJRVUZNoAbviUvQpsLxzyHZ1o0_ExCpBdhCTFNe_6hH3RX4-hr_j4Pm7u-56ab5PeHeKiSBqIdARvuHrhT7O7IR54LKJ4GJ6hkNgNeLdH8NqFAxt5cRDQQSZAEGWa_l64nmFtR-14YQSWJglB7l_jg=s800-w800-h600"], reserve:false, fixed:false },
+  { id:"nala-beach-street", name:"Nala Penang Beach Street", lat:5.4150, lng:100.3388, type:"shop", area:"Armenian & Beach St", note:"Bold graphic prints, statement pieces — a different aesthetic to Sixth Sense/Warehouse 129, a few doors down.", hours:"Daily 10am–6pm", address:"230, Beach Street, George Town", url:"https://maps.google.com/?cid=11042297117850927207", images:["https://lh3.googleusercontent.com/place-photos/AJRVUZNjUi95j4o_vCAd-VJSWjeaxdJAV5yZpvMZWPe0Vhu_68_GZxiVr1oc_fBmkfjrfgkyf4QLPGWn2-o4D1i1oxEwLUkmTmh5sut1WYjDtcHsQCcANADTTSjhSivsfB7qaKSIhb2VjLNhc74-fvU=s800-w800-h600"], reserve:false, fixed:false },
+  { id:"rasa-sayang-nyonya", name:"RASA SAYANG Nyonya Cuisine", lat:5.4291, lng:100.3116, type:"food", area:"Pulau Tikus", note:"4.8 stars, widely regarded as the best Nyonya food in Penang. Assam Pedas Stingray, Nyonya Kari Bak Kut, blue pea fragrant rice. Open Tuesdays — call ahead, time-limited seating. Closed Wednesdays. Reserve ahead; Grab to Zone C.", hours:"Mon–Tue, Thu–Sun 11am–3pm, 5:30–9:30pm · Closed Wed · +60 12-854 8799", address:"64, Jalan Moulmein, Pulau Tikus", url:"https://maps.google.com/?cid=6818770760881667612", images:["https://lh3.googleusercontent.com/place-photos/AJRVUZMizJwt3hT-Ckntyhg7mLfSWqSzPM4QYfjLeEw52Qi-GLkcLfmszCyZvFn42BGGlvwktPqVXQj9Dvb7rcnzOzR7d2GlyDkAw126HWRNxeGe3BldT20snuUoGcUk_i1UZqvW_ZVZp7Wc-ai2Hw=s800-w800-h600","https://lh3.googleusercontent.com/place-photos/AJRVUZO5FTrtpyb7S3nCu2LMKMYyCDpUzdKIKxP-yGpGcIOu8Dgb816H88c9Fal98kjEggjEUpWZqBAebHePQo-iL-_6xuNtYZo6rEHv2bFQ9NlYjvWWXUlIaFxwmd--Lxn-LSMnxi9f6MxTy9_S9lUkLBi3Vg=s800-w800-h600","https://lh3.googleusercontent.com/place-photos/AJRVUZPq_GK1rjK5KUzENOlD-JoSTPRrcRFeWPx-TxN4FOuyWyX3IMkYU_2BOtGOlFLUUx6yztVaZ5VlBX8H1agpAAbF2LcppKJJwPGWq35CNskNib4ZeJAKojoFqQ5gemOf41180oWRSBsDZumVGVyrBXfzjg=s800-w800-h600"], reserve:true, fixed:false },
+  { id:"auntie-star-coffee", name:"AUNTIE STAR COFFEE", lat:5.4115, lng:100.3307, type:"cafe", area:"Noordin & South GT", note:"Legendary roadside street-cart traditional kopi stall on Lebuh Noordin, run by an elderly \"auntie\" known for her latte art. Swapped in for My Own Cafe, which is closed Wednesdays.", hours:"Reported ~8am–6pm daily (unverified)", address:"Lebuh Noordin, George Town", url:"https://maps.google.com/?q=Auntie+Star+Coffee+Lebuh+Noordin+George+Town", images:[], reserve:false, fixed:false },
+  { id:"penang-road-famous-chendul", name:"Penang Road Famous Teochew Chendul", lat:5.41711, lng:100.33072, type:"food", area:"Campbell & Chulia", note:"Historic 1936 cendol/chendul and assam laksa stall on Keng Kwee St, right off Penang Road.", hours:"Mon–Fri 10:30am–7pm · Sat–Sun 10am–7:30pm · +60 4-262 6002", address:"27-29, Lebuh Keng Kwee, George Town", url:"https://maps.google.com/?q=Penang+Road+Famous+Teochew+Chendul", images:[], reserve:false, fixed:false },
+  { id:"laksalicious", name:"Laksalicious", lat:5.4201, lng:100.3301, type:"food", area:"Penang Rd & Chowrasta", note:"Michelin-listed. Air-conditioned — order the assam version, generous fish-to-noodle ratio. The asam laksa mojito is a fun novelty.", hours:"Tue–Sun 11:30am–7pm · Closed Mon", address:"117–117A, Jalan Hutton, George Town", url:"https://maps.google.com/?cid=834969466285114595", images:["https://lh3.googleusercontent.com/place-photos/AJRVUZMtVdCfCCSgoFXuWJVgyZyBKy--uPXWTw4VG3O5ryEw2JqKuYNzC_jJUvee9afWni8-y1Z7-tkNDi-oLQ_cf_w05aOX7Es7v0wulcOXMrHSj_eyIPMyGpdZPUzy6jPxRIHSU-AEt-YPR5A006q7fRxEPQ=s800-w800-h600"], reserve:false, fixed:false },
+  { id:"888-hokkien-mee", name:"888 Hokkien Mee", lat:5.4111, lng:100.3307, type:"food", area:"Noordin & South GT", note:"Michelin Bib Gourmand. Rich prawn broth — add roast pork. Lor mee and oyster omelette also good. Grab a table first, then order.", hours:"Mon–Wed, Fri–Sun 3–9:30pm · Closed Thu", address:"67A, Lebuh Presgrave, George Town", url:"https://maps.google.com/?cid=16953154920432182119", images:["https://lh3.googleusercontent.com/place-photos/AJRVUZMizJwt3hT-Ckntyhg7mLfSWqSzPM4QYfjLeEw52Qi-GLkcLfmszCyZvFn42BGGlvwktPqVXQj9Dvb7rcnzOzR7d2GlyDkAw126HWRNxeGe3BldT20snuUoGcUk_i1UZqvW_ZVZp7Wc-ai2Hw=s800-w800-h600"], reserve:false, fixed:false },
+  { id:"norm-micro-roastery", name:"Norm Micro Roastery", lat:5.416881, lng:100.342897, type:"cafe", area:"Jelutong Rd (East)", note:"Industrial-chic coffee roaster/cafe with brunch and waffles, spacious high-ceiling shophouse.", hours:"Daily ~9am–6pm · +60 16-527 6273", address:"13, Gat Lebuh Gereja, George Town", url:"https://maps.google.com/?cid=5545424050001683732", images:[], reserve:false, fixed:false },
+  { id:"ae-coffee", name:"ae coffee", lat:5.420583, lng:100.331281, type:"cafe", area:"Campbell & Chulia", note:"Minimalist specialty pour-over cafe with competition-level baristas, opened 2022.", hours:"Sun–Wed & Sat 10:30am–6:30pm · Closed Thu–Fri", address:"11, Lebuh Clarke, George Town", url:"https://maps.google.com/?cid=15883899005438938459", images:[], reserve:false, fixed:false },
+  { id:"forest-cloud-beverage-co", name:"Forest Cloud Beverage Co", lat:5.420127, lng:100.332428, type:"cafe", area:"Campbell & Chulia", note:"Ranked among Penang's best specialty coffee/matcha shops, industrial-chic flagship store.", hours:"Mon–Fri 8am–6pm · Sat–Sun 8am–8pm · +60 16-555 1335", address:"132, Jalan Penang, George Town", url:"https://maps.google.com/?cid=3237327636816143471", images:[], reserve:false, fixed:false },
+  { id:"loong-fong-cafe", name:"Loong Fong Cafe", lat:5.413391, lng:100.337268, type:"cafe", area:"Armenian & Beach St", note:"Retro Nanyang-style kopitiam with a vintage store upstairs; nasi lemak, mantou curry. Closes 4pm, so visit early in the afternoon window.", hours:"Fri–Wed 8am–4pm · Closed Thu · +60 12-606 2526", address:"249, Lebuh Pantai, George Town", url:"https://maps.google.com/?cid=8199987392712637588", images:[], reserve:false, fixed:false },
+  { id:"pause-mood", name:"Pause Mood", lat:5.4155, lng:100.336, type:"cafe", area:"Campbell & Chulia", note:"Minimalist coffee bar known for flat whites and cookies, quiet heritage-lane setting. Hours inconsistent across sources — verify before treating as fixed.", hours:"Hours unconfirmed — verify locally", address:"28, Lebuh Aceh, George Town", url:"https://maps.google.com/?q=Pause+Mood+Lebuh+Aceh+George+Town", images:[], reserve:false, fixed:false },
+  { id:"jing-si-books-cafe", name:"Jing Si Books & Cafe", lat:5.4170, lng:100.3422, type:"cafe", area:"Jelutong Rd (East)", note:"Calm cafe run by the Tzu Chi Foundation. Organic drinks, good tea — a quiet break between shops.", hours:"Daily 9am–6pm", address:"31, Beach Street, George Town", url:"https://maps.google.com/?cid=7738219335417321972", images:["https://lh3.googleusercontent.com/place-photos/AJRVUZM0KdDlbJ3tUKfGTRz0-XHcz-R2ek8V5l7tXXB5ppw8pVEYGvzzFu8clC75LDj0XbOkz1NybpO_rRLgwIzBtiTeSgngvczEm5SnBKDu5A6oEKeVVJ9Nm5-WAcmlrMWAc0DgSVEIfFM2ZupF_CpKQXccJA=s800-w800-h600"], reserve:false, fixed:false },
+  { id:"le-petit-four-patisserie", name:"Le Petit Four Pâtisserie", lat:5.4138, lng:100.3376, type:"cafe", area:"Armenian & Beach St", note:"French-Asian pastry shop. Almond croissant and canelé are outstanding.", hours:"Mon–Wed, Fri–Sun 9am–6pm · Closed Thu", address:"310, Lebuh Pantai, George Town", url:"https://maps.google.com/?cid=7169884917205022526", images:["https://lh3.googleusercontent.com/places/ANXAkqFRYLasX_elESHjOFWEn-nu4YlWPSXCg5ORdIMKSwy87W2C_xElG6lAUCsvJQqGfMBXe49QRDELDS8KgBrWB1s8fpSRzqxXKec=s800-w800-h600"], reserve:false, fixed:false },
+  { id:"journal-georgetown", name:"Journal Georgetown", lat:5.4198034, lng:100.336133, type:"shop", area:"Campbell & Chulia", note:"Slow-living stationery and lifestyle store on Muntri St.", hours:"Opens 9:30am · +60 18-788 8916", address:"29, Muntri Street, George Town", url:"https://maps.google.com/?cid=17607514250986790860", images:["https://lh3.googleusercontent.com/place-photos/AJRVUZOL8juLF1K4rrOefOaD_-TGuEanWzHgf-hgxOOIF8sUpH5stbo5ZnKZ-ipfxO5oZ-d4OObaqRan26h2HHXsuth7-8P1zyL3aBPXT27p2cbpyzWD3N70Qu0hpLPmYqsOIkftTnhjVxOIZ9q_2g=s800-w800-h600"], reserve:false, fixed:false },
+  { id:"heritage-house-25", name:"Heritage House 25", lat:5.4149429, lng:100.337642, type:"shop", area:"Armenian & Beach St", note:"4.7 stars. Artistic handicrafts on Armenian St.", hours:"Closes 7pm · +60 10-452 3839", address:"25, Lebuh Armenian, George Town", url:"https://maps.google.com/?cid=13210714849389775542", images:["https://dynamic-media-cdn.tripadvisor.com/media/photo-o/28/44/a4/6d/clothing-in-neutral-tones.jpg?w=1100&h=1100&s=1"], reserve:false, fixed:false },
+  { id:"sukha", name:"sukha.", lat:5.4150109, lng:100.3378825, type:"shop", area:"Armenian & Beach St", note:"Linen clothing and straw bags on Armenian St, next door to Heritage House 25.", hours:"Check hours on arrival", address:"26, Lebuh Armenian, George Town", url:"https://maps.google.com/?cid=8128499800471495600", images:["https://kedaipakaiannearme.my/wp-content/uploads/2025/10/external_image_1508_1759688022.jpg"], reserve:false, fixed:false },
+  { id:"p66", name:"P.66", lat:5.4177818, lng:100.3343943, type:"shop", area:"Campbell & Chulia", note:"4.2 stars. Pen and stationery store on Campbell St. Closes 6pm.", hours:"Closes 6pm · +60 4-262 7899", address:"66, Lebuh Campbell, George Town", url:"https://maps.google.com/?cid=956591380961229620", images:["https://dynamic-media-cdn.tripadvisor.com/media/photo-o/28/15/59/ad/wonderfull-interior.jpg?w=900&h=500&s=1"], reserve:false, fixed:false },
+  { id:"14-living-story", name:"14 Living Story", lat:5.4148, lng:100.3378, type:"shop", area:"Armenian & Beach St", note:"Handicraft/curio shop on Armenian St, known for patchwork curtains and handmade lanterns.", hours:"Daily 10am–6pm · +60 4-261 0352", address:"14, Lebuh Armenian, George Town", url:"https://maps.google.com/?q=14+Living+Story+Armenian+Street+George+Town", images:[], reserve:false, fixed:false },
+  { id:"loka-made", name:"Loka Made", lat:5.4147, lng:100.3388, type:"shop", area:"Armenian & Beach St", note:"Local-culture concept shop selling postcards, journals, tote bags. Address uncertain across sources.", hours:"Mon–Thu 9am–6pm · Fri–Sun 9am–9pm", address:"37A&B, Lebuh Pantai, George Town", url:"https://maps.google.com/?q=Loka+Made+George+Town+Penang", images:[], reserve:false, fixed:false },
+  { id:"kenyaku-store", name:"KENYAKU STORE", lat:5.4140, lng:100.3330, type:"shop", area:"Campbell & Chulia", note:"Vintage/thrift clothing shop on Beach St.", hours:"Hours not confirmed — verify locally", address:"342, Beach Street, George Town", url:"https://maps.google.com/?q=Kenyaku+Store+Beach+Street+George+Town", images:[], reserve:false, fixed:false },
+  { id:"oak-wears", name:"Oak Wears", lat:5.4153, lng:100.3363, type:"shop", area:"Campbell & Chulia", note:"Clothing boutique on Cannon St, previously \"Yimi Store.\"", hours:"Daily 10am–7pm", address:"17, Lebuh Cannon, George Town", url:"https://maps.google.com/?q=Oak+Wears+Lebuh+Cannon+George+Town", images:[], reserve:false, fixed:false },
+  { id:"il-bacaro", name:"Il Bacaro", lat:5.418172, lng:100.33365, type:"food", area:"Campbell & Chulia", note:"Venetian-style Italian restaurant inside heritage Campbell House.", hours:"Daily 8am–11pm · +60 4-261 8290", address:"Campbell House, 106, Lebuh Campbell, George Town", url:"https://maps.google.com/?cid=17601013631397987618", images:[], reserve:false, fixed:false },
+  { id:"funicular-penang-hill", name:"Funicular Service Penang Hill", lat:5.4085, lng:100.2772, type:"activity", area:"Penang Hill", note:"Pre-book express tickets at penanghill.gov.my to skip the queue.", hours:"Daily 6:30am–11pm", address:"422, Jalan Bukit Bendera", url:"https://maps.google.com/?cid=9139778477464223867", images:["https://lh3.googleusercontent.com/place-photos/AJRVUZO4oNXwIwIYWZXgmhPuZQ-q5N982H1hmeFUOpp6TTEYGLrNTNtro3lMkvF0dVH45U2T6jVAaQtGn53O6KpON0lBQTCXSc_0urCOMcgJR3vem8BnQx5JlSCa_yOF3sK4ckqZn83_wHVY9a2w=s800-w800-h600"], reserve:false, fixed:false },
+  { id:"penang-hill-heritage-trail", name:"Penang Hill Heritage Trail", lat:5.4105, lng:100.2761, type:"activity", area:"Penang Hill", note:"Colonial-era buildings and viewpoints along the way.", hours:"Open 24 hours", address:"478, Jalan Pokok Ceri, Ayer Itam", url:"https://maps.google.com/?cid=12969436852212952995", images:["https://lh3.googleusercontent.com/place-photos/AJRVUZO6fPVsOT_vF16RBjKBhk-P5e2REg4EmsNQA4ksgQRNk9H9dD7bEQE1ahOrrUf9hNfhVzr27_5m7kU5YcuGeBGQX2i7c75u37TBVtYAhtYtB5VhvkSQTspq1VGcYv87FSjAUiJNdb8PG-yP4A=s800-w800-h600"], reserve:false, fixed:false },
+  { id:"scenic-spot-viewing-area", name:"Scenic Spot Viewing Area", lat:5.42444, lng:100.26892, type:"activity", area:"Penang Hill", note:"180° elevated viewpoint over George Town.", hours:"", address:"Penang Hill summit, Ayer Itam", url:"https://maps.google.com/?q=Penang+Hill+Scenic+Viewpoint", images:[], reserve:false, fixed:false },
+  { id:"ali-nasi-lemak-daun-pisang", name:"Ali Nasi Lemak Daun Pisang", lat:5.4178, lng:100.3428, type:"food", area:"Jelutong Rd (East)", note:"Michelin Guide. Opens 7am, sells out by mid-morning. RM3 a plate.", hours:"Mon–Fri 7am–2pm · Sat 7am–1pm · Closed Sun", address:"Sri Weld Food Court, Beach Street", url:"https://maps.google.com/?cid=6348670730682531118", images:["https://lh3.googleusercontent.com/places/ANXAkqGmnuOnexIK7c6XjAC3U-PfnziyoywOOuIDkjK5ag3a3h9vh7QKQHDTV5RvlSawMDT0pDL3Q3PoZnUredMs3SZjJIuzfiGgfSE=s800-w800-h575"], reserve:false, fixed:false },
+  { id:"laksa-mamu", name:"Laksa Mamu Famous Sungai Pinang", lat:5.4023, lng:100.3230, type:"food", area:"Ayer Itam Rd", note:"Grab to Zone E (~15 min). Opens 3pm.", hours:"Mon–Sat 3–9pm · Closed Sun", address:"Taman Lita, Jelutong, Penang", url:"https://maps.google.com/?cid=10445095134458840476", images:["https://lh3.googleusercontent.com/place-photos/AJRVUZOj9_G-CFO4HCxp9ljs8b5EAJDy2kmqScEqMhetHgwMcD7dEUF0x_EsCzK9mUavAyzZr-ZjaANrKLzgJSafgHH-uvF3xW-9ic_XTyIIHCkov_rRwmsXP_dOrnTfdXS8-JSgSdU0R4EmZGiquz5etzFEZQ=s800-w800-h600"], reserve:false, fixed:false },
+  { id:"chong-charcoal-ckt", name:"CHONG Charcoal Seafood Char Koay Teow", lat:5.4149, lng:100.3265, type:"food", area:"Penang Rd & Chowrasta", note:"Closed Wednesdays. Opens 4:30pm sharp Thursdays.", hours:"Mon–Tue, Thu–Sun 4:30–10:30pm · Closed Wed", address:"35, Lorong Baru, George Town", url:"https://maps.google.com/?cid=15741183335894796147", images:["https://lh3.googleusercontent.com/places/ANXAkqFUMb0Cf7DfgoG0NRIFo8jmMUubyA45vIuieboU-zATylkGBxAkYT-JMvMWKcieqFhILxGRIZU6y9i4233_ED5nA8qmVw41dMY=s800-w720-h600"], reserve:false, fixed:false },
+  { id:"cheong-fatt-tze-mansion", name:"Cheong Fatt Tze Mansion (Blue Mansion)", lat:5.421451, lng:100.334893, type:"activity", area:"Campbell & Chulia", note:"1880s eclectic Chinese courtyard mansion, UNESCO-listed. Guided tours at 11am, 1:30pm, 3pm.", hours:"Daily 11am–6pm · +60 4-262 0006", address:"14, Lebuh Leith, George Town", url:"https://maps.google.com/?cid=967834975835066597", images:[], reserve:false, fixed:false },
+  { id:"artlane", name:"Artlane", lat:5.4151242, lng:100.3392036, type:"activity", area:"Armenian & Beach St", note:"4.7 stars. Multi-room art centre and creative shops.", hours:"Closes 7pm · +60 4-263 7299", address:"127, Beach Street, George Town", url:"https://maps.google.com/?cid=1689426142022259780", images:[], reserve:false, fixed:false },
+  { id:"soul-boutique", name:"Soul Boutique", lat:5.4166353, lng:100.3315206, type:"shop", area:"Penang Rd & Chowrasta", note:"5.0 stars (small review count). Fashion designer pieces.", hours:"Closes 7pm · +60 4-584 0269", address:"54, Jalan Kuala Kangsar, George Town", url:"https://maps.google.com/?cid=2774836751591456088", images:[], reserve:false, fixed:false },
+  { id:"604-gift-shop", name:"604 Gift Shop", lat:5.4177, lng:100.3345, type:"shop", area:"Campbell & Chulia", note:"Curated vintage/thrift clothing store, RM150–500.", hours:"Daily 12pm–9pm", address:"94, Lebuh Campbell, George Town", url:"https://maps.google.com/?q=604+Gift+Shop+Lebuh+Campbell+George+Town", images:[], reserve:false, fixed:false },
+  { id:"maha-house", name:"Maha House", lat:5.4177, lng:100.3344, type:"shop", area:"Campbell & Chulia", note:"Boutique selling linen apparel and accessories.", hours:"Check hours on arrival", address:"66, Lebuh Campbell, George Town", url:"https://maps.google.com/?q=Maha+House+Lebuh+Campbell+George+Town", images:[], reserve:false, fixed:false },
+  { id:"lim-kee-old-collection", name:"Lim Kee Old Collection Shop", lat:5.4147, lng:100.3315, type:"shop", area:"Penang Rd & Chowrasta", note:"Antique stall inside Chowrasta Market. Closed Mondays and Wednesdays.", hours:"9am–1pm · Closed Mon & Wed · +60 16-482 2777", address:"Lot 1-155, Pasar Chowrasta, Jalan Penang", url:"https://maps.google.com/?q=Lim+Kee+Old+Collection+Shop+Chowrasta+Market", images:[], reserve:false, fixed:false },
+  { id:"fujiyama-jeans", name:"Fujiyama Jeans & Tokyo No.18", lat:5.4207782, lng:100.3254787, type:"shop", area:"Penang Rd & Chowrasta", note:"4.4 stars. Vintage clothing on Jalan Burma in Pulau Tikus.", hours:"Closes 7:30pm", address:"124-C, Jalan Burma, George Town", url:"https://maps.google.com/?cid=18347337122909725920", images:["https://thesmartlocal.my/wp-content/uploads/2023/04/Thrift-shops-in-Penang-1.jpg"], reserve:false, fixed:false },
+  { id:"sum-concept-store", name:"Sum Concept Store", lat:5.4149, lng:100.3380, type:"shop", area:"Armenian & Beach St", note:"Unverified listing — check Google Maps on arrival.", hours:"Unverified — confirm on arrival", address:"Armenian St area, George Town (unconfirmed)", url:"https://maps.google.com/?q=Sum+Concept+Store+George+Town+Penang", images:[], reserve:false, fixed:false },
+  { id:"deens-maju-nasi-kandar", name:"Deens Maju Nasi Kandar", lat:5.4097, lng:100.3281, type:"food", area:"Ayer Itam Rd", note:"Popular Indian-Muslim nasi kandar. Friday hours conflict across sources — call if timing is tight.", hours:"Mon–Thu 12pm–10:30pm · +60 12-425 2421", address:"170, Jalan Gurdwara, George Town", url:"https://maps.google.com/?q=Deens+Maju+Nasi+Kandar+Jalan+Gurdwara", images:[], reserve:false, fixed:false },
+  { id:"narrow-marrow", name:"Narrow Marrow", lat:5.413797, lng:100.3376, type:"cafe", area:"Armenian & Beach St", note:"Dessert/cocktail cafe, tiramisu and cheesecakes. Closed Tue & Wed.", hours:"Thu–Mon 3–11pm · Closed Tue & Wed · +60 16-553 6647", address:"312, Lebuh Pantai, George Town", url:"https://maps.google.com/?cid=2547755577269838632", images:[], reserve:false, fixed:false },
+  { id:"penang-airport", name:"Penang Airport (PEN)", lat:5.2971, lng:100.2767, type:"activity", area:"Airport", note:"~20–25 min Grab from George Town.", hours:"", address:"", url:"https://maps.google.com/?q=Penang+International+Airport", images:[], reserve:false, fixed:true },  { id:"my-own-cafe", name:"My Own Cafe", lat:5.4155, lng:100.3355, type:"cafe", area:"Campbell & Chulia", note:"Zone B cafe, closed Wednesdays.", hours:"", address:"", url:"https://maps.google.com/?q=My+Own+Cafe+George+Town+Penang", images:[], reserve:false, fixed:false },
+  { id:"ome-spacebar-coffee", name:"Ome by Spacebar Coffee", lat:5.4165, lng:100.3340, type:"cafe", area:"Campbell & Chulia", note:"Zone B specialty coffee spot.", hours:"", address:"", url:"https://maps.google.com/?q=Ome+by+Spacebar+Coffee+George+Town+Penang", images:[], reserve:false, fixed:false },
+  { id:"dao-shang-shao", name:"島上燒 Dao Shang Shao", lat:5.4152, lng:100.3372, type:"food", area:"Armenian & Beach St", note:"Zone B eatery.", hours:"", address:"", url:"https://maps.google.com/?q=Dao+Shang+Shao+George+Town+Penang", images:[], reserve:false, fixed:false },
+  { id:"baba-phang", name:"BaBa Phang", lat:5.4280, lng:100.3100, type:"food", area:"Pulau Tikus", note:"Backup Nyonya dinner spot if RASA SAYANG is unavailable — call +60 14-741 9839. No online booking found.", hours:"", address:"", url:"https://maps.google.com/?q=BaBa+Phang+Pulau+Tikus+Penang", images:[], reserve:false, fixed:false }
 ];
 
+/* ---- SHORTLIST (heart) STATE ---- */
+var shortlist=new Set();
+var expandedIds=new Set();
+
+function loadShortlist(){
+  try{
+    const raw=localStorage.getItem('2026-penang-shortlist');
+    if(raw) shortlist=new Set(JSON.parse(raw));
+  }catch(e){}
+}
+function saveShortlist(){
+  try{localStorage.setItem('2026-penang-shortlist',JSON.stringify(Array.from(shortlist)));}catch(e){}
+}
+function toggleShortlist(id){
+  if(shortlist.has(id)) shortlist.delete(id); else shortlist.add(id);
+  saveShortlist();
+  render();
+}
+
+function recenterMap(){
+  if(!map) return;
+  const day=DAY_SCHEDULE.find(d=>d.key===activeDayKey);
+  const c=dayCenter(day);
+  map.setView([c.lat,c.lng],16);
+  userPanned=false;
+  document.getElementById('recenter-btn').style.display='none';
+}
+
+/* ---- DISTANCE / BUCKETING WITH HYSTERESIS ---- */
+function haversineMeters(lat1,lng1,lat2,lng2){
+  const R=6371000;
+  const toRad=d=>d*Math.PI/180;
+  const dLat=toRad(lat2-lat1);
+  const dLng=toRad(lng2-lng1);
+  const a=Math.sin(dLat/2)**2+Math.cos(toRad(lat1))*Math.cos(toRad(lat2))*Math.sin(dLng/2)**2;
+  const c=2*Math.atan2(Math.sqrt(a),Math.sqrt(1-a));
+  return R*c;
+}
+
+const BAND_BOUNDARIES=[160,400,1200]; // walkMeters boundaries between bands 0/1, 1/2, 2/3
+const BAND_HYSTERESIS=40;
+const BAND_LABELS=['Under 2 min','2–5 min','5–15 min','Further'];
+
+function computeBand(prevBand,walkMeters){
+  if(prevBand===undefined||prevBand===null){
+    if(walkMeters<BAND_BOUNDARIES[0]) return 0;
+    if(walkMeters<BAND_BOUNDARIES[1]) return 1;
+    if(walkMeters<BAND_BOUNDARIES[2]) return 2;
+    return 3;
+  }
+  let band=prevBand;
+  let moved=true;
+  while(moved){
+    moved=false;
+    if(band<3){
+      const boundary=BAND_BOUNDARIES[band];
+      if(walkMeters>boundary+BAND_HYSTERESIS){ band++; moved=true; continue; }
+    }
+    if(band>0){
+      const boundary=BAND_BOUNDARIES[band-1];
+      if(walkMeters<boundary-BAND_HYSTERESIS){ band--; moved=true; }
+    }
+  }
+  return band;
+}
+
+/* ---- HOURS PARSING (structured) ----
+   Day-index convention used everywhere in this file: 0=Sun,1=Mon,2=Tue,
+   3=Wed,4=Thu,5=Fri,6=Sat (matches DAY_NAMES below and the dayIdx values
+   2/3/4/5 = Tue/Wed/Thu/Fri used by DAY_SCHEDULE).
+
+   parsePlaceHours(hoursStr) returns:
+     { open: {0:[[startMin,endMin],...], ..., 6:[...]},  // minutes since midnight, per day
+       closed: [dayIdx,...],                              // days explicitly marked closed
+       confident: bool }                                  // false = don't trust/guess, show "Hours unverified"
+
+   Only strings with real day+time structure (day ranges/lists, "Daily",
+   "Open 24 hours", explicit "Closed X", or a bare time range paired with
+   an explicit Closed list) are marked confident. Fragments ("Closes 7pm",
+   "Opens 9:30am"), blank strings, and "unverified/unconfirmed/confirm/verify"
+   text are left confident:false with no fabricated hours — the UI shows
+   "Hours unverified" + the raw string for those instead of guessing. */
+const DAY_NAMES=['Sun','Mon','Tue','Wed','Thu','Fri','Sat'];
+function dayIdx(abbr){ return DAY_NAMES.indexOf(abbr); }
+
+function expandDayRange(a,b){
+  const days=[];
+  let i=a;
+  while(true){
+    days.push(i);
+    if(i===b) break;
+    i=(i+1)%7;
+  }
+  return days;
+}
+
+function parseDayListSegment(seg){
+  const parts=seg.split(/,|&/).map(s=>s.trim()).filter(Boolean);
+  const days=new Set();
+  parts.forEach(p=>{
+    const m=p.match(/(Mon|Tue|Wed|Thu|Fri|Sat|Sun)\s*[–-]\s*(Mon|Tue|Wed|Thu|Fri|Sat|Sun)/);
+    if(m){
+      expandDayRange(dayIdx(m[1]),dayIdx(m[2])).forEach(d=>days.add(d));
+    } else {
+      const m2=p.match(/(Mon|Tue|Wed|Thu|Fri|Sat|Sun)/);
+      if(m2) days.add(dayIdx(m2[1]));
+    }
+  });
+  return days;
+}
+
+function to24Min(h,m,ap){
+  let hh=h%12;
+  if(ap==='pm') hh+=12;
+  return hh*60+m;
+}
+
+// Parses one or more comma-separated time ranges (e.g. "11am–3pm, 5:30–9:30pm").
+// Returns array of [startMin,endMin], or null if any part doesn't look like a time range.
+function parseTimeRanges(str){
+  const parts=str.split(',').map(s=>s.trim()).filter(Boolean);
+  if(!parts.length) return null;
+  const out=[];
+  for(const part of parts){
+    const m=part.match(/^~?(\d{1,2})(?::(\d{2}))?\s*(am|pm)?\s*[–-]\s*(\d{1,2})(?::(\d{2}))?\s*(am|pm)?/i);
+    if(!m) return null;
+    let sh=+m[1], sm=m[2]?+m[2]:0, sap=m[3]?m[3].toLowerCase():null;
+    let eh=+m[4], em=m[5]?+m[5]:0, eap=m[6]?m[6].toLowerCase():null;
+    if(!sap && eap) sap=eap;      // e.g. "3–9:30pm" — infer start meridiem from end
+    if(!eap && sap) eap=sap;
+    if(!sap) sap='am';
+    if(!eap) eap='pm';
+    const startMin=to24Min(sh,sm,sap);
+    let endMin=to24Min(eh,em,eap);
+    if(endMin<=startMin) endMin+=24*60; // defensive: wrap past midnight
+    out.push([startMin,Math.min(endMin,1440)]);
+  }
+  return out;
+}
+
+function parsePlaceHours(hoursStr){
+  const result={open:{0:[],1:[],2:[],3:[],4:[],5:[],6:[]},closed:[],confident:false};
+  if(!hoursStr) return result; // blank — no data, don't guess
+  const lower=hoursStr.toLowerCase();
+  if(lower.includes('unverified')||lower.includes('unconfirmed')||lower.includes('confirm')||lower.includes('verify')) return result;
+
+  const rawSegments=hoursStr.split('·').map(s=>s.trim()).filter(Boolean);
+  const segments=rawSegments.filter(s=>!/^\+?\d[\d\s-]{5,}$/.test(s)); // drop phone-number segments
+
+  let sawDayInfo=false, sawBareTime=false, sawFragment=false;
+  const dayTimeMap={};
+  const bareRanges=[];
+  const closedDaysExplicit=new Set();
+
+  segments.forEach(seg=>{
+    if(/^open 24 hours?$/i.test(seg) || /^24-hour/i.test(seg)){
+      for(let d=0;d<7;d++) dayTimeMap[d]=(dayTimeMap[d]||[]).concat([[0,1440]]);
+      sawDayInfo=true;
+      return;
+    }
+    if(/^closed\b/i.test(seg)){
+      parseDayListSegment(seg.replace(/^closed/i,'')).forEach(d=>closedDaysExplicit.add(d));
+      sawDayInfo=true;
+      return;
+    }
+    let m=seg.match(/^daily\s+(.+)$/i);
+    if(m){
+      const ranges=parseTimeRanges(m[1]);
+      if(ranges && ranges.length){
+        for(let d=0;d<7;d++) dayTimeMap[d]=(dayTimeMap[d]||[]).concat(ranges);
+        sawDayInfo=true;
+        return;
+      }
+    }
+    m=seg.match(/^((?:Mon|Tue|Wed|Thu|Fri|Sat|Sun)(?:[\s,&–-]+(?:Mon|Tue|Wed|Thu|Fri|Sat|Sun))*)\s+(\d.*)$/i);
+    if(m){
+      const days=parseDayListSegment(m[1]);
+      const ranges=parseTimeRanges(m[2]);
+      if(days.size && ranges && ranges.length){
+        days.forEach(d=>{ dayTimeMap[d]=(dayTimeMap[d]||[]).concat(ranges); });
+        sawDayInfo=true;
+        return;
+      }
+    }
+    // bare time range, no leading day list (e.g. "9am–1pm" paired with a separate "Closed Mon & Wed")
+    if(/^~?\d{1,2}(?::\d{2})?\s*(?:am|pm)?\s*[–-]\s*\d{1,2}(?::\d{2})?\s*(?:am|pm)/i.test(seg)){
+      const ranges=parseTimeRanges(seg);
+      if(ranges && ranges.length){
+        ranges.forEach(r=>bareRanges.push(r));
+        sawBareTime=true;
+        return;
+      }
+    }
+    sawFragment=true; // e.g. "Closes 7pm", "Opens 9:30am", "Check hours on arrival"
+  });
+
+  if(sawFragment) return result;       // don't guess when any segment is an unparseable fragment
+  if(!sawDayInfo && !sawBareTime) return result;
+
+  for(let d=0;d<7;d++){
+    if(closedDaysExplicit.has(d)) continue;
+    if(!dayTimeMap[d] && bareRanges.length) dayTimeMap[d]=bareRanges.slice();
+  }
+  for(let d=0;d<7;d++) result.open[d]=dayTimeMap[d]||[];
+  result.closed=Array.from(closedDaysExplicit);
+  result.confident=true;
+  return result;
+}
+
+/* Parsed hours for every place, computed once. */
+const PLACE_HOURS={};
+PLACES.forEach(p=>{ PLACE_HOURS[p.id]=parsePlaceHours(p.hours); });
+
+function formatTime(min){
+  let h=Math.floor(min/60), m=min%60;
+  const ap=h>=12?'pm':'am';
+  let hh=h%12; if(hh===0) hh=12;
+  return hh+(m?':'+String(m).padStart(2,'0'):'')+ap;
+}
+
+// Finds the next moment (from dayIdx/nowMin) the place has an open range, searching forward up to a week.
+function findNextOpen(parsed,dayIdx0,nowMin){
+  for(let i=0;i<8;i++){
+    const d=(dayIdx0+i)%7;
+    if(parsed.closed.includes(d)) continue;
+    const ranges=(parsed.open[d]||[]).slice().sort((a,b)=>a[0]-b[0]);
+    for(const r of ranges){
+      if(i===0 && r[0]<=nowMin) continue;
+      return (i===0?'':DAY_NAMES[d]+' ')+formatTime(r[0]);
+    }
+  }
+  return 'unknown';
+}
+
+// Live status for a place on a given day-chip's weekday (uses the real current clock time-of-day).
+function computeStatus(p,dIdx){
+  const parsed=PLACE_HOURS[p.id];
+  if(dIdx===null){
+    if(!parsed.confident) return {text:'Hours unverified',cls:'unverified'};
+    const raw=(p.hours||'');
+    return {text:raw.length>50?raw.slice(0,50)+'…':(raw||'Hours available'),cls:''};
+  }
+  if(!parsed.confident) return {text:'Hours unverified',cls:'unverified'};
+  const now=new Date();
+  const nowMin=now.getHours()*60+now.getMinutes();
+  if(!parsed.closed.includes(dIdx)){
+    const ranges=parsed.open[dIdx]||[];
+    for(const r of ranges){
+      if(nowMin>=r[0] && nowMin<r[1]){
+        const remain=r[1]-nowMin;
+        if(remain<=60) return {text:`Closes in ${remain} min`,cls:'open'};
+        return {text:'Open now',cls:'open'};
+      }
+    }
+  }
+  return {text:`Closed — opens ${findNextOpen(parsed,dIdx,nowMin)}`,cls:'closed'};
+}
+
+/* ---- FILTER STATE ---- */
+var activeType='all';
+const TYPE_CHIPS=[{key:'all',label:'All'},{key:'food',label:'Food'},{key:'cafe',label:'Cafe'},{key:'shop',label:'Shop'},{key:'activity',label:'Activity'}];
+
+/* ---- DAY SCHEDULE (itinerary order + walkable "nearby" pool per day) ----
+   Day-index convention: 0=Sun,1=Mon,2=Tue,3=Wed,4=Thu,5=Fri,6=Sat (matches
+   DAY_NAMES / hours-parsing above). Reconstructed from
+   personal/travel-planner/trips/2026-penang/itinerary.md plus day-assignment
+   notes recorded on individual PLACES entries. */
+var activeDayKey=null;
+
+const DAY_SCHEDULE=[
+  { key:'day1', label:'Tue 10 Nov', dayIdx:2,
+    sections:[
+      {label:'Arrival — check-in',ids:['citadines-connect-bertam']},
+      {label:'Afternoon — Zone B walk',ids:['chew-jetty','sixth-sense','warehouse-129','nala-beach-street']},
+      {label:'Dinner — Zone C',ids:['rasa-sayang-nyonya']}
+    ],
+    nearbyAreas:['Armenian & Beach St','Pulau Tikus']
+  },
+  { key:'day2', label:'Wed 11 Nov', dayIdx:3,
+    sections:[
+      {label:'Breakfast — Zone A',ids:['auntie-star-coffee']},
+      {label:'Lunch — hawker crawl, Zone A',ids:['penang-road-famous-chendul','laksalicious','888-hokkien-mee']},
+      {label:'Afternoon — Zone B shopping & coffee',ids:['norm-micro-roastery','ae-coffee','forest-cloud-beverage-co','loong-fong-cafe','pause-mood','jing-si-books-cafe','le-petit-four-patisserie']},
+      {label:'Dinner — Zone B (Zone C closed Wed)',ids:['il-bacaro']}
+    ],
+    nearbyAreas:['Campbell & Chulia','Noordin & South GT','Penang Rd & Chowrasta','Jelutong Rd (East)','Armenian & Beach St']
+  },
+  { key:'day3', label:'Thu 12 Nov', dayIdx:4,
+    sections:[
+      {label:'Morning — Penang Hill',ids:['funicular-penang-hill','penang-hill-heritage-trail','scenic-spot-viewing-area']},
+      {label:'Lunch',ids:['ali-nasi-lemak-daun-pisang','laksa-mamu','chong-charcoal-ckt']},
+      {label:'Afternoon — finish Zone B',ids:['narrow-marrow']},
+      {label:'Dinner — Zone A',ids:['deens-maju-nasi-kandar']}
+    ],
+    nearbyAreas:['Armenian & Beach St','Campbell & Chulia','Penang Rd & Chowrasta']
+  },
+  { key:'day4', label:'Fri 13 Nov', dayIdx:5,
+    sections:[
+      {label:'Breakfast near hotel',ids:['auntie-star-coffee']},
+      {label:'Departure',ids:['citadines-connect-bertam','penang-airport']}
+    ],
+    nearbyAreas:[]
+  }
+];
+
+// Every id scheduled on any day — a day's "nearby" pool never includes a place
+// that's the scheduled highlight of another day (keeps "optional extras" from
+// overlapping with the core plan).
+const ALL_SCHEDULED_IDS=new Set(DAY_SCHEDULE.flatMap(d=>d.sections.flatMap(s=>s.ids)));
+
+function getDayPool(day){
+  const scheduledIds=day.sections.flatMap(s=>s.ids);
+  const scheduledSet=new Set(scheduledIds);
+  const nearby=PLACES.filter(p=>!ALL_SCHEDULED_IDS.has(p.id) && day.nearbyAreas.includes(p.area));
+  return {scheduledIds,scheduledSet,nearby};
+}
+
+/* ---- ANCHOR-BLOCK ELIGIBILITY ----
+   A scheduled place gets its own bottom-of-page anchor block when it's the
+   day's food/activity highlight. Base rule: type food or activity. Two
+   judgment-call overrides on top of that:
+   - ANCHOR_INCLUDE_EXTRA: cafe stops that are genuinely the day's sit-down
+     meal (a single dedicated breakfast/dessert stop), not one option among
+     many in a browsing block — auntie-star-coffee (breakfast, Day 2 & 4) and
+     narrow-marrow (the sole "finish Zone B" stop, Day 3). The 7-cafe
+     Day 2 "shopping & coffee" block is left out on purpose — those are
+     browsing options, not a single scheduled highlight.
+   - ANCHOR_EXCLUDE: places that are type food/activity but pure logistics —
+     penang-airport (Day 4 departure) shouldn't get a "what's nearby the
+     airport" block. */
+const ANCHOR_INCLUDE_EXTRA=new Set(['auntie-star-coffee','narrow-marrow']);
+const ANCHOR_EXCLUDE=new Set(['penang-airport']);
+function isAnchorPlace(p){
+  if(!p||ANCHOR_EXCLUDE.has(p.id)) return false;
+  if(p.type==='food'||p.type==='activity') return true;
+  return ANCHOR_INCLUDE_EXTRA.has(p.id);
+}
+
+function dayCenter(day){
+  if(!day) return {lat:5.4156,lng:100.3292};
+  const pts=day.sections.flatMap(s=>s.ids).map(id=>PLACES.find(p=>p.id===id)).filter(Boolean);
+  if(!pts.length) return {lat:5.4156,lng:100.3292};
+  const lat=pts.reduce((a,p)=>a+p.lat,0)/pts.length;
+  const lng=pts.reduce((a,p)=>a+p.lng,0)/pts.length;
+  return {lat,lng};
+}
+
+/* ---- ROUTES (suggested walking-order chains, no times attached) ---- */
+const ROUTES=[
+  {key:'beach-st-linen',label:'Beach St linen walk',places:['loka-made','warehouse-129','sixth-sense','nala-beach-street']},
+  {key:'armenian-crafts',label:'Armenian St crafts loop',places:['14-living-story','heritage-house-25','sukha','artlane']},
+  {key:'hawker-south',label:'Hawker crawl south',places:['laksalicious','penang-road-famous-chendul','chong-charcoal-ckt','888-hokkien-mee']}
+];
+var activeRoute=null; // null or a ROUTES[].key
+var routeLine=null;
+
+function renderChips(){
+  const tc=document.getElementById('type-chips');
+  tc.innerHTML=TYPE_CHIPS.map(c=>`<button class="chip${activeType===c.key?' active':''}" data-type="${c.key}">${c.label}</button>`).join('');
+  tc.querySelectorAll('.chip').forEach(b=>b.addEventListener('click',()=>{
+    activeType=b.getAttribute('data-type');
+    renderChips();
+    render();
+  }));
+
+  const rc=document.getElementById('route-chips');
+  const routeChipDefs=[{key:'',label:'Clear route'}].concat(ROUTES.map(r=>({key:r.key,label:r.label})));
+  rc.innerHTML=routeChipDefs.map(c=>`<button class="chip${(activeRoute||'')===c.key?' active':''}" data-route="${c.key}">${c.label}</button>`).join('');
+  rc.querySelectorAll('.chip').forEach(b=>b.addEventListener('click',()=>{
+    const v=b.getAttribute('data-route');
+    activeRoute=v===''?null:v;
+    renderChips();
+    render();
+  }));
+}
+
+/* ---- RENDERING ---- */
 const COLORS={food:"#C4622D",activity:"#2A6B5E",shop:"#9A6B10",cafe:"#6040A0",hotel:"#5A5550"};
+
+// Category grouping for anchor-block "nearby" sublists — order matches
+// TYPE_CHIPS (food, cafe, shop, activity), with hotel appended since it has
+// no chip but could theoretically appear in a nearby list. Labels match the
+// map legend's wording ("Shopping" for the shop type).
+const CATEGORY_ORDER=['food','cafe','shop','activity','hotel'];
+const CATEGORY_LABELS={food:'Food',cafe:'Cafe',shop:'Shopping',activity:'Activity',hotel:'Hotel'};
+// Collapsed by default; holds keys `${anchorId}::${type}` for open categories.
+var openCategories=new Set();
+
+function escapeHtml(s){
+  return String(s||'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+}
 
 function mkIcon(type){
   const c=COLORS[type]||"#888";
@@ -459,55 +1159,453 @@ function mkIcon(type){
   return L.divIcon({html:svg,className:'',iconSize:[26,32],iconAnchor:[13,32],popupAnchor:[0,-34]});
 }
 
-map=L.map('map',{zoomControl:true,scrollWheelZoom:false});
-L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png',{attribution:'© <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a>',maxZoom:19}).addTo(map);
+/* ---- MAP-OPTIONAL RESILIENCE ----
+   If Leaflet/OSM tiles fail (no network, tile host blocked, etc.), collapse the
+   map area instead of leaving a broken gray box. Everything else — anchor bar,
+   filter chips, list, badges, shortlist hearts, route selection — runs on pure
+   lat/lng math and keeps working with map===null (every map touchpoint below
+   is already guarded with `if(map)`). */
+var mapFailed=false;
+function handleMapFailure(){
+  if(mapFailed) return;
+  mapFailed=true;
+  const wrap=document.getElementById('map-wrap');
+  const mapEl=document.getElementById('map');
+  const recenterBtn=document.getElementById('recenter-btn');
+  if(mapEl) mapEl.style.display='none';
+  if(recenterBtn) recenterBtn.style.display='none';
+  if(wrap) wrap.classList.add('map-collapsed');
+  map=null; // downstream code already checks `if(map)` before touching it
+  render();
+}
 
-function renderPanel(idx){
-  const d=DAYS[idx];
-  document.getElementById('pt').textContent=d.title;
-  document.getElementById('ps').textContent=d.sub;
-  const c=document.getElementById('panel-stops');
-  c.innerHTML='';
-  d.stops.forEach((s,i)=>{
-    const div=document.createElement('div');
-    div.className='si'+(i===0?' active':'');
-    div.innerHTML=`<div class="sil"><div class="sit">${s.time}</div><div class="sid" style="background:${COLORS[s.type]||'#888'}"></div></div><div class="sib"><div class="sin">${s.name}</div><div class="sitags"><span class="stag stag-${s.type}">${s.type.charAt(0).toUpperCase()+s.type.slice(1)}</span>${s.reserve?'<span class="stag stag-reserve">Reserve</span>':''}</div><div class="sinote">${s.note}</div><a class="simaps" href="${s.url}" target="_blank">Open in Maps</a></div>`;
-    div.addEventListener('click',()=>{
-      c.querySelectorAll('.si').forEach(el=>el.classList.remove('active'));
-      div.classList.add('active');
-      if(markers[i]){markers[i].openPopup();map.panTo([s.lat,s.lng],{animate:true});}
+function initMap(){
+  if(mapInitialized) return;
+  mapInitialized=true;
+  try{
+    map=L.map('map',{zoomControl:true,scrollWheelZoom:false});
+    const tileLayer=L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png',{attribution:'© <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a>',maxZoom:19});
+    let tilesLoaded=false;
+    let tileErrorCount=0;
+    tileLayer.on('load',()=>{ tilesLoaded=true; });
+    tileLayer.on('tileerror',()=>{
+      tileErrorCount++;
+      if(tileErrorCount>=8 && !tilesLoaded) handleMapFailure();
     });
-    c.appendChild(div);
+    tileLayer.addTo(map);
+    const hotel=PLACES.find(p=>p.id==='citadines-connect-bertam');
+    map.setView([hotel.lat,hotel.lng],15);
+    map.on('dragstart',()=>{
+      userPanned=true;
+      document.getElementById('recenter-btn').style.display='block';
+    });
+    setTimeout(()=>{ if(!tilesLoaded) handleMapFailure(); },6000);
+  }catch(e){
+    handleMapFailure();
+  }
+}
+
+function statusHtml(p,dIdx){
+  const noteExcerpt=p.note.length>60?p.note.slice(0,60)+'…':p.note;
+  const st=computeStatus(p,dIdx);
+  return `${escapeHtml(noteExcerpt)} · <span class="${st.cls}">${escapeHtml(st.text)}</span>`;
+}
+
+// Anchor cards render the full note separately (see renderAnchorBlocks) —
+// this shows just the status badge, so the note text isn't duplicated.
+function statusBadgeHtml(p,dIdx){
+  const st=computeStatus(p,dIdx);
+  return `<span class="${st.cls}">${escapeHtml(st.text)}</span>`;
+}
+
+function renderDetail(p){
+  const photos=p.images&&p.images.length
+    ? `<div class="si-detail-photos">${p.images.slice(0,3).map(u=>`<img src="${u}" loading="lazy" alt="">`).join('')}</div>`
+    : '';
+  return `<div class="si-detail">
+    ${photos}
+    <div class="si-detail-note">${escapeHtml(p.note)}</div>
+    ${p.hours?`<div class="si-detail-hours">${escapeHtml(p.hours)}</div>`:''}
+    ${p.address?`<div class="si-detail-addr">${escapeHtml(p.address)}</div>`:''}
+    <a class="mb" href="${p.url}" target="_blank" onclick="event.stopPropagation()">Open in Maps</a>
+  </div>`;
+}
+
+function renderRow(it,dIdx){
+  const p=it.p;
+  const isShort=shortlist.has(p.id);
+  const thumbStyle=p.images&&p.images.length?`background-image:url('${p.images[0]}')`:`background-color:${COLORS[p.type]||'#888'}`;
+  const hasDist=it.walkMeters!==undefined;
+  const distHtml=hasDist?`<div class="si-dist">${Math.max(1,Math.round(it.walkMinutes))} min · ${Math.round(it.walkMeters)}m</div>`:'';
+  const expanded=expandedIds.has(p.id)?' expanded':'';
+  const nearbyClass=it.nearby?' si-nearby':'';
+  return `<div class="si${expanded}${nearbyClass}" data-id="${p.id}">
+    <div class="si-main-row">
+      <div class="si-thumb" style="${thumbStyle}"></div>
+      <div class="si-body">
+        <div class="si-name">${escapeHtml(p.name)}${it.nearby?'<span class="si-nearby-tag">nearby</span>':''}</div>
+        <div class="si-sub">${statusHtml(p,dIdx)}</div>
+      </div>
+      <div class="si-right">
+        ${distHtml}
+        <button class="si-heart${isShort?' active':''}" data-id="${p.id}">${isShort?'♥':'♡'}</button>
+      </div>
+    </div>
+    ${renderDetail(p)}
+  </div>`;
+}
+
+// Clicking a row both toggles its expanded detail AND pans the map to its
+// marker (bug fix — this previously only toggled expand and never touched
+// the map). panToPlace() runs after render() so it looks up the freshly
+// rebuilt marker for this id.
+function attachRowHandlers(container){
+  container.querySelectorAll('.si').forEach(el=>{
+    const id=el.getAttribute('data-id');
+    el.addEventListener('click',(e)=>{
+      if(e.target.closest('.si-heart')) return;
+      if(expandedIds.has(id)) expandedIds.delete(id); else expandedIds.add(id);
+      render();
+      panToPlace(id);
+    });
+  });
+  container.querySelectorAll('.si-heart').forEach(btn=>{
+    btn.addEventListener('click',(e)=>{
+      e.stopPropagation();
+      toggleShortlist(btn.getAttribute('data-id'));
+    });
   });
 }
 
-function renderMap(idx){
+// Pans/centers the map on a place and opens its marker's popup, if that
+// marker is currently rendered (it may not be, if the type-filter chip
+// currently hides it — panning still happens, the popup just won't open).
+function panToPlace(id){
+  if(!map) return;
+  const p=PLACES.find(x=>x.id===id);
+  if(!p) return;
+  // Open the popup BEFORE panning: opening a popup runs its own autoPan,
+  // which — if it runs after panTo's animated pan — snaps the map back and
+  // silently cancels the pan. Opening first means panTo runs last and wins.
+  const mk=markers.find(m=>m._pid===id);
+  if(mk) mk.openPopup();
+  map.panTo([p.lat,p.lng]);
+}
+
+// Map panel list: that day's place pool (scheduled + nearby), filtered only
+// by the type chips — no distance-band sorting, no time-of-day grouping.
+// Flat, alphabetical; nearby (unscheduled) places are dimmed via it.nearby,
+// same as before.
+function renderPoolList(items,dIdx){
+  const container=document.getElementById('panel-stops');
+  let html='';
+  items.forEach(it=>{ html+=renderRow(it,dIdx); });
+  container.innerHTML=html||'<div style="padding:20px 13px;font-size:12px;color:var(--muted)">No places match these filters.</div>';
+  attachRowHandlers(container);
+}
+
+// Route mode: shows the route's places in its own fixed order (not distance-bucketed).
+function renderRouteListUI(items,dIdx){
+  const container=document.getElementById('panel-stops');
+  let html=`<div class="sl">Route order</div>`;
+  items.forEach(it=>{ html+=renderRow(it,dIdx); });
+  container.innerHTML=html||'<div style="padding:20px 13px;font-size:12px;color:var(--muted)">No stops in this route.</div>';
+  attachRowHandlers(container);
+}
+
+// Draws the selected route's chain as an extra map layer (distinct from the anchor ring).
+function drawRouteLine(routePlaces){
+  if(!map) return;
+  if(routeLine){ map.removeLayer(routeLine); routeLine=null; }
+  if(!routePlaces.length) return;
+  routeLine=L.polyline(routePlaces.map(p=>[p.lat,p.lng]),{color:'#C4622D',weight:3,opacity:0.85}).addTo(map);
+}
+
+function scrollToRow(id){
+  const el=document.querySelector(`.si[data-id="${id}"]`);
+  if(el) el.scrollIntoView({behavior:'smooth',block:'nearest'});
+}
+
+function renderMarkers(visible){
+  if(!map) return;
   markers.forEach(m=>map.removeLayer(m));
   markers=[];
-  const d=DAYS[idx];
-  const bounds=[];
-  d.stops.forEach((s,i)=>{
-    const m=L.marker([s.lat,s.lng],{icon:mkIcon(s.type)}).addTo(map).bindPopup(`<strong>${s.name}</strong><span>${s.time}</span>`);
-    m.on('click',()=>{
-      const items=document.getElementById('panel-stops').querySelectorAll('.si');
-      items.forEach(el=>el.classList.remove('active'));
-      if(items[i]){items[i].classList.add('active');items[i].scrollIntoView({behavior:'smooth',block:'nearest'});}
-    });
+  visible.forEach(it=>{
+    const p=it.p;
+    const m=L.marker([p.lat,p.lng],{icon:mkIcon(p.type),opacity:it.nearby?0.45:1}).addTo(map).bindPopup(`<strong>${p.name}</strong><span>${p.area||''}</span>`);
+    m._pid=p.id;
+    // bindPopup already opens the popup on marker click by default — the fix
+    // here is panning the map to the marker, which never happened before.
+    m.on('click',()=>{ map.panTo([p.lat,p.lng]); scrollToRow(p.id); });
     markers.push(m);
-    bounds.push([s.lat,s.lng]);
   });
-  if(bounds.length) map.fitBounds(bounds,{padding:[40,40],maxZoom:15,animate:false});
 }
 
-function switchDay(idx){
-  document.querySelectorAll('.tab').forEach((t,i)=>t.classList.toggle('active',i===idx));
-  document.querySelectorAll('.day-section').forEach((s,i)=>s.classList.toggle('active',i===idx));
-  renderPanel(idx);
-  renderMap(idx);
+// Below the map panel: one permanent "anchor block" per qualifying scheduled
+// food/activity place for the active day, in itinerary order — each showing
+// the place as a heading card, then every OTHER pool place (scheduled +
+// nearby) sorted by walking distance from that specific anchor, computed
+// fresh each render with the same hysteresis-bucketed engine used elsewhere
+// (no persisted previous-band state needed: these are static per-anchor
+// lists, not live-GPS-following, so there's nothing for hysteresis to smooth
+// over — computeBand(undefined,...) just applies the plain thresholds).
+function renderAnchorBlocks(day,dIdx){
+  const container=document.getElementById('anchor-blocks');
+  const pool=getDayPool(day);
+  const poolIds=new Set([...pool.scheduledIds,...pool.nearby.map(p=>p.id)]);
+  const poolPlaces=PLACES.filter(p=>poolIds.has(p.id));
+
+  const anchorIds=[];
+  day.sections.forEach(sec=>{
+    sec.ids.forEach(id=>{
+      const p=PLACES.find(x=>x.id===id);
+      if(p && isAnchorPlace(p) && !anchorIds.includes(id)) anchorIds.push(id);
+    });
+  });
+
+  if(!anchorIds.length){ container.innerHTML=''; return; }
+
+  let html='';
+  anchorIds.forEach(id=>{
+    const anchor=PLACES.find(x=>x.id===id);
+    const others=poolPlaces.filter(p=>p.id!==id).map(p=>{
+      const meters=haversineMeters(anchor.lat,anchor.lng,p.lat,p.lng);
+      const walkMeters=meters*1.3;
+      const walkMinutes=walkMeters/80;
+      return {p,walkMeters,walkMinutes,nearby:!pool.scheduledSet.has(p.id)};
+    });
+    // Group by type instead of distance band; within each group, nearest
+    // first (reuses the same walkMeters computed above — the distance math
+    // itself is unchanged, only how it's used for grouping vs. sorting).
+    const byType={};
+    others.forEach(it=>{
+      const t=it.p.type;
+      (byType[t]=byType[t]||[]).push(it);
+    });
+    Object.keys(byType).forEach(t=>byType[t].sort((a,b)=>a.walkMeters-b.walkMeters));
+    const typeOrder=CATEGORY_ORDER.concat(Object.keys(byType).filter(t=>!CATEGORY_ORDER.includes(t)));
+
+    const photos=anchor.images&&anchor.images.length
+      ? `<div class="si-detail-photos">${anchor.images.slice(0,3).map(u=>`<img src="${u}" loading="lazy" alt="">`).join('')}</div>`
+      : '';
+    html+=`<div class="anchor-block">
+      <div class="anchor-card" data-id="${anchor.id}">
+        <div class="anchor-card-name">${escapeHtml(anchor.name)}</div>
+        <div class="anchor-card-sub">${statusBadgeHtml(anchor,dIdx)}</div>
+        ${photos}
+        <div class="si-detail-note">${escapeHtml(anchor.note)}</div>
+        ${anchor.hours?`<div class="si-detail-hours">${escapeHtml(anchor.hours)}</div>`:''}
+        ${anchor.address?`<div class="si-detail-addr">${escapeHtml(anchor.address)}</div>`:''}
+        <a class="mb" href="${anchor.url}" target="_blank" onclick="event.stopPropagation()">Open in Maps</a>
+      </div>
+      <div class="anchor-nearby-list">`;
+    typeOrder.forEach(t=>{
+      const g=byType[t];
+      if(!g||!g.length) return;
+      const catKey=`${anchor.id}::${t}`;
+      const isOpen=openCategories.has(catKey);
+      const label=CATEGORY_LABELS[t]||(t.charAt(0).toUpperCase()+t.slice(1));
+      html+=`<div class="cat-header${isOpen?' open':''}" data-cat="${catKey}">
+        <span class="cat-header-label">${escapeHtml(label)} (${g.length})</span>
+        <svg class="cat-chevron" viewBox="0 0 10 10" fill="none"><path d="M2 3l3 3 3-3" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+      </div>
+      <div class="cat-list${isOpen?'':' collapsed'}">`;
+      g.forEach(it=>{ html+=renderRow(it,dIdx); });
+      html+='</div>';
+    });
+    html+='</div></div>';
+  });
+
+  container.innerHTML=html;
+  attachRowHandlers(container);
+  container.querySelectorAll('.anchor-card').forEach(el=>{
+    el.addEventListener('click',()=>panToPlace(el.getAttribute('data-id')));
+  });
+  container.querySelectorAll('.cat-header').forEach(el=>{
+    el.addEventListener('click',()=>{
+      const key=el.getAttribute('data-cat');
+      if(openCategories.has(key)) openCategories.delete(key); else openCategories.add(key);
+      render();
+    });
+  });
 }
 
-renderPanel(0);
-renderMap(0);
+// Renders the active day tab: route mode (global, ignores day scoping) takes
+// priority; otherwise the type-filtered pool list. The bottom anchor blocks
+// render unconditionally after either, since they're independent of both the
+// route selector and the type-filter chips.
+function render(){
+  const day=DAY_SCHEDULE.find(d=>d.key===activeDayKey);
+  if(!day) return;
+  const dIdx=day.dayIdx;
+
+  if(activeRoute){
+    const centerLL=dayCenter(day);
+    const route=ROUTES.find(r=>r.key===activeRoute);
+    const routeItems=(route?route.places:[]).map(id=>{
+      const p=PLACES.find(x=>x.id===id);
+      if(!p) return null;
+      const meters=haversineMeters(centerLL.lat,centerLL.lng,p.lat,p.lng);
+      return {p,walkMeters:meters*1.3,walkMinutes:(meters*1.3)/80,nearby:false};
+    }).filter(Boolean);
+    renderRouteListUI(routeItems,dIdx);
+    if(map){
+      renderMarkers(routeItems);
+      drawRouteLine(routeItems.map(it=>it.p));
+    }
+  } else {
+    if(routeLine){ if(map) map.removeLayer(routeLine); routeLine=null; }
+    // Map panel list is day-independent: browse the FULL place list by type,
+    // not just this day's scheduled+nearby pool (that pool is what the
+    // anchor blocks below use — this list is a separate "browse everything"
+    // view). nearby is always false here since there's no day-schedule
+    // concept in play; dIdx is still passed through so open/closed status
+    // reflects the currently active day's date.
+    const filterOk=p=>activeType==='all'||p.type===activeType;
+    const items=PLACES.filter(filterOk)
+      .map(p=>({p,nearby:false}))
+      .sort((a,b)=>a.p.name.localeCompare(b.p.name));
+    renderPoolList(items,dIdx);
+    if(map) renderMarkers(items);
+  }
+
+  renderAnchorBlocks(day,dIdx);
+}
+
+var panelInitialized=false;
+
+function switchDayTab(key){
+  activeDayKey=key;
+  activeType='all';
+  renderChips();
+  initMap();
+  const day=DAY_SCHEDULE.find(d=>d.key===key);
+  if(map){
+    const c=dayCenter(day);
+    map.setView([c.lat,c.lng],15);
+    userPanned=false;
+    document.getElementById('recenter-btn').style.display='none';
+  }
+  render();
+  setTimeout(()=>{ if(map) map.invalidateSize(); },50);
+}
+
+function switchTab(type,dayKey){
+  const allTabs=document.querySelectorAll('.tab');
+  allTabs.forEach(t=>t.classList.remove('active'));
+  document.querySelectorAll('.day-section').forEach(s=>s.classList.remove('active'));
+  if(type==='checklist'){
+    document.getElementById('tab-checklist').classList.add('active');
+    document.getElementById('checklist-section').classList.add('active');
+  } else if(type==='transport'){
+    document.getElementById('tab-transport').classList.add('active');
+    document.getElementById('transport-section').classList.add('active');
+  } else if(type==='day'){
+    document.getElementById('tab-'+dayKey).classList.add('active');
+    document.getElementById('days-section').classList.add('active');
+    if(!panelInitialized){
+      panelInitialized=true;
+      loadShortlist();
+      renderChips();
+    }
+    switchDayTab(dayKey);
+  }
+}
+
+/* CHECKLIST LOGIC */
+function updateProgress(){
+  const all=document.querySelectorAll('.ci');
+  const done=document.querySelectorAll('.ci.done');
+  const total=all.length;
+  const doneCount=done.length;
+  document.getElementById('done-count').textContent=doneCount;
+  document.getElementById('total-count').textContent=total;
+  const pct=total>0?Math.round((doneCount/total)*100):0;
+  document.getElementById('progress-bar').style.width=pct+'%';
+}
+
+function toggleItem(id){
+  const el=document.getElementById(id);
+  el.classList.toggle('done');
+  saveState();
+  updateProgress();
+}
+
+function showNoteInput(id){
+  document.getElementById(id+'-input').classList.add('visible');
+  document.getElementById(id+'-actions').classList.add('visible');
+  document.getElementById(id+'-addbtn').style.display='none';
+  document.getElementById(id+'-input').focus();
+}
+
+function saveNote(id){
+  const val=document.getElementById(id+'-input').value.trim();
+  const saved=document.getElementById(id+'-saved');
+  if(val){
+    saved.textContent=val;
+    saved.classList.add('has-content');
+  } else {
+    saved.textContent='';
+    saved.classList.remove('has-content');
+  }
+  document.getElementById(id+'-input').classList.remove('visible');
+  document.getElementById(id+'-actions').classList.remove('visible');
+  document.getElementById(id+'-addbtn').style.display='flex';
+  document.getElementById(id+'-addbtn').textContent='';
+  const icon=`<svg width="12" height="12" viewBox="0 0 12 12" fill="none"><path d="M6 1v10M1 6h10" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></svg>`;
+  document.getElementById(id+'-addbtn').innerHTML=icon+(val?'Edit note':'Add note');
+  saveState();
+}
+
+function cancelNote(id){
+  const saved=document.getElementById(id+'-saved');
+  document.getElementById(id+'-input').value=saved.textContent||'';
+  document.getElementById(id+'-input').classList.remove('visible');
+  document.getElementById(id+'-actions').classList.remove('visible');
+  document.getElementById(id+'-addbtn').style.display='flex';
+}
+
+function saveState(){
+  const state={};
+  document.querySelectorAll('.ci').forEach(el=>{
+    const id=el.id;
+    state[id]={
+      done:el.classList.contains('done'),
+      note:document.getElementById(id+'-saved')?document.getElementById(id+'-saved').textContent:''
+    };
+  });
+  try{localStorage.setItem('2026-penang-checklist',JSON.stringify(state));}catch(e){}
+}
+
+function loadState(){
+  try{
+    const raw=localStorage.getItem('2026-penang-checklist');
+    if(!raw) return;
+    const state=JSON.parse(raw);
+    Object.keys(state).forEach(id=>{
+      const el=document.getElementById(id);
+      if(!el) return;
+      if(state[id].done) el.classList.add('done');
+      if(state[id].note){
+        const saved=document.getElementById(id+'-saved');
+        if(saved){
+          saved.textContent=state[id].note;
+          saved.classList.add('has-content');
+          const inp=document.getElementById(id+'-input');
+          if(inp) inp.value=state[id].note;
+          const btn=document.getElementById(id+'-addbtn');
+          if(btn){
+            const icon=`<svg width="12" height="12" viewBox="0 0 12 12" fill="none"><path d="M6 1v10M1 6h10" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></svg>`;
+            btn.innerHTML=icon+'Edit note';
+          }
+        }
+      }
+    });
+  }catch(e){}
+}
+
+loadState();
+updateProgress();
 </script>
 </body>
 </html>
