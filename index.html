@@ -349,7 +349,7 @@ body{font-family:'DM Sans',sans-serif;background:var(--cream);color:var(--ink);m
             </div>
             <div class="ci-body">
               <div class="ci-name">Thaizen — Aroma Head Spa (Standard, 90 min)</div>
-              <div class="ci-meta">WhatsApp +60 13-694 9949 · Day 1 (Tue) 4:30pm · RM188</div>
+              <div class="ci-meta">WhatsApp +60 13-694 9949 · Day 1 (Tue) 5:30pm · RM188</div>
             </div>
             <span class="ci-urgency urgency-med">Book soon</span>
           </div>
@@ -713,7 +713,7 @@ body{font-family:'DM Sans',sans-serif;background:var(--cream);color:var(--ink);m
           <div class="tj-row">
             <div class="tj-cell" style="flex:2">
               <div class="tj-cell-label">Notes</div>
-              <div class="tj-cell-value muted">Leave hotel by ~10am — no time for a morning activity. Online check-in opens 48hrs before departure.</div>
+              <div class="tj-cell-value muted">Leave hotel by 9am — ~50 min car ride to the airport. Online check-in opens 48hrs before departure.</div>
             </div>
           </div>
           <div class="cat-header seatmap-toggle" data-target="seatmap-return">
@@ -810,6 +810,7 @@ const PLACES = [
   { id:"church-st-boysbaker", name:"Church St BoysBaker", lat:5.4169854, lng:100.3427002, type:"cafe", area:"Armenian & Beach St", note:"Bakery on Church St, next to Norm Micro Roastery.", hours:"Daily 7am–3pm", address:"9, Gat Lebuh Gereja, George Town", url:"https://maps.google.com/?q=Church+St+BoysBaker+George+Town", images:[], reserve:false, fixed:false },
   { id:"a-puff-shop", name:"a puff shop", lat:5.4204433, lng:100.3318835, type:"cafe", area:"Campbell & Chulia", note:"Pastries to take home.", hours:"Thu–Sun 12pm–5pm · Closed Mon–Wed", address:"", url:"https://maps.app.goo.gl/fK5nGU7ZSBGV73kbA", images:[], reserve:false, fixed:false },
   { id:"swatow-coffee", name:"Swatow Coffee", lat:5.4169981, lng:100.3316609, type:"cafe", area:"Campbell & Chulia", note:"Breakfast near Kimberley St. Known for asam laksa.", hours:"Daily 8:30am–4:30pm", address:"", url:"https://maps.app.goo.gl/2dwuN1pSU6crfKxr8", images:[], reserve:false, fixed:false },
+  { id:"familymart-chulia", name:"FamilyMart Chulia Street", lat:5.4187197, lng:100.3356537, type:"shop", area:"Campbell & Chulia", note:"Convenience store — cup noodles and snacks.", hours:"Daily 8am–2am", address:"Ground Floor, Kim Mansion, 332, Lebuh Chulia, George Town", url:"https://maps.app.goo.gl/djiuScBxE7RHHw526", images:[], reserve:false, fixed:false },
   { id:"ali-nasi-lemak-daun-pisang", name:"Ali Nasi Lemak Daun Pisang", lat:5.4178, lng:100.3428, type:"food", area:"Jelutong Rd (East)", note:"Michelin Guide. Opens 7am, sells out by mid-morning. RM3 a plate.", hours:"Mon–Fri 7am–2pm · Sat 7am–1pm · Closed Sun", address:"Sri Weld Food Court, Beach Street", url:"https://maps.google.com/?cid=6348670730682531118", images:["https://lh3.googleusercontent.com/places/ANXAkqGmnuOnexIK7c6XjAC3U-PfnziyoywOOuIDkjK5ag3a3h9vh7QKQHDTV5RvlSawMDT0pDL3Q3PoZnUredMs3SZjJIuzfiGgfSE=s800-w800-h575"], reserve:false, fixed:false },
   { id:"laksa-mamu", name:"Laksa Mamu Famous Sungai Pinang", lat:5.4023, lng:100.3230, type:"food", area:"Ayer Itam Rd", note:"Grab to Zone E (~15 min). Opens 3pm.", hours:"Mon–Sat 3–9pm · Closed Sun", address:"Taman Lita, Jelutong, Penang", url:"https://maps.google.com/?cid=10445095134458840476", images:["https://lh3.googleusercontent.com/place-photos/AJRVUZOj9_G-CFO4HCxp9ljs8b5EAJDy2kmqScEqMhetHgwMcD7dEUF0x_EsCzK9mUavAyzZr-ZjaANrKLzgJSafgHH-uvF3xW-9ic_XTyIIHCkov_rRwmsXP_dOrnTfdXS8-JSgSdU0R4EmZGiquz5etzFEZQ=s800-w800-h600"], reserve:false, fixed:false },
   { id:"chong-charcoal-ckt", name:"CHONG Charcoal Seafood Char Koay Teow", lat:5.4149466, lng:100.3265084, type:"food", area:"Penang Rd & Chowrasta", note:"Closed Wednesdays. Opens 4:30pm sharp Thursdays.", hours:"Mon–Tue, Thu–Sun 4:30–10:30pm · Closed Wed", address:"35, Lorong Baru, George Town", url:"https://maps.app.goo.gl/i6yDtzEM2cJtbDXz9", images:["https://lh3.googleusercontent.com/places/ANXAkqFUMb0Cf7DfgoG0NRIFo8jmMUubyA45vIuieboU-zATylkGBxAkYT-JMvMWKcieqFhILxGRIZU6y9i4233_ED5nA8qmVw41dMY=s800-w720-h600"], reserve:false, fixed:false },
@@ -823,7 +824,7 @@ const PLACES = [
   { id:"sum-concept-store", name:"Sum Concept Store", lat:5.4138765, lng:100.3408439, type:"shop", area:"Armenian & Beach St", note:"Concept store on Pengkalan Weld, by the waterfront.", hours:"Mon, Wed–Sun 11am–6pm · Closed Tue", address:"35-36, Pengkalan Weld, George Town", url:"https://maps.google.com/?q=Sum+Concept+Store+George+Town+Penang", images:[], reserve:false, fixed:false },
   { id:"deens-maju-nasi-kandar", name:"Deens Maju Nasi Kandar", lat:5.4097318, lng:100.3281249, type:"food", area:"Ayer Itam Rd", note:"Popular Indian-Muslim nasi kandar.", hours:"Mon–Thu, Sat–Sun 12pm–10pm · Closed Fri", address:"170, Jalan Gurdwara, George Town", url:"https://maps.app.goo.gl/XSKzyRY5QZFJfR4R7", images:[], reserve:false, fixed:false },
   { id:"narrow-marrow", name:"Narrow Marrow", lat:5.4137967, lng:100.3376003, type:"cafe", area:"Armenian & Beach St", note:"Dessert/cocktail cafe, tiramisu and cheesecakes. Closed Tue & Wed.", hours:"Mon, Thu–Sun 3pm–11pm · Closed Tue–Wed", address:"312, Lebuh Pantai, George Town", url:"https://maps.google.com/?cid=2547755577269838632", images:[], reserve:false, fixed:false },
-  { id:"penang-airport", name:"Penang Airport (PEN)", lat:5.2971, lng:100.2767, type:"activity", area:"Airport", note:"~20–25 min Grab from George Town.", hours:"", address:"", url:"https://maps.google.com/?q=Penang+International+Airport", images:[], reserve:false, fixed:true },  { id:"my-own-cafe", name:"My Own Cafe", lat:5.415176, lng:100.336781, type:"cafe", area:"Campbell & Chulia", note:"Zone B cafe, closed Wednesdays.", hours:"Mon–Tue, Thu–Sun 10am–4pm · Closed Wed", address:"2, Cannon St, George Town", url:"https://maps.google.com/?q=My+Own+Cafe+George+Town+Penang", images:[], reserve:false, fixed:false },
+  { id:"penang-airport", name:"Penang Airport (PEN)", lat:5.2971, lng:100.2767, type:"activity", area:"Airport", note:"~50 min by car from George Town.", hours:"", address:"", url:"https://maps.google.com/?q=Penang+International+Airport", images:[], reserve:false, fixed:true },  { id:"my-own-cafe", name:"My Own Cafe", lat:5.415176, lng:100.336781, type:"cafe", area:"Campbell & Chulia", note:"Zone B cafe, closed Wednesdays.", hours:"Mon–Tue, Thu–Sun 10am–4pm · Closed Wed", address:"2, Cannon St, George Town", url:"https://maps.google.com/?q=My+Own+Cafe+George+Town+Penang", images:[], reserve:false, fixed:false },
   { id:"ome-spacebar-coffee", name:"Ome by Spacebar Coffee", lat:5.4165, lng:100.3340, type:"cafe", area:"Campbell & Chulia", note:"Zone B specialty coffee spot.", hours:"", address:"", url:"https://maps.google.com/?q=Ome+by+Spacebar+Coffee+George+Town+Penang", images:[], reserve:false, fixed:false },
   { id:"dao-shang-shao", name:"島上燒 Dao Shang Shao", lat:5.4152, lng:100.3372, type:"food", area:"Armenian & Beach St", note:"Zone B eatery.", hours:"", address:"", url:"https://maps.google.com/?q=Dao+Shang+Shao+George+Town+Penang", images:[], reserve:false, fixed:false },
   { id:"baba-phang", name:"BaBa Phang", lat:5.4280, lng:100.3100, type:"food", area:"Pulau Tikus", note:"Backup Nyonya dinner spot if RASA SAYANG is unavailable — call +60 14-741 9839. No online booking found.", hours:"", address:"", url:"https://maps.google.com/?q=BaBa+Phang+Pulau+Tikus+Penang", images:[], reserve:false, fixed:false }
@@ -1076,9 +1077,9 @@ const MAP_SKIP=new Set(['penang-airport']); // too far out — would zoom the ma
 
 const DAY_SCHEDULE=[
   { key:'day1', label:'Tue 10 Nov', dayIdx:2, stops:[
-    {tag:'coffee', kind:'Coffee', label:'Forest Cloud', note:'After check-in (~3:30pm). Take it to go if the flight lands late.', ids:['forest-cloud-beverage-co']},
-    {tag:'anchor', kind:'Spa', time:'4:30–6pm', label:'Aroma Head Spa', note:'Standard 90 min, RM188. Book on WhatsApp.', ids:['thaizen']},
-    {tag:'anchor', kind:'Dinner', label:'Hawker crawl', ids:['chong-charcoal-ckt','888-hokkien-mee','chulia-night-hawkers']}
+    {tag:'coffee', kind:'Coffee + snacks', time:'4:30pm', label:'Forest Cloud', note:'After check-in (~4pm, ~50 min from the airport).', ids:['forest-cloud-beverage-co']},
+    {tag:'anchor', kind:'Spa', time:'5:30–7pm', label:'Aroma Head Spa', note:'Standard 90 min, RM188. Book on WhatsApp.', ids:['thaizen']},
+    {tag:'anchor', kind:'Dinner', time:'7pm', label:'Hawker crawl', note:'Closing times: 888 Hokkien Mee 9:30pm · CHONG 10:30pm · Chulia St stalls 12am. Go in that order.', ids:['chong-charcoal-ckt','888-hokkien-mee','chulia-night-hawkers'], extras:['familymart-chulia']}
   ]},
   { key:'day2', label:'Wed 11 Nov', dayIdx:3, stops:[
     {tag:'meal', kind:'Breakfast', label:'AUNTIE STAR COFFEE', note:'Breakfast and the morning coffee.', ids:['auntie-star-coffee']},
@@ -1086,7 +1087,7 @@ const DAY_SCHEDULE=[
     {tag:'anchor', kind:'Shopping', label:'RiumForest', ids:['riumforest'], shops:['fujiyama-jeans']},
     {tag:'anchor', kind:'Lunch & city walk', label:'Cara Caro Cafe', note:'Lunch, then walk Campbell St and Kimberley St.', ids:['cara-caro-cafe'],
       shops:['fujiyama-street-market','fujiyama-tokyo-18','604-gift-shop','p66','soul-boutique','island-problems','mellow','great-worn-vintage'],
-      extras:['journal-georgetown']},
+      extras:['journal-georgetown','familymart-chulia']},
     {tag:'anchor', kind:'Shopping', label:'Gurney Plaza & Gurney Paragon', note:'Grab out (~15 min).', ids:['kens-apothecary','bookxcess-gurney']},
     {tag:'coffee', kind:'Coffee', label:'Chapel Street Cafe', note:'On the way back. Closes 5pm.', ids:['chapel-street-cafe']},
     {tag:'break', kind:'Hotel', label:'Hotel stop', note:'Freshen up before dinner.', ids:['citadines-connect-bertam']},
@@ -1107,8 +1108,8 @@ const DAY_SCHEDULE=[
     {tag:'anchor', kind:'Dinner', label:'Deens Maju Nasi Kandar', ids:['deens-maju-nasi-kandar']}
   ]},
   { key:'day4', label:'Fri 13 Nov', dayIdx:5, stops:[
-    {tag:'meal', kind:'Breakfast', label:'Swatow Coffee', ids:['swatow-coffee']},
-    {tag:'go', kind:'Departure', time:'~10am', label:'Check out, head to the airport', ids:['citadines-connect-bertam','penang-airport']}
+    {tag:'meal', kind:'Breakfast', time:'8:30am', label:'Swatow Coffee', note:'Check out first — ~30 min here before leaving at 9am, or take it to go.', ids:['swatow-coffee']},
+    {tag:'go', kind:'Departure', time:'9am', label:'Check out, head to the airport', note:'~50 min car ride.', ids:['citadines-connect-bertam','penang-airport']}
   ]}
 ];
 
