@@ -39,21 +39,10 @@ body{font-family:'DM Sans',sans-serif;background:var(--cream);color:var(--ink);m
 .tab.checklist-tab.active{background:var(--terracotta);border-color:var(--terracotta)}
 
 /* MAP + PANEL */
-.map-wrap{display:flex;border-radius:14px;overflow:hidden;border:1px solid var(--border);height:460px;position:relative}
+.map-wrap{display:flex;border-radius:14px;overflow:hidden;border:1px solid var(--border);height:380px;position:relative}
 #map{flex:1;min-width:0}
-.panel{width:290px;flex-shrink:0;background:var(--card);display:flex;flex-direction:column;border-left:1px solid var(--border);overflow:hidden}
-.ph{padding:11px 13px;border-bottom:1px solid var(--border);flex-shrink:0;display:flex;flex-direction:column;gap:7px}
-.ph-title{font-family:'DM Serif Display',serif;font-size:16px;color:var(--ink);margin-bottom:2px}
-.ph-sub{font-size:11px;color:var(--muted)}
-.ps{flex:1;overflow-y:auto;scrollbar-width:thin}
-.ps::-webkit-scrollbar{width:3px}
-.ps::-webkit-scrollbar-thumb{background:var(--sand);border-radius:4px}
 
 /* FILTER CHIPS */
-.chip-row{display:flex;gap:5px;flex-wrap:wrap}
-.chip{font-size:10.5px;font-weight:500;padding:4px 10px;border-radius:100px;border:1px solid var(--border);background:var(--cream);color:var(--muted);cursor:pointer;white-space:nowrap;font-family:'DM Sans',sans-serif;transition:all .15s}
-.chip:hover{border-color:var(--terracotta);color:var(--terracotta)}
-.chip.active{background:var(--ink);border-color:var(--ink);color:var(--cream)}
 
 /* RECENTER BUTTON */
 .recenter-btn{position:absolute;bottom:10px;right:10px;z-index:400;background:var(--card);border:1px solid var(--border);border-radius:100px;padding:6px 13px;font-size:11.5px;font-weight:500;color:var(--ink);cursor:pointer;box-shadow:0 2px 8px rgba(0,0,0,.18);font-family:'DM Sans',sans-serif}
@@ -94,13 +83,25 @@ body{font-family:'DM Sans',sans-serif;background:var(--cream);color:var(--ink);m
 .sl::after{content:'';flex:1;height:1px;background:var(--border)}
 
 /* ANCHOR BLOCKS (bottom of each day tab — one per scheduled food/activity stop) */
-.anchor-blocks{display:flex;flex-direction:column;gap:16px}
-.anchor-block{background:var(--card);border:1px solid var(--border);border-radius:14px;overflow:hidden}
-.anchor-card{padding:14px 15px;border-bottom:1px solid var(--border);cursor:pointer}
+/* DAY PLAN — one card per stop, in order */
+.day-plan{display:flex;flex-direction:column;gap:12px}
+.stop{background:var(--card);border:1px solid var(--border);border-radius:14px;overflow:hidden}
+.stop-optional{border-style:dashed}
+.stop-head{display:flex;align-items:center;gap:8px;flex-wrap:wrap;padding:12px 15px 11px}
+.stop-num{width:22px;height:22px;border-radius:50%;background:var(--sand);color:var(--ink);font-size:11px;font-weight:600;display:flex;align-items:center;justify-content:center;flex-shrink:0}
+.stop-tag{font-size:9.5px;font-weight:600;letter-spacing:.08em;text-transform:uppercase;padding:3px 8px;border-radius:100px;background:var(--cream);color:var(--muted)}
+.stop-anchor .stop-tag{background:var(--ink);color:var(--cream)}
+.stop-coffee .stop-tag{background:var(--cafe);color:#fff}
+.stop-time{font-size:12px;font-weight:600;color:var(--terracotta)}
+.stop-label{flex-basis:100%;font-family:'DM Serif Display',serif;font-size:19px;color:var(--ink);line-height:1.25}
+.stop-note{flex-basis:100%;font-size:12px;color:var(--muted);line-height:1.45}
+.stop .anchor-card{border-top:1px solid var(--border);border-bottom:none}
+.stop .sl{padding:11px 15px 3px;border-top:1px solid var(--border)}
+.stop .si{padding-left:15px;padding-right:15px}
+.stop .si:last-child{border-bottom:none}
+.anchor-card{padding:12px 15px 14px;border-bottom:1px solid var(--border);cursor:pointer}
 .anchor-card-name{font-family:'DM Serif Display',serif;font-size:18px;color:var(--ink);margin-bottom:3px}
 .anchor-card-sub{font-size:12px;color:var(--muted);margin-bottom:9px}
-.anchor-nearby-list{display:flex;flex-direction:column}
-.anchor-nearby-list .sl{padding-left:15px;padding-right:15px}
 .cat-header{display:flex;align-items:center;justify-content:space-between;gap:8px;padding:11px 15px;cursor:pointer;font-size:10px;font-weight:500;letter-spacing:.1em;text-transform:uppercase;color:var(--muted);border-bottom:1px solid var(--border);-webkit-tap-highlight-color:transparent;min-height:20px}
 .cat-header:hover{color:var(--ink)}
 .cat-header-label{white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
@@ -258,12 +259,10 @@ body{font-family:'DM Sans',sans-serif;background:var(--cream);color:var(--ink);m
 @media(max-width:700px){
   .map-wrap{flex-direction:column;height:auto}
   #map{flex:0 0 280px;height:280px}
-  .panel{width:100%;height:220px;border-left:none;border-top:1px solid var(--border)}
 }
 
 /* MAP-OPTIONAL FALLBACK (tiles failed to load / no network) */
-.map-wrap.map-collapsed{height:auto;flex-direction:column}
-.map-wrap.map-collapsed .panel{width:100%;height:420px;border-left:none}
+.map-wrap.map-collapsed{display:none}
 </style>
 </head>
 <body>
@@ -320,8 +319,8 @@ body{font-family:'DM Sans',sans-serif;background:var(--cream);color:var(--ink);m
               </svg>
             </div>
             <div class="ci-body">
-              <div class="ci-name">RASA SAYANG NYONYA CUISINE reservation</div>
-              <div class="ci-meta">Call +60 12-854 8799 · Needed for dinner Day 1 (Tue) · No online booking found</div>
+              <div class="ci-name">Curios-City Penang reservation</div>
+              <div class="ci-meta">Call +60 14-210 5236 · Dinner Day 2 (Wed) 7pm · Reservations required, book direct</div>
             </div>
             <span class="ci-urgency urgency-high">Book now</span>
           </div>
@@ -349,8 +348,8 @@ body{font-family:'DM Sans',sans-serif;background:var(--cream);color:var(--ink);m
               </svg>
             </div>
             <div class="ci-body">
-              <div class="ci-name">BaBa Phang — backup reservation</div>
-              <div class="ci-meta">Call +60 14-741 9839 · Backup if RASA SAYANG unavailable Day 1 · No online booking found</div>
+              <div class="ci-name">Thaizen — Aroma Head Spa (Standard, 90 min)</div>
+              <div class="ci-meta">WhatsApp +60 13-694 9949 · Day 1 (Tue) 4:30pm · RM188</div>
             </div>
             <span class="ci-urgency urgency-med">Book soon</span>
           </div>
@@ -385,10 +384,10 @@ body{font-family:'DM Sans',sans-serif;background:var(--cream);color:var(--ink);m
               </svg>
             </div>
             <div class="ci-body">
-              <div class="ci-name">Penang Hill funicular — express tickets</div>
-              <div class="ci-meta">Book at penanghill.gov.my · Needed Day 3 (Thu) morning · Walk-up queues can be 90+ min</div>
+              <div class="ci-name">YU ZEN Wellness Center — optional massage</div>
+              <div class="ci-meta">Day 3 (Thu) before dinner · Hours not found online — check Google Maps first</div>
             </div>
-            <span class="ci-urgency urgency-med">Book soon</span>
+            <span class="ci-urgency urgency-med">Optional</span>
           </div>
           <div class="ci-notes">
             <div class="ci-notes-inner">
@@ -422,7 +421,7 @@ body{font-family:'DM Sans',sans-serif;background:var(--cream);color:var(--ink);m
             </div>
             <div class="ci-body">
               <div class="ci-name">Online check-in — SIN→PEN (FRODW3)</div>
-              <div class="ci-meta">Opens 48h before · From ~08:00 Sun 8 Nov</div>
+              <div class="ci-meta">Opens 48h before · From ~13:05 Sun 8 Nov</div>
             </div>
             <span class="ci-urgency urgency-med">Before trip</span>
           </div>
@@ -451,7 +450,7 @@ body{font-family:'DM Sans',sans-serif;background:var(--cream);color:var(--ink);m
             </div>
             <div class="ci-body">
               <div class="ci-name">Online check-in — PEN→SIN (FRODW3)</div>
-              <div class="ci-meta">Opens 48h before · From ~12:05 Wed 11 Nov</div>
+              <div class="ci-meta">Opens 48h before · From ~12:00 Wed 11 Nov</div>
             </div>
             <span class="ci-urgency urgency-med">During trip</span>
           </div>
@@ -672,7 +671,7 @@ body{font-family:'DM Sans',sans-serif;background:var(--cream);color:var(--ink);m
           <div class="tj-route-from">
             <div class="tj-route-code">PEN</div>
             <div class="tj-route-city">Penang Intl</div>
-            <div class="tj-route-time">12:05</div>
+            <div class="tj-route-time">12:00</div>
           </div>
           <div class="tj-route-mid">
             <div class="tj-route-line">
@@ -687,7 +686,7 @@ body{font-family:'DM Sans',sans-serif;background:var(--cream);color:var(--ink);m
           <div class="tj-route-to">
             <div class="tj-route-code" style="text-align:right">SIN</div>
             <div class="tj-route-city" style="text-align:right">Singapore Changi T2</div>
-            <div class="tj-route-time" style="text-align:right">13:40</div>
+            <div class="tj-route-time" style="text-align:right">13:35</div>
           </div>
         </div>
         <div class="tj-body">
@@ -730,22 +729,13 @@ body{font-family:'DM Sans',sans-serif;background:var(--cream);color:var(--ink);m
   <!-- END TRANSPORT TAB -->
 
   <!-- =============================================
-    DAY TABS (shared map/panel, day-scoped data)
+    DAY TABS (day map + day plan)
     ============================================= -->
   <div id="days-section" class="day-section">
     <div class="map-wrap" id="map-wrap">
       <div id="map"></div>
       <button class="recenter-btn" id="recenter-btn" style="display:none" onclick="recenterMap()">Recenter</button>
-      <div class="panel">
-        <div class="ph">
-          <div class="chip-row" id="type-chips"></div>
-          <div class="chip-row" id="route-chips"></div>
-        </div>
-        <div class="ps" id="panel-stops"></div>
-      </div>
     </div>
-
-    <div id="day-logistics" class="day-logistics"></div>
 
     <div id="legend" class="legend">
       <div class="li"><div class="ld" style="background:var(--food)"></div>Food</div>
@@ -755,7 +745,9 @@ body{font-family:'DM Sans',sans-serif;background:var(--cream);color:var(--ink);m
       <div class="li"><div class="ld" style="background:var(--hotel)"></div>Hotel</div>
     </div>
 
-    <div id="anchor-blocks" class="anchor-blocks"></div>
+    <div id="day-logistics" class="day-logistics"></div>
+
+    <div id="day-plan" class="day-plan"></div>
   </div>
   <!-- END DAY TABS -->
 
@@ -773,48 +765,65 @@ var userPanned=false;
 
 const PLACES = [
   { id:"citadines-connect-bertam", name:"Citadines Connect Bertam Georgetown", lat:5.4156, lng:100.3292, type:"hotel", area:"Penang Rd & Chowrasta", note:"Check in, drop bags, freshen up. Central George Town — most Zone A/B spots are walkable from here. Complimentary nutmeg juice on arrival.", hours:"24-hour front desk · +60 4-202 0111", address:"428, Jalan Penang, George Town", url:"https://maps.google.com/?cid=10225322812764014476", images:["https://lh3.googleusercontent.com/places/ANXAkqF9OblYorluX7ZWSjuu-gn7613ta8cEOrrmiramiS8U9y7LE-CcCpGjbBh0mTUUs7gZZPp8Xu5aPzhNNy7S2NrqqPGGqxOWw8w=s800-w800-h600","https://lh3.googleusercontent.com/places/ANXAkqEWxlI0B4yteeyogCybt6V7zuECbQCMyS6BvXIuvbjHzj_7lNq-1GA0MXvjzKUmY01QMXNGY3ipn00U0zNJQO7zDKCqPVUS0LI=s800-w800-h600","https://lh3.googleusercontent.com/places/ANXAkqHHY_wwNqtZi2j5eWlhZ4rGTp5Gzziqfu96smXzY1H0kqGtk2EU3jGz8NUpM9-uwG5pzh_sJXmGDDdSN2N8XopO57nY5vXymLs=s800-w800-h600"], reserve:false, fixed:true },
-  { id:"chew-jetty", name:"Clan Jetties (Chew, Lim, Lee & Tan)", lat:5.412717, lng:100.339772, type:"activity", area:"Armenian & Beach St", note:"UNESCO stilt-house water village. Chew Jetty is the main boardwalk entry point, with Lim, Lee, and Tan jetties branching off nearby along Pengkalan Weld — walk all of them as one stop. Free to walk, food/souvenir stalls along the boardwalk.", hours:"Daily 9am–9pm (stalls ~10am–7pm) · +60 11-6246 2884", address:"Weld Quay, 10300 George Town", url:"https://maps.google.com/?cid=17347006713449220", images:[], reserve:false, fixed:false },
-  { id:"sixth-sense", name:"Sixth Sense", lat:5.4148, lng:100.3387, type:"shop", area:"Armenian & Beach St", note:"Affordable linen and cotton pieces. Good starting point for the Beach Street shopping cluster.", hours:"Mon–Sat 10am–5:30pm · Sun 12–4:45pm", address:"157, Lebuh Pantai, George Town", url:"https://maps.google.com/?cid=8747951626966440676", images:["https://lh3.googleusercontent.com/place-photos/AJRVUZNZ2bUCZhnUiqJsViTtW5MXlvuJ0PewzM2DlYwBTmJBNZPFvPgDOiOQo66Xe8Cm1ZksBfL-M2yemCSkkuCAc53OCDIkSSpYRXUpr-JIKpjuSWSlfuNcgwhlLDMerypR93fsAHsA7n2PahnY=s800-w800-h600"], reserve:false, fixed:false },
-  { id:"warehouse-129", name:"Warehouse 129", lat:5.4149, lng:100.3393, type:"shop", area:"Armenian & Beach St", note:"Premium linen pieces, around RM200. Beautiful fabrics — worth browsing even without buying. Same block as Sixth Sense.", hours:"Mon–Sat 11am–5:30pm · Sun 12–5pm", address:"129, Lebuh Pantai, George Town", url:"https://maps.google.com/?cid=5985802180757766645", images:["https://lh3.googleusercontent.com/place-photos/AJRVUZNoAbviUvQpsLxzyHZ1o0_ExCpBdhCTFNe_6hH3RX4-hr_j4Pm7u-56ab5PeHeKiSBqIdARvuHrhT7O7IR54LKJ4GJ6hkNgNeLdH8NqFAxt5cRDQQSZAEGWa_l64nmFtR-14YQSWJglB7l_jg=s800-w800-h600"], reserve:false, fixed:false },
-  { id:"nala-beach-street", name:"Nala Penang Beach Street", lat:5.4150, lng:100.3388, type:"shop", area:"Armenian & Beach St", note:"Bold graphic prints, statement pieces — a different aesthetic to Sixth Sense/Warehouse 129, a few doors down.", hours:"Daily 10am–6pm", address:"230, Beach Street, George Town", url:"https://maps.google.com/?cid=11042297117850927207", images:["https://lh3.googleusercontent.com/place-photos/AJRVUZNjUi95j4o_vCAd-VJSWjeaxdJAV5yZpvMZWPe0Vhu_68_GZxiVr1oc_fBmkfjrfgkyf4QLPGWn2-o4D1i1oxEwLUkmTmh5sut1WYjDtcHsQCcANADTTSjhSivsfB7qaKSIhb2VjLNhc74-fvU=s800-w800-h600"], reserve:false, fixed:false },
+  { id:"chew-jetty", name:"Clan Jetties (Chew, Lim, Lee & Tan)", lat:5.4127175, lng:100.3397723, type:"activity", area:"Armenian & Beach St", note:"UNESCO stilt-house water village. Chew Jetty is the main boardwalk entry point, with Lim, Lee, and Tan jetties branching off nearby along Pengkalan Weld — walk all of them as one stop. Free to walk, food/souvenir stalls along the boardwalk.", hours:"Mon–Wed, Fri–Sun 9am–9pm · Thu 9am–9:30pm", address:"Weld Quay, 10300 George Town", url:"https://maps.google.com/?cid=17347006713449220", images:[], reserve:false, fixed:false },
+  { id:"sixth-sense", name:"Sixth Sense", lat:5.414799, lng:100.3387396, type:"shop", area:"Armenian & Beach St", note:"Affordable linen and cotton pieces. Good starting point for the Beach Street shopping cluster.", hours:"Mon–Sat 10am–5:30pm · Sun 12pm–4:45pm", address:"157, Lebuh Pantai, George Town", url:"https://maps.google.com/?cid=8747951626966440676", images:["https://lh3.googleusercontent.com/place-photos/AJRVUZNZ2bUCZhnUiqJsViTtW5MXlvuJ0PewzM2DlYwBTmJBNZPFvPgDOiOQo66Xe8Cm1ZksBfL-M2yemCSkkuCAc53OCDIkSSpYRXUpr-JIKpjuSWSlfuNcgwhlLDMerypR93fsAHsA7n2PahnY=s800-w800-h600"], reserve:false, fixed:false },
+  { id:"warehouse-129", name:"Warehouse 129", lat:5.4149174, lng:100.339287, type:"shop", area:"Armenian & Beach St", note:"Premium linen pieces, around RM200. Beautiful fabrics — worth browsing even without buying. Same block as Sixth Sense.", hours:"Mon–Sat 11am–5:30pm · Sun 12pm–5pm", address:"129, Lebuh Pantai, George Town", url:"https://maps.google.com/?cid=5985802180757766645", images:["https://lh3.googleusercontent.com/place-photos/AJRVUZNoAbviUvQpsLxzyHZ1o0_ExCpBdhCTFNe_6hH3RX4-hr_j4Pm7u-56ab5PeHeKiSBqIdARvuHrhT7O7IR54LKJ4GJ6hkNgNeLdH8NqFAxt5cRDQQSZAEGWa_l64nmFtR-14YQSWJglB7l_jg=s800-w800-h600"], reserve:false, fixed:false },
+  { id:"nala-beach-street", name:"Nala Penang Beach Street", lat:5.4150034, lng:100.3388234, type:"shop", area:"Armenian & Beach St", note:"Bold graphic prints, statement pieces — a different aesthetic to Sixth Sense/Warehouse 129, a few doors down.", hours:"Daily 10am–6pm", address:"230, Beach Street, George Town", url:"https://maps.google.com/?cid=11042297117850927207", images:["https://lh3.googleusercontent.com/place-photos/AJRVUZNjUi95j4o_vCAd-VJSWjeaxdJAV5yZpvMZWPe0Vhu_68_GZxiVr1oc_fBmkfjrfgkyf4QLPGWn2-o4D1i1oxEwLUkmTmh5sut1WYjDtcHsQCcANADTTSjhSivsfB7qaKSIhb2VjLNhc74-fvU=s800-w800-h600"], reserve:false, fixed:false },
   { id:"rasa-sayang-nyonya", name:"RASA SAYANG Nyonya Cuisine", lat:5.4291, lng:100.3116, type:"food", area:"Pulau Tikus", note:"4.8 stars, widely regarded as the best Nyonya food in Penang. Assam Pedas Stingray, Nyonya Kari Bak Kut, blue pea fragrant rice. Open Tuesdays — call ahead, time-limited seating. Closed Wednesdays. Reserve ahead; Grab to Zone C.", hours:"Mon–Tue, Thu–Sun 11am–3pm, 5:30–9:30pm · Closed Wed · +60 12-854 8799", address:"64, Jalan Moulmein, Pulau Tikus", url:"https://maps.google.com/?cid=6818770760881667612", images:["https://lh3.googleusercontent.com/place-photos/AJRVUZMizJwt3hT-Ckntyhg7mLfSWqSzPM4QYfjLeEw52Qi-GLkcLfmszCyZvFn42BGGlvwktPqVXQj9Dvb7rcnzOzR7d2GlyDkAw126HWRNxeGe3BldT20snuUoGcUk_i1UZqvW_ZVZp7Wc-ai2Hw=s800-w800-h600","https://lh3.googleusercontent.com/place-photos/AJRVUZO5FTrtpyb7S3nCu2LMKMYyCDpUzdKIKxP-yGpGcIOu8Dgb816H88c9Fal98kjEggjEUpWZqBAebHePQo-iL-_6xuNtYZo6rEHv2bFQ9NlYjvWWXUlIaFxwmd--Lxn-LSMnxi9f6MxTy9_S9lUkLBi3Vg=s800-w800-h600","https://lh3.googleusercontent.com/place-photos/AJRVUZPq_GK1rjK5KUzENOlD-JoSTPRrcRFeWPx-TxN4FOuyWyX3IMkYU_2BOtGOlFLUUx6yztVaZ5VlBX8H1agpAAbF2LcppKJJwPGWq35CNskNib4ZeJAKojoFqQ5gemOf41180oWRSBsDZumVGVyrBXfzjg=s800-w800-h600"], reserve:true, fixed:false },
-  { id:"auntie-star-coffee", name:"AUNTIE STAR COFFEE", lat:5.4115, lng:100.3307, type:"cafe", area:"Noordin & South GT", note:"Legendary roadside street-cart traditional kopi stall on Lebuh Noordin, run by an elderly \"auntie\" known for her latte art. Swapped in for My Own Cafe, which is closed Wednesdays.", hours:"Reported ~8am–6pm daily (unverified)", address:"Lebuh Noordin, George Town", url:"https://maps.google.com/?q=Auntie+Star+Coffee+Lebuh+Noordin+George+Town", images:[], reserve:false, fixed:false },
+  { id:"auntie-star-coffee", name:"AUNTIE STAR COFFEE", lat:5.4126559, lng:100.3291206, type:"cafe", area:"Noordin & South GT", note:"Legendary roadside street-cart traditional kopi stall on Lebuh Noordin, run by an elderly \"auntie\" known for her latte art. Swapped in for My Own Cafe, which is closed Wednesdays.", hours:"Mon–Wed, Fri–Sun 8am–5:30pm · Closed Thu", address:"Lebuh Noordin, George Town", url:"https://maps.app.goo.gl/z7dSVQ1u4Pd2564QA", images:[], reserve:false, fixed:false },
   { id:"penang-road-famous-chendul", name:"Penang Road Famous Teochew Chendul", lat:5.41711, lng:100.33072, type:"food", area:"Campbell & Chulia", note:"Historic 1936 cendol/chendul and assam laksa stall on Keng Kwee St, right off Penang Road.", hours:"Mon–Fri 10:30am–7pm · Sat–Sun 10am–7:30pm · +60 4-262 6002", address:"27-29, Lebuh Keng Kwee, George Town", url:"https://maps.google.com/?q=Penang+Road+Famous+Teochew+Chendul", images:[], reserve:false, fixed:false },
   { id:"laksalicious", name:"Laksalicious", lat:5.4201, lng:100.3301, type:"food", area:"Penang Rd & Chowrasta", note:"Michelin-listed. Air-conditioned — order the assam version, generous fish-to-noodle ratio. The asam laksa mojito is a fun novelty.", hours:"Tue–Sun 11:30am–7pm · Closed Mon", address:"117–117A, Jalan Hutton, George Town", url:"https://maps.google.com/?cid=834969466285114595", images:["https://lh3.googleusercontent.com/place-photos/AJRVUZMtVdCfCCSgoFXuWJVgyZyBKy--uPXWTw4VG3O5ryEw2JqKuYNzC_jJUvee9afWni8-y1Z7-tkNDi-oLQ_cf_w05aOX7Es7v0wulcOXMrHSj_eyIPMyGpdZPUzy6jPxRIHSU-AEt-YPR5A006q7fRxEPQ=s800-w800-h600"], reserve:false, fixed:false },
-  { id:"888-hokkien-mee", name:"888 Hokkien Mee", lat:5.4111, lng:100.3307, type:"food", area:"Noordin & South GT", note:"Michelin Bib Gourmand. Rich prawn broth — add roast pork. Lor mee and oyster omelette also good. Grab a table first, then order.", hours:"Mon–Wed, Fri–Sun 3–9:30pm · Closed Thu", address:"67A, Lebuh Presgrave, George Town", url:"https://maps.google.com/?cid=16953154920432182119", images:["https://lh3.googleusercontent.com/place-photos/AJRVUZMizJwt3hT-Ckntyhg7mLfSWqSzPM4QYfjLeEw52Qi-GLkcLfmszCyZvFn42BGGlvwktPqVXQj9Dvb7rcnzOzR7d2GlyDkAw126HWRNxeGe3BldT20snuUoGcUk_i1UZqvW_ZVZp7Wc-ai2Hw=s800-w800-h600"], reserve:false, fixed:false },
-  { id:"norm-micro-roastery", name:"Norm Micro Roastery", lat:5.416881, lng:100.342897, type:"cafe", area:"Jelutong Rd (East)", note:"Industrial-chic coffee roaster/cafe with brunch and waffles, spacious high-ceiling shophouse.", hours:"Daily ~9am–6pm · +60 16-527 6273", address:"13, Gat Lebuh Gereja, George Town", url:"https://maps.google.com/?cid=5545424050001683732", images:[], reserve:false, fixed:false },
+  { id:"888-hokkien-mee", name:"888 Hokkien Mee", lat:5.411117, lng:100.3306767, type:"food", area:"Noordin & South GT", note:"Michelin Bib Gourmand. Rich prawn broth — add roast pork. Lor mee and oyster omelette also good. Grab a table first, then order.", hours:"Mon–Wed, Fri–Sun 3:30–9:30pm · Closed Thu", address:"67A, Lebuh Presgrave, George Town", url:"https://maps.app.goo.gl/FckZ7HRetogkUhaZA", images:["https://lh3.googleusercontent.com/place-photos/AJRVUZMizJwt3hT-Ckntyhg7mLfSWqSzPM4QYfjLeEw52Qi-GLkcLfmszCyZvFn42BGGlvwktPqVXQj9Dvb7rcnzOzR7d2GlyDkAw126HWRNxeGe3BldT20snuUoGcUk_i1UZqvW_ZVZp7Wc-ai2Hw=s800-w800-h600"], reserve:false, fixed:false },
+  { id:"norm-micro-roastery", name:"Norm Micro Roastery", lat:5.4168813, lng:100.342897, type:"cafe", area:"Jelutong Rd (East)", note:"Industrial-chic coffee roaster/cafe with brunch and waffles, spacious high-ceiling shophouse.", hours:"Daily 9:30am–6pm", address:"13, Gat Lebuh Gereja, George Town", url:"https://maps.google.com/?cid=5545424050001683732", images:[], reserve:false, fixed:false },
   { id:"ae-coffee", name:"ae coffee", lat:5.420583, lng:100.331281, type:"cafe", area:"Campbell & Chulia", note:"Minimalist specialty pour-over cafe with competition-level baristas, opened 2022.", hours:"Sun–Wed & Sat 10:30am–6:30pm · Closed Thu–Fri", address:"11, Lebuh Clarke, George Town", url:"https://maps.google.com/?cid=15883899005438938459", images:[], reserve:false, fixed:false },
-  { id:"forest-cloud-beverage-co", name:"Forest Cloud Beverage Co", lat:5.420127, lng:100.332428, type:"cafe", area:"Campbell & Chulia", note:"Ranked among Penang's best specialty coffee/matcha shops, industrial-chic flagship store.", hours:"Mon–Fri 8am–6pm · Sat–Sun 8am–8pm · +60 16-555 1335", address:"132, Jalan Penang, George Town", url:"https://maps.google.com/?cid=3237327636816143471", images:[], reserve:false, fixed:false },
+  { id:"forest-cloud-beverage-co", name:"Forest Cloud Beverage Co", lat:5.420127, lng:100.332428, type:"cafe", area:"Campbell & Chulia", note:"Ranked among Penang's best specialty coffee/matcha shops, industrial-chic flagship store.", hours:"Daily 8am–8pm", address:"132, Jalan Penang, George Town", url:"https://maps.google.com/?cid=3237327636816143471", images:[], reserve:false, fixed:false },
   { id:"loong-fong-cafe", name:"Loong Fong Cafe", lat:5.413391, lng:100.337268, type:"cafe", area:"Armenian & Beach St", note:"Retro Nanyang-style kopitiam with a vintage store upstairs; nasi lemak, mantou curry. Closes 4pm, so visit early in the afternoon window.", hours:"Fri–Wed 8am–4pm · Closed Thu · +60 12-606 2526", address:"249, Lebuh Pantai, George Town", url:"https://maps.google.com/?cid=8199987392712637588", images:[], reserve:false, fixed:false },
-  { id:"pause-mood", name:"Pause Mood", lat:5.4155, lng:100.336, type:"cafe", area:"Campbell & Chulia", note:"Minimalist coffee bar known for flat whites and cookies, quiet heritage-lane setting. Hours inconsistent across sources — verify before treating as fixed.", hours:"Hours unconfirmed — verify locally", address:"28, Lebuh Aceh, George Town", url:"https://maps.google.com/?q=Pause+Mood+Lebuh+Aceh+George+Town", images:[], reserve:false, fixed:false },
-  { id:"jing-si-books-cafe", name:"Jing Si Books & Cafe", lat:5.4170, lng:100.3422, type:"cafe", area:"Jelutong Rd (East)", note:"Calm cafe run by the Tzu Chi Foundation. Organic drinks, good tea — a quiet break between shops.", hours:"Daily 9am–6pm", address:"31, Beach Street, George Town", url:"https://maps.google.com/?cid=7738219335417321972", images:["https://lh3.googleusercontent.com/place-photos/AJRVUZM0KdDlbJ3tUKfGTRz0-XHcz-R2ek8V5l7tXXB5ppw8pVEYGvzzFu8clC75LDj0XbOkz1NybpO_rRLgwIzBtiTeSgngvczEm5SnBKDu5A6oEKeVVJ9Nm5-WAcmlrMWAc0DgSVEIfFM2ZupF_CpKQXccJA=s800-w800-h600"], reserve:false, fixed:false },
+  { id:"pause-mood", name:"Pause Mood", lat:5.4142201, lng:100.337022, type:"cafe", area:"Campbell & Chulia", note:"Minimalist coffee bar known for flat whites and cookies, quiet heritage-lane setting. Hours inconsistent across sources — verify before treating as fixed.", hours:"Mon, Wed–Sun 9am–5:30pm · Closed Tue", address:"28, Lebuh Acheh, George Town", url:"https://maps.google.com/?q=Pause+Mood+Lebuh+Aceh+George+Town", images:[], reserve:false, fixed:false },
+  { id:"jing-si-books-cafe", name:"Jing Si Books & Cafe", lat:5.4170284, lng:100.3421859, type:"cafe", area:"Jelutong Rd (East)", note:"Calm cafe run by the Tzu Chi Foundation. Organic drinks, good tea — a quiet break between shops.", hours:"Daily 9am–6pm", address:"31, Beach St, George Town", url:"https://maps.google.com/?cid=7738219335417321972", images:["https://lh3.googleusercontent.com/place-photos/AJRVUZM0KdDlbJ3tUKfGTRz0-XHcz-R2ek8V5l7tXXB5ppw8pVEYGvzzFu8clC75LDj0XbOkz1NybpO_rRLgwIzBtiTeSgngvczEm5SnBKDu5A6oEKeVVJ9Nm5-WAcmlrMWAc0DgSVEIfFM2ZupF_CpKQXccJA=s800-w800-h600"], reserve:false, fixed:false },
   { id:"le-petit-four-patisserie", name:"Le Petit Four Pâtisserie", lat:5.4138, lng:100.3376, type:"cafe", area:"Armenian & Beach St", note:"French-Asian pastry shop. Almond croissant and canelé are outstanding.", hours:"Mon–Wed, Fri–Sun 9am–6pm · Closed Thu", address:"310, Lebuh Pantai, George Town", url:"https://maps.google.com/?cid=7169884917205022526", images:["https://lh3.googleusercontent.com/places/ANXAkqFRYLasX_elESHjOFWEn-nu4YlWPSXCg5ORdIMKSwy87W2C_xElG6lAUCsvJQqGfMBXe49QRDELDS8KgBrWB1s8fpSRzqxXKec=s800-w800-h600"], reserve:false, fixed:false },
-  { id:"journal-georgetown", name:"Journal Georgetown", lat:5.4198034, lng:100.336133, type:"shop", area:"Campbell & Chulia", note:"Slow-living stationery and lifestyle store on Muntri St.", hours:"Opens 9:30am · +60 18-788 8916", address:"29, Muntri Street, George Town", url:"https://maps.google.com/?cid=17607514250986790860", images:["https://lh3.googleusercontent.com/place-photos/AJRVUZOL8juLF1K4rrOefOaD_-TGuEanWzHgf-hgxOOIF8sUpH5stbo5ZnKZ-ipfxO5oZ-d4OObaqRan26h2HHXsuth7-8P1zyL3aBPXT27p2cbpyzWD3N70Qu0hpLPmYqsOIkftTnhjVxOIZ9q_2g=s800-w800-h600"], reserve:false, fixed:false },
-  { id:"heritage-house-25", name:"Heritage House 25", lat:5.4149429, lng:100.337642, type:"shop", area:"Armenian & Beach St", note:"4.7 stars. Artistic handicrafts on Armenian St.", hours:"Closes 7pm · +60 10-452 3839", address:"25, Lebuh Armenian, George Town", url:"https://maps.google.com/?cid=13210714849389775542", images:["https://dynamic-media-cdn.tripadvisor.com/media/photo-o/28/44/a4/6d/clothing-in-neutral-tones.jpg?w=1100&h=1100&s=1"], reserve:false, fixed:false },
-  { id:"sukha", name:"sukha.", lat:5.4150109, lng:100.3378825, type:"shop", area:"Armenian & Beach St", note:"Linen clothing and straw bags on Armenian St, next door to Heritage House 25.", hours:"Check hours on arrival", address:"26, Lebuh Armenian, George Town", url:"https://maps.google.com/?cid=8128499800471495600", images:["https://kedaipakaiannearme.my/wp-content/uploads/2025/10/external_image_1508_1759688022.jpg"], reserve:false, fixed:false },
-  { id:"p66", name:"P.66", lat:5.4177818, lng:100.3343943, type:"shop", area:"Campbell & Chulia", note:"4.2 stars. Pen and stationery store on Campbell St. Closes 6pm.", hours:"Closes 6pm · +60 4-262 7899", address:"66, Lebuh Campbell, George Town", url:"https://maps.google.com/?cid=956591380961229620", images:["https://dynamic-media-cdn.tripadvisor.com/media/photo-o/28/15/59/ad/wonderfull-interior.jpg?w=900&h=500&s=1"], reserve:false, fixed:false },
-  { id:"14-living-story", name:"14 Living Story", lat:5.4148, lng:100.3378, type:"shop", area:"Armenian & Beach St", note:"Handicraft/curio shop on Armenian St, known for patchwork curtains and handmade lanterns.", hours:"Daily 10am–6pm · +60 4-261 0352", address:"14, Lebuh Armenian, George Town", url:"https://maps.google.com/?q=14+Living+Story+Armenian+Street+George+Town", images:[], reserve:false, fixed:false },
-  { id:"loka-made", name:"Loka Made", lat:5.4147, lng:100.3388, type:"shop", area:"Armenian & Beach St", note:"Local-culture concept shop selling postcards, journals, tote bags. Address uncertain across sources.", hours:"Mon–Thu 9am–6pm · Fri–Sun 9am–9pm", address:"37A&B, Lebuh Pantai, George Town", url:"https://maps.google.com/?q=Loka+Made+George+Town+Penang", images:[], reserve:false, fixed:false },
-  { id:"kenyaku-store", name:"KENYAKU STORE", lat:5.4140, lng:100.3330, type:"shop", area:"Campbell & Chulia", note:"Vintage/thrift clothing shop on Beach St.", hours:"Hours not confirmed — verify locally", address:"342, Beach Street, George Town", url:"https://maps.google.com/?q=Kenyaku+Store+Beach+Street+George+Town", images:[], reserve:false, fixed:false },
-  { id:"oak-wears", name:"Oak Wears", lat:5.4153, lng:100.3363, type:"shop", area:"Campbell & Chulia", note:"Clothing boutique on Cannon St, previously \"Yimi Store.\"", hours:"Daily 10am–7pm", address:"17, Lebuh Cannon, George Town", url:"https://maps.google.com/?q=Oak+Wears+Lebuh+Cannon+George+Town", images:[], reserve:false, fixed:false },
+  { id:"journal-georgetown", name:"Journal Georgetown", lat:5.4198034, lng:100.336133, type:"shop", area:"Campbell & Chulia", note:"Google Maps shows a temporary closure Tue 10 – Wed 11 Nov. Normally daily 9:30am–6:30pm.", hours:"Closed Tue–Wed · Thu–Mon 9:30am–6:30pm", address:"29, Muntri St, George Town", url:"https://maps.google.com/?cid=17607514250986790860", images:["https://lh3.googleusercontent.com/place-photos/AJRVUZOL8juLF1K4rrOefOaD_-TGuEanWzHgf-hgxOOIF8sUpH5stbo5ZnKZ-ipfxO5oZ-d4OObaqRan26h2HHXsuth7-8P1zyL3aBPXT27p2cbpyzWD3N70Qu0hpLPmYqsOIkftTnhjVxOIZ9q_2g=s800-w800-h600"], reserve:false, fixed:false },
+  { id:"heritage-house-25", name:"Heritage House 25", lat:5.4149429, lng:100.337642, type:"shop", area:"Armenian & Beach St", note:"4.7 stars. Artistic handicrafts on Armenian St.", hours:"Daily 10am–7pm", address:"25, Lebuh Armenian, George Town", url:"https://maps.google.com/?cid=13210714849389775542", images:["https://dynamic-media-cdn.tripadvisor.com/media/photo-o/28/44/a4/6d/clothing-in-neutral-tones.jpg?w=1100&h=1100&s=1"], reserve:false, fixed:false },
+  { id:"sukha", name:"sukha.", lat:5.4150109, lng:100.3378825, type:"shop", area:"Armenian & Beach St", note:"Linen clothing and straw bags on Armenian St, next door to Heritage House 25.", hours:"Mon–Sat 10am–7pm · Closed Sun", address:"26, Lebuh Armenian, George Town", url:"https://maps.google.com/?cid=8128499800471495600", images:["https://kedaipakaiannearme.my/wp-content/uploads/2025/10/external_image_1508_1759688022.jpg"], reserve:false, fixed:false },
+  { id:"p66", name:"P.66", lat:5.4177818, lng:100.3343943, type:"shop", area:"Campbell & Chulia", note:"4.2 stars. Pen and stationery store on Campbell St. Closes 6pm.", hours:"Daily 9am–6pm", address:"66, Lebuh Campbell, George Town", url:"https://maps.google.com/?cid=956591380961229620", images:["https://dynamic-media-cdn.tripadvisor.com/media/photo-o/28/15/59/ad/wonderfull-interior.jpg?w=900&h=500&s=1"], reserve:false, fixed:false },
+  { id:"14-living-story", name:"14 Living Story", lat:5.4148937, lng:100.3380216, type:"shop", area:"Armenian & Beach St", note:"Handicraft/curio shop on Armenian St, known for patchwork curtains and handmade lanterns.", hours:"Daily 10am–6pm · +60 4-261 0352", address:"14, Lebuh Armenian, George Town", url:"https://maps.google.com/?q=14+Living+Story+Armenian+Street+George+Town", images:[], reserve:false, fixed:false },
+  { id:"loka-made", name:"Loka Made", lat:5.4152355, lng:100.3374474, type:"shop", area:"Armenian & Beach St", note:"Local-culture concept shop selling postcards, journals, tote bags. Address uncertain across sources.", hours:"Mon–Thu 10am–8pm · Fri 10am–9pm · Sat–Sun 9am–9pm", address:"37A&B, Lebuh Pantai, George Town", url:"https://maps.google.com/?q=Loka+Made+George+Town+Penang", images:[], reserve:false, fixed:false },
+  { id:"kenyaku-store", name:"KENYAKU STORE", lat:5.4134212, lng:100.3371035, type:"shop", area:"Campbell & Chulia", note:"Vintage/thrift clothing shop on Beach St.", hours:"Mon–Thu, Sat 12pm–10pm · Fri 3pm–10pm · Sun 2pm–10pm", address:"342, Beach St, George Town", url:"https://maps.google.com/?q=Kenyaku+Store+Beach+Street+George+Town", images:[], reserve:false, fixed:false },
+  { id:"oak-wears", name:"Oak Wears", lat:5.4148057, lng:100.3367691, type:"shop", area:"Campbell & Chulia", note:"Clothing boutique on Cannon St, previously \"Yimi Store.\"", hours:"Daily 10am–7pm", address:"17, Lebuh Cannon, George Town", url:"https://maps.google.com/?q=Oak+Wears+Lebuh+Cannon+George+Town", images:[], reserve:false, fixed:false },
   { id:"il-bacaro", name:"Il Bacaro", lat:5.418172, lng:100.33365, type:"food", area:"Campbell & Chulia", note:"Venetian-style Italian restaurant inside heritage Campbell House.", hours:"Daily 8am–11pm · +60 4-261 8290", address:"Campbell House, 106, Lebuh Campbell, George Town", url:"https://maps.google.com/?cid=17601013631397987618", images:[], reserve:false, fixed:false },
-  { id:"funicular-penang-hill", name:"Funicular Service Penang Hill", lat:5.4085, lng:100.2772, type:"activity", area:"Penang Hill", note:"Pre-book express tickets at penanghill.gov.my to skip the queue.", hours:"Daily 6:30am–11pm", address:"422, Jalan Bukit Bendera", url:"https://maps.google.com/?cid=9139778477464223867", images:["https://lh3.googleusercontent.com/place-photos/AJRVUZO4oNXwIwIYWZXgmhPuZQ-q5N982H1hmeFUOpp6TTEYGLrNTNtro3lMkvF0dVH45U2T6jVAaQtGn53O6KpON0lBQTCXSc_0urCOMcgJR3vem8BnQx5JlSCa_yOF3sK4ckqZn83_wHVY9a2w=s800-w800-h600"], reserve:false, fixed:false },
-  { id:"penang-hill-heritage-trail", name:"Penang Hill Heritage Trail", lat:5.4105, lng:100.2761, type:"activity", area:"Penang Hill", note:"Colonial-era buildings and viewpoints along the way.", hours:"Open 24 hours", address:"478, Jalan Pokok Ceri, Ayer Itam", url:"https://maps.google.com/?cid=12969436852212952995", images:["https://lh3.googleusercontent.com/place-photos/AJRVUZO6fPVsOT_vF16RBjKBhk-P5e2REg4EmsNQA4ksgQRNk9H9dD7bEQE1ahOrrUf9hNfhVzr27_5m7kU5YcuGeBGQX2i7c75u37TBVtYAhtYtB5VhvkSQTspq1VGcYv87FSjAUiJNdb8PG-yP4A=s800-w800-h600"], reserve:false, fixed:false },
-  { id:"scenic-spot-viewing-area", name:"Scenic Spot Viewing Area", lat:5.42444, lng:100.26892, type:"activity", area:"Penang Hill", note:"180° elevated viewpoint over George Town.", hours:"", address:"Penang Hill summit, Ayer Itam", url:"https://maps.google.com/?q=Penang+Hill+Scenic+Viewpoint", images:[], reserve:false, fixed:false },
+  { id:"curios-city", name:"Curios-City Penang", lat:5.4136096, lng:100.3394176, type:"food", area:"Armenian & Beach St", note:"Michelin-listed dinner spot behind an unmarked door on Victoria St. Reservations required — book direct.", hours:"Wed–Sun 6pm–12am · Closed Mon–Tue · +60 14-210 5236", address:"164A-B, Lebuh Victoria, George Town", url:"https://maps.app.goo.gl/heYUxQiWDTbC6yVb9", images:[], reserve:true, fixed:false },
+  { id:"riumforest", name:"RiumForest", lat:5.4207722, lng:100.3259675, type:"shop", area:"Penang Rd & Chowrasta", note:"Plant and lifestyle shop off Jalan Nagor. Fujiyama Jeans is next door.", hours:"Wed–Sun 10am–7pm · Closed Mon–Tue", address:"Jalan Nagor, George Town", url:"https://maps.app.goo.gl/qccHdQLEywwayPxT6", images:[], reserve:false, fixed:false },
+  { id:"thaizen", name:"Thaizen Wellness & Spa", lat:5.4135195, lng:100.3295807, type:"activity", area:"Penang Rd & Chowrasta", note:"Aroma Head Spa — Standard 90 min RM188 (Express 60 min RM149). Eye mask, head/neck/shoulder massage, shampoo, blow dry. Book on WhatsApp.", hours:"Daily 12pm–12am · +60 13-694 9949", address:"197 & 199, Jalan Magazine, George Town (opposite The Granite Luxury Hotel)", url:"https://maps.app.goo.gl/euP92YSB5Hcm8Vm3A", images:[], reserve:true, fixed:false },
+  { id:"suka-suka-store", name:"Suka-Suka Store", lat:5.4119206, lng:100.3280336, type:"shop", area:"Penang Rd & Chowrasta", note:"Shop near AUNTIE STAR, close to the hotel.", hours:"Mon, Thu–Sun 11am–5pm · Closed Tue–Wed", address:"", url:"https://maps.app.goo.gl/TALsLnYuNP4LKTy58", images:[], reserve:false, fixed:false },
+  { id:"yu-zen-wellness", name:"YU ZEN Wellness Center 悠然", lat:5.4121599, lng:100.3229978, type:"activity", area:"Dato Keramat", note:"Optional massage before dinner, Day 3.", hours:"Daily 11am–12am", address:"Jalan Dato Keramat, George Town", url:"https://maps.app.goo.gl/9jQSWgGin1KDkoFv9", images:[], reserve:false, fixed:false },
+  { id:"chulia-night-hawkers", name:"Chulia St Night Hawker Stalls", lat:5.4181458, lng:100.3362829, type:"food", area:"Campbell & Chulia", note:"Evening street stalls along Lebuh Chulia.", hours:"Tue–Sun 4pm–12am · Closed Mon", address:"Lebuh Chulia, George Town", url:"https://maps.google.com/?q=Chulia+Street+Hawker+Food", images:[], reserve:false, fixed:false },
+  { id:"cara-caro-cafe", name:"Cara Caro Cafe", lat:5.4190317, lng:100.3330481, type:"food", area:"Campbell & Chulia", note:"European country-style cafe. Day 2 lunch.", hours:"Closes 10pm (Google Maps)", address:"22, Kampung Malabar, George Town", url:"https://maps.app.goo.gl/4qvsKt85EM8FADo37", images:[], reserve:false, fixed:false },
+  { id:"fujiyama-street-market", name:"Fujiyama Street Market", lat:5.4194423, lng:100.3319793, type:"shop", area:"Campbell & Chulia", note:"Vintage clothing store.", hours:"Mon, Wed–Sun 11am–7:30pm · Closed Tue", address:"Unit 2, 216, Jalan Datuk Koyah, George Town", url:"https://maps.app.goo.gl/SwbdgHGJfQPSGnpc7", images:[], reserve:false, fixed:false },
+  { id:"fujiyama-tokyo-18", name:"Fujiyama Tokyo No 18", lat:5.4197198, lng:100.3316933, type:"shop", area:"Campbell & Chulia", note:"Clothing store, same building as Fujiyama Street Market.", hours:"Mon, Wed–Sun 11am–7:30pm · Closed Tue", address:"Unit 7, 216, Jalan Datuk Koyah, George Town", url:"https://maps.app.goo.gl/cNGMqpNCc4fFyU6R6", images:[], reserve:false, fixed:false },
+  { id:"island-problems", name:"Island Problems", lat:5.4184283, lng:100.3325739, type:"shop", area:"Campbell & Chulia", note:"Shop on Campbell St.", hours:"Mon–Tue, Thu–Sun 12pm–10pm · Closed Wed", address:"161, Lebuh Campbell, George Town", url:"https://maps.google.com/?q=Island+Problems+Lebuh+Campbell+George+Town", images:[], reserve:false, fixed:false },
+  { id:"mellow", name:"Mellow", lat:5.4170925, lng:100.3342958, type:"shop", area:"Campbell & Chulia", note:"Shop on Jalan Pintal Tali.", hours:"Mon–Wed, Fri 1pm–10pm · Sat–Sun 1pm–11pm · Closed Thu", address:"56, Jalan Pintal Tali, George Town", url:"https://maps.google.com/?q=Mellow+Jalan+Pintal+Tali+George+Town", images:[], reserve:false, fixed:false },
+  { id:"great-worn-vintage", name:"Great Worn Vintage", lat:5.4165859, lng:100.333807, type:"shop", area:"Campbell & Chulia", note:"Vintage clothing on Jalan Pintal Tali.", hours:"Daily 12pm–9pm", address:"103, Jalan Pintal Tali, George Town", url:"https://maps.google.com/?q=Great+Worn+Vintage+George+Town", images:[], reserve:false, fixed:false },
+  { id:"kens-apothecary", name:"KENS Apothecary @ Gurney Plaza", lat:5.4385869, lng:100.3100078, type:"shop", area:"Gurney", note:"Perfume, ground floor of Gurney Plaza.", hours:"Daily 10am–10pm", address:"Unit 170-G-46B, Gurney Plaza, Persiaran Gurney", url:"https://maps.google.com/?q=KENS+Apothecary+Gurney+Plaza", images:[], reserve:false, fixed:false },
+  { id:"bookxcess-gurney", name:"BookXcess Gurney Paragon", lat:5.4357359, lng:100.311185, type:"shop", area:"Gurney", note:"Bookstore, levels 7–8 of Gurney Paragon.", hours:"Daily 10am–10pm", address:"Gurney Paragon, 163D Gurney Dr", url:"https://maps.google.com/?q=BookXcess+Gurney+Paragon", images:[], reserve:false, fixed:false },
+  { id:"chapel-street-cafe", name:"Chapel Street Cafe", lat:5.4282358, lng:100.318697, type:"cafe", area:"Pulau Tikus", note:"Coffee on the way back from Gurney.", hours:"Daily 9am–5pm", address:"14, Medan Lim Cheng Teik, George Town", url:"https://maps.app.goo.gl/Y2rBFFWksNcW6a8w8", images:[], reserve:false, fixed:false },
+  { id:"good-friends-club", name:"Good Friends Club", lat:5.4123142, lng:100.3281509, type:"activity", area:"Penang Rd & Chowrasta", note:"Cocktail bar, ~400m from the hotel.", hours:"Mon–Thu, Sun 8pm–1am · Fri–Sat 8pm–2am", address:"39, Jalan Gurdwara, George Town", url:"https://maps.app.goo.gl/A7qDySuRNsDuruXH7", images:[], reserve:false, fixed:false },
+  { id:"bao-teck-tea-house", name:"Bao Teck Tea House", lat:5.4132765, lng:100.3352301, type:"food", area:"Armenian & Beach St", note:"Michelin-listed dim sum in a heritage house with an indoor moss garden.", hours:"Mon–Thu 8am–3pm · Fri–Sun 8am–5pm", address:"25, Lebuh Melayu, George Town", url:"https://maps.app.goo.gl/65APHKDN8usNe9m18", images:[], reserve:false, fixed:false },
+  { id:"church-st-boysbaker", name:"Church St BoysBaker", lat:5.4169854, lng:100.3427002, type:"cafe", area:"Armenian & Beach St", note:"Bakery on Church St, next to Norm Micro Roastery.", hours:"Daily 7am–3pm", address:"9, Gat Lebuh Gereja, George Town", url:"https://maps.google.com/?q=Church+St+BoysBaker+George+Town", images:[], reserve:false, fixed:false },
+  { id:"a-puff-shop", name:"a puff shop", lat:5.4204433, lng:100.3318835, type:"cafe", area:"Campbell & Chulia", note:"Pastries to take home.", hours:"Thu–Sun 12pm–5pm · Closed Mon–Wed", address:"", url:"https://maps.app.goo.gl/fK5nGU7ZSBGV73kbA", images:[], reserve:false, fixed:false },
+  { id:"swatow-coffee", name:"Swatow Coffee", lat:5.4169981, lng:100.3316609, type:"cafe", area:"Campbell & Chulia", note:"Breakfast near Kimberley St. Known for asam laksa.", hours:"Daily 8:30am–4:30pm", address:"", url:"https://maps.app.goo.gl/2dwuN1pSU6crfKxr8", images:[], reserve:false, fixed:false },
   { id:"ali-nasi-lemak-daun-pisang", name:"Ali Nasi Lemak Daun Pisang", lat:5.4178, lng:100.3428, type:"food", area:"Jelutong Rd (East)", note:"Michelin Guide. Opens 7am, sells out by mid-morning. RM3 a plate.", hours:"Mon–Fri 7am–2pm · Sat 7am–1pm · Closed Sun", address:"Sri Weld Food Court, Beach Street", url:"https://maps.google.com/?cid=6348670730682531118", images:["https://lh3.googleusercontent.com/places/ANXAkqGmnuOnexIK7c6XjAC3U-PfnziyoywOOuIDkjK5ag3a3h9vh7QKQHDTV5RvlSawMDT0pDL3Q3PoZnUredMs3SZjJIuzfiGgfSE=s800-w800-h575"], reserve:false, fixed:false },
   { id:"laksa-mamu", name:"Laksa Mamu Famous Sungai Pinang", lat:5.4023, lng:100.3230, type:"food", area:"Ayer Itam Rd", note:"Grab to Zone E (~15 min). Opens 3pm.", hours:"Mon–Sat 3–9pm · Closed Sun", address:"Taman Lita, Jelutong, Penang", url:"https://maps.google.com/?cid=10445095134458840476", images:["https://lh3.googleusercontent.com/place-photos/AJRVUZOj9_G-CFO4HCxp9ljs8b5EAJDy2kmqScEqMhetHgwMcD7dEUF0x_EsCzK9mUavAyzZr-ZjaANrKLzgJSafgHH-uvF3xW-9ic_XTyIIHCkov_rRwmsXP_dOrnTfdXS8-JSgSdU0R4EmZGiquz5etzFEZQ=s800-w800-h600"], reserve:false, fixed:false },
-  { id:"chong-charcoal-ckt", name:"CHONG Charcoal Seafood Char Koay Teow", lat:5.4149, lng:100.3265, type:"food", area:"Penang Rd & Chowrasta", note:"Closed Wednesdays. Opens 4:30pm sharp Thursdays.", hours:"Mon–Tue, Thu–Sun 4:30–10:30pm · Closed Wed", address:"35, Lorong Baru, George Town", url:"https://maps.google.com/?cid=15741183335894796147", images:["https://lh3.googleusercontent.com/places/ANXAkqFUMb0Cf7DfgoG0NRIFo8jmMUubyA45vIuieboU-zATylkGBxAkYT-JMvMWKcieqFhILxGRIZU6y9i4233_ED5nA8qmVw41dMY=s800-w720-h600"], reserve:false, fixed:false },
+  { id:"chong-charcoal-ckt", name:"CHONG Charcoal Seafood Char Koay Teow", lat:5.4149466, lng:100.3265084, type:"food", area:"Penang Rd & Chowrasta", note:"Closed Wednesdays. Opens 4:30pm sharp Thursdays.", hours:"Mon–Tue, Thu–Sun 4:30–10:30pm · Closed Wed", address:"35, Lorong Baru, George Town", url:"https://maps.app.goo.gl/i6yDtzEM2cJtbDXz9", images:["https://lh3.googleusercontent.com/places/ANXAkqFUMb0Cf7DfgoG0NRIFo8jmMUubyA45vIuieboU-zATylkGBxAkYT-JMvMWKcieqFhILxGRIZU6y9i4233_ED5nA8qmVw41dMY=s800-w720-h600"], reserve:false, fixed:false },
   { id:"cheong-fatt-tze-mansion", name:"Cheong Fatt Tze Mansion (Blue Mansion)", lat:5.421451, lng:100.334893, type:"activity", area:"Campbell & Chulia", note:"1880s eclectic Chinese courtyard mansion, UNESCO-listed. Guided tours at 11am, 1:30pm, 3pm.", hours:"Daily 11am–6pm · +60 4-262 0006", address:"14, Lebuh Leith, George Town", url:"https://maps.google.com/?cid=967834975835066597", images:[], reserve:false, fixed:false },
-  { id:"artlane", name:"Artlane", lat:5.4151242, lng:100.3392036, type:"activity", area:"Armenian & Beach St", note:"4.7 stars. Multi-room art centre and creative shops.", hours:"Closes 7pm · +60 4-263 7299", address:"127, Beach Street, George Town", url:"https://maps.google.com/?cid=1689426142022259780", images:[], reserve:false, fixed:false },
-  { id:"soul-boutique", name:"Soul Boutique", lat:5.4166353, lng:100.3315206, type:"shop", area:"Penang Rd & Chowrasta", note:"5.0 stars (small review count). Fashion designer pieces.", hours:"Closes 7pm · +60 4-584 0269", address:"54, Jalan Kuala Kangsar, George Town", url:"https://maps.google.com/?cid=2774836751591456088", images:[], reserve:false, fixed:false },
+  { id:"artlane", name:"Artlane", lat:5.4151242, lng:100.3392036, type:"activity", area:"Armenian & Beach St", note:"4.7 stars. Multi-room art centre and creative shops.", hours:"Daily 11am–7pm", address:"127, Beach Street, George Town", url:"https://maps.google.com/?cid=1689426142022259780", images:[], reserve:false, fixed:false },
+  { id:"soul-boutique", name:"Soul Boutique", lat:5.4166353, lng:100.3315206, type:"shop", area:"Penang Rd & Chowrasta", note:"5.0 stars (small review count). Fashion designer pieces.", hours:"Daily 10:30am–7pm", address:"54, Jalan Kuala Kangsar, George Town", url:"https://maps.google.com/?cid=2774836751591456088", images:[], reserve:false, fixed:false },
   { id:"604-gift-shop", name:"604 Gift Shop", lat:5.4177, lng:100.3345, type:"shop", area:"Campbell & Chulia", note:"Curated vintage/thrift clothing store, RM150–500.", hours:"Daily 12pm–9pm", address:"94, Lebuh Campbell, George Town", url:"https://maps.google.com/?q=604+Gift+Shop+Lebuh+Campbell+George+Town", images:[], reserve:false, fixed:false },
-  { id:"maha-house", name:"Maha House", lat:5.4177, lng:100.3344, type:"shop", area:"Campbell & Chulia", note:"Boutique selling linen apparel and accessories.", hours:"Check hours on arrival", address:"66, Lebuh Campbell, George Town", url:"https://maps.google.com/?q=Maha+House+Lebuh+Campbell+George+Town", images:[], reserve:false, fixed:false },
+  { id:"maha-house", name:"Maha House", lat:5.4148326, lng:100.3378942, type:"shop", area:"Armenian & Beach St", note:"Boutique selling linen apparel and accessories.", hours:"Daily 10am–8pm", address:"13, Lebuh Armenian, George Town", url:"https://maps.google.com/?q=Maha+House+Lebuh+Campbell+George+Town", images:[], reserve:false, fixed:false },
   { id:"lim-kee-old-collection", name:"Lim Kee Old Collection Shop", lat:5.4147, lng:100.3315, type:"shop", area:"Penang Rd & Chowrasta", note:"Antique stall inside Chowrasta Market. Closed Mondays and Wednesdays.", hours:"9am–1pm · Closed Mon & Wed · +60 16-482 2777", address:"Lot 1-155, Pasar Chowrasta, Jalan Penang", url:"https://maps.google.com/?q=Lim+Kee+Old+Collection+Shop+Chowrasta+Market", images:[], reserve:false, fixed:false },
-  { id:"fujiyama-jeans", name:"Fujiyama Jeans & Tokyo No.18", lat:5.4207782, lng:100.3254787, type:"shop", area:"Penang Rd & Chowrasta", note:"4.4 stars. Vintage clothing on Jalan Burma in Pulau Tikus.", hours:"Closes 7:30pm", address:"124-C, Jalan Burma, George Town", url:"https://maps.google.com/?cid=18347337122909725920", images:["https://thesmartlocal.my/wp-content/uploads/2023/04/Thrift-shops-in-Penang-1.jpg"], reserve:false, fixed:false },
-  { id:"sum-concept-store", name:"Sum Concept Store", lat:5.4149, lng:100.3380, type:"shop", area:"Armenian & Beach St", note:"Unverified listing — check Google Maps on arrival.", hours:"Unverified — confirm on arrival", address:"Armenian St area, George Town (unconfirmed)", url:"https://maps.google.com/?q=Sum+Concept+Store+George+Town+Penang", images:[], reserve:false, fixed:false },
-  { id:"deens-maju-nasi-kandar", name:"Deens Maju Nasi Kandar", lat:5.4097, lng:100.3281, type:"food", area:"Ayer Itam Rd", note:"Popular Indian-Muslim nasi kandar. Friday hours conflict across sources — call if timing is tight.", hours:"Mon–Thu 12pm–10:30pm · +60 12-425 2421", address:"170, Jalan Gurdwara, George Town", url:"https://maps.google.com/?q=Deens+Maju+Nasi+Kandar+Jalan+Gurdwara", images:[], reserve:false, fixed:false },
-  { id:"narrow-marrow", name:"Narrow Marrow", lat:5.413797, lng:100.3376, type:"cafe", area:"Armenian & Beach St", note:"Dessert/cocktail cafe, tiramisu and cheesecakes. Closed Tue & Wed.", hours:"Thu–Mon 3–11pm · Closed Tue & Wed · +60 16-553 6647", address:"312, Lebuh Pantai, George Town", url:"https://maps.google.com/?cid=2547755577269838632", images:[], reserve:false, fixed:false },
-  { id:"penang-airport", name:"Penang Airport (PEN)", lat:5.2971, lng:100.2767, type:"activity", area:"Airport", note:"~20–25 min Grab from George Town.", hours:"", address:"", url:"https://maps.google.com/?q=Penang+International+Airport", images:[], reserve:false, fixed:true },  { id:"my-own-cafe", name:"My Own Cafe", lat:5.4155, lng:100.3355, type:"cafe", area:"Campbell & Chulia", note:"Zone B cafe, closed Wednesdays.", hours:"", address:"", url:"https://maps.google.com/?q=My+Own+Cafe+George+Town+Penang", images:[], reserve:false, fixed:false },
+  { id:"fujiyama-jeans", name:"Fujiyama Jeans & Tokyo No.18", lat:5.4207782, lng:100.3254787, type:"shop", area:"Penang Rd & Chowrasta", note:"4.4 stars. Vintage clothing on Jalan Burma in Pulau Tikus.", hours:"Mon, Wed–Sun 11am–7:30pm · Closed Tue", address:"124-C, Jalan Burma, George Town", url:"https://maps.google.com/?cid=18347337122909725920", images:["https://thesmartlocal.my/wp-content/uploads/2023/04/Thrift-shops-in-Penang-1.jpg"], reserve:false, fixed:false },
+  { id:"sum-concept-store", name:"Sum Concept Store", lat:5.4138765, lng:100.3408439, type:"shop", area:"Armenian & Beach St", note:"Concept store on Pengkalan Weld, by the waterfront.", hours:"Mon, Wed–Sun 11am–6pm · Closed Tue", address:"35-36, Pengkalan Weld, George Town", url:"https://maps.google.com/?q=Sum+Concept+Store+George+Town+Penang", images:[], reserve:false, fixed:false },
+  { id:"deens-maju-nasi-kandar", name:"Deens Maju Nasi Kandar", lat:5.4097318, lng:100.3281249, type:"food", area:"Ayer Itam Rd", note:"Popular Indian-Muslim nasi kandar.", hours:"Mon–Thu, Sat–Sun 12pm–10pm · Closed Fri", address:"170, Jalan Gurdwara, George Town", url:"https://maps.app.goo.gl/XSKzyRY5QZFJfR4R7", images:[], reserve:false, fixed:false },
+  { id:"narrow-marrow", name:"Narrow Marrow", lat:5.4137967, lng:100.3376003, type:"cafe", area:"Armenian & Beach St", note:"Dessert/cocktail cafe, tiramisu and cheesecakes. Closed Tue & Wed.", hours:"Mon, Thu–Sun 3pm–11pm · Closed Tue–Wed", address:"312, Lebuh Pantai, George Town", url:"https://maps.google.com/?cid=2547755577269838632", images:[], reserve:false, fixed:false },
+  { id:"penang-airport", name:"Penang Airport (PEN)", lat:5.2971, lng:100.2767, type:"activity", area:"Airport", note:"~20–25 min Grab from George Town.", hours:"", address:"", url:"https://maps.google.com/?q=Penang+International+Airport", images:[], reserve:false, fixed:true },  { id:"my-own-cafe", name:"My Own Cafe", lat:5.415176, lng:100.336781, type:"cafe", area:"Campbell & Chulia", note:"Zone B cafe, closed Wednesdays.", hours:"Mon–Tue, Thu–Sun 10am–4pm · Closed Wed", address:"2, Cannon St, George Town", url:"https://maps.google.com/?q=My+Own+Cafe+George+Town+Penang", images:[], reserve:false, fixed:false },
   { id:"ome-spacebar-coffee", name:"Ome by Spacebar Coffee", lat:5.4165, lng:100.3340, type:"cafe", area:"Campbell & Chulia", note:"Zone B specialty coffee spot.", hours:"", address:"", url:"https://maps.google.com/?q=Ome+by+Spacebar+Coffee+George+Town+Penang", images:[], reserve:false, fixed:false },
   { id:"dao-shang-shao", name:"島上燒 Dao Shang Shao", lat:5.4152, lng:100.3372, type:"food", area:"Armenian & Beach St", note:"Zone B eatery.", hours:"", address:"", url:"https://maps.google.com/?q=Dao+Shang+Shao+George+Town+Penang", images:[], reserve:false, fixed:false },
   { id:"baba-phang", name:"BaBa Phang", lat:5.4280, lng:100.3100, type:"food", area:"Pulau Tikus", note:"Backup Nyonya dinner spot if RASA SAYANG is unavailable — call +60 14-741 9839. No online booking found.", hours:"", address:"", url:"https://maps.google.com/?q=BaBa+Phang+Pulau+Tikus+Penang", images:[], reserve:false, fixed:false }
@@ -841,9 +850,7 @@ function toggleShortlist(id){
 
 function recenterMap(){
   if(!map) return;
-  const day=DAY_SCHEDULE.find(d=>d.key===activeDayKey);
-  const c=dayCenter(day);
-  map.setView([c.lat,c.lng],16);
+  fitDay();
   userPanned=false;
   document.getElementById('recenter-btn').style.display='none';
 }
@@ -955,7 +962,7 @@ function parseTimeRanges(str){
     const startMin=to24Min(sh,sm,sap);
     let endMin=to24Min(eh,em,eap);
     if(endMin<=startMin) endMin+=24*60; // defensive: wrap past midnight
-    out.push([startMin,Math.min(endMin,1440)]);
+    out.push([startMin,endMin]);
   }
   return out;
 }
@@ -1034,147 +1041,102 @@ const PLACE_HOURS={};
 PLACES.forEach(p=>{ PLACE_HOURS[p.id]=parsePlaceHours(p.hours); });
 
 function formatTime(min){
+  min=min%1440; // past-midnight closes, e.g. 1am
   let h=Math.floor(min/60), m=min%60;
   const ap=h>=12?'pm':'am';
   let hh=h%12; if(hh===0) hh=12;
   return hh+(m?':'+String(m).padStart(2,'0'):'')+ap;
 }
 
-// Finds the next moment (from dayIdx/nowMin) the place has an open range, searching forward up to a week.
-function findNextOpen(parsed,dayIdx0,nowMin){
-  for(let i=0;i<8;i++){
-    const d=(dayIdx0+i)%7;
-    if(parsed.closed.includes(d)) continue;
-    const ranges=(parsed.open[d]||[]).slice().sort((a,b)=>a[0]-b[0]);
-    for(const r of ranges){
-      if(i===0 && r[0]<=nowMin) continue;
-      return (i===0?'':DAY_NAMES[d]+' ')+formatTime(r[0]);
-    }
-  }
-  return 'unknown';
-}
-
-// Live status for a place on a given day-chip's weekday (uses the real current clock time-of-day).
+// Status for the planned trip day (not the live clock): that weekday's hours,
+// or "Closed <day>" — so the plan shows at a glance whether a stop will be open.
 function computeStatus(p,dIdx){
   const parsed=PLACE_HOURS[p.id];
-  if(dIdx===null){
-    if(!parsed.confident) return {text:'Hours unverified',cls:'unverified'};
-    const raw=(p.hours||'');
-    return {text:raw.length>50?raw.slice(0,50)+'…':(raw||'Hours available'),cls:''};
-  }
   if(!parsed.confident) return {text:'Hours unverified',cls:'unverified'};
-  const now=new Date();
-  const nowMin=now.getHours()*60+now.getMinutes();
-  if(!parsed.closed.includes(dIdx)){
-    const ranges=parsed.open[dIdx]||[];
-    for(const r of ranges){
-      if(nowMin>=r[0] && nowMin<r[1]){
-        const remain=r[1]-nowMin;
-        if(remain<=60) return {text:`Closes in ${remain} min`,cls:'open'};
-        return {text:'Open now',cls:'open'};
-      }
-    }
-  }
-  return {text:`Closed — opens ${findNextOpen(parsed,dIdx,nowMin)}`,cls:'closed'};
+  const day=DAY_NAMES[dIdx];
+  const ranges=parsed.closed.includes(dIdx)?[]:(parsed.open[dIdx]||[]);
+  if(!ranges.length) return {text:`Closed ${day}`,cls:'closed'};
+  if(ranges.some(r=>r[0]===0&&r[1]>=1440)) return {text:'Open 24 hours',cls:'open'};
+  return {text:`${day} `+ranges.map(r=>formatTime(r[0])+'–'+formatTime(r[1])).join(', '),cls:'open'};
 }
 
-/* ---- FILTER STATE ---- */
-var activeType='all';
-const TYPE_CHIPS=[{key:'all',label:'All'},{key:'food',label:'Food'},{key:'cafe',label:'Cafe'},{key:'shop',label:'Shop'},{key:'activity',label:'Activity'}];
-
-/* ---- DAY SCHEDULE (itinerary order + walkable "nearby" pool per day) ----
-   Day-index convention: 0=Sun,1=Mon,2=Tue,3=Wed,4=Thu,5=Fri,6=Sat (matches
-   DAY_NAMES / hours-parsing above). Reconstructed from
-   personal/travel-planner/trips/2026-penang/itinerary.md plus day-assignment
-   notes recorded on individual PLACES entries. */
+/* ---- DAY PLAN ----
+   Each day is the ordered list of stops agreed with Cason — the page shows
+   only these, nothing else. Day-index convention: 0=Sun … 6=Sat.
+   Stop: {tag, kind, label, time?, note?, ids, shops?, extras?}
+   - tag: 'anchor' | 'meal' | 'coffee' | 'break' | 'optional' | 'go' — styling only
+   - kind: the chip text shown on the card (Dinner, City walk, Spa …)
+   - ids: the stop's main place(s); anchors render as full cards
+   - shops: saved places to visit around this stop, with walk time from it
+   - extras: saved places nearby that aren't planned (shown dimmed) */
 var activeDayKey=null;
 
+const STOP_TAGS={anchor:'Anchor',meal:'Meal',coffee:'Coffee',break:'Break',optional:'Optional',go:'Departure'};
+const MAP_SKIP=new Set(['penang-airport']); // too far out — would zoom the map out to the whole island
+
 const DAY_SCHEDULE=[
-  { key:'day1', label:'Tue 10 Nov', dayIdx:2,
-    sections:[
-      {label:'Arrival — check-in',ids:['citadines-connect-bertam']},
-      {label:'Afternoon — Zone B walk',ids:['chew-jetty','sixth-sense','warehouse-129','nala-beach-street']},
-      {label:'Dinner — Zone C',ids:['rasa-sayang-nyonya']}
-    ],
-    nearbyAreas:['Armenian & Beach St','Pulau Tikus']
-  },
-  { key:'day2', label:'Wed 11 Nov', dayIdx:3,
-    sections:[
-      {label:'Breakfast — Zone A',ids:['auntie-star-coffee']},
-      {label:'Lunch — hawker crawl, Zone A',ids:['penang-road-famous-chendul','laksalicious','888-hokkien-mee']},
-      {label:'Afternoon — Zone B shopping & coffee',ids:['norm-micro-roastery','ae-coffee','forest-cloud-beverage-co','loong-fong-cafe','pause-mood','jing-si-books-cafe','le-petit-four-patisserie']},
-      {label:'Dinner — Zone B (Zone C closed Wed)',ids:['il-bacaro']}
-    ],
-    nearbyAreas:['Campbell & Chulia','Noordin & South GT','Penang Rd & Chowrasta','Jelutong Rd (East)','Armenian & Beach St']
-  },
-  { key:'day3', label:'Thu 12 Nov', dayIdx:4,
-    sections:[
-      {label:'Morning — Penang Hill',ids:['funicular-penang-hill','penang-hill-heritage-trail','scenic-spot-viewing-area']},
-      {label:'Lunch',ids:['ali-nasi-lemak-daun-pisang','laksa-mamu','chong-charcoal-ckt']},
-      {label:'Afternoon — finish Zone B',ids:['narrow-marrow']},
-      {label:'Dinner — Zone A',ids:['deens-maju-nasi-kandar']}
-    ],
-    nearbyAreas:['Armenian & Beach St','Campbell & Chulia','Penang Rd & Chowrasta']
-  },
-  { key:'day4', label:'Fri 13 Nov', dayIdx:5,
-    sections:[
-      {label:'Breakfast near hotel',ids:['auntie-star-coffee']},
-      {label:'Departure',ids:['citadines-connect-bertam','penang-airport']}
-    ],
-    nearbyAreas:[]
-  }
+  { key:'day1', label:'Tue 10 Nov', dayIdx:2, stops:[
+    {tag:'coffee', kind:'Coffee', label:'Forest Cloud', note:'After check-in (~3:30pm). Take it to go if the flight lands late.', ids:['forest-cloud-beverage-co']},
+    {tag:'anchor', kind:'Spa', time:'4:30–6pm', label:'Aroma Head Spa', note:'Standard 90 min, RM188. Book on WhatsApp.', ids:['thaizen']},
+    {tag:'anchor', kind:'Dinner', label:'Hawker crawl', ids:['chong-charcoal-ckt','888-hokkien-mee','chulia-night-hawkers']}
+  ]},
+  { key:'day2', label:'Wed 11 Nov', dayIdx:3, stops:[
+    {tag:'meal', kind:'Breakfast', label:'AUNTIE STAR COFFEE', note:'Breakfast and the morning coffee.', ids:['auntie-star-coffee']},
+    {tag:'break', kind:'Pool', label:'Hotel pool', ids:['citadines-connect-bertam']},
+    {tag:'anchor', kind:'Shopping', label:'RiumForest', ids:['riumforest'], shops:['fujiyama-jeans']},
+    {tag:'anchor', kind:'Lunch & city walk', label:'Cara Caro Cafe', note:'Lunch, then walk Campbell St and Kimberley St.', ids:['cara-caro-cafe'],
+      shops:['fujiyama-street-market','fujiyama-tokyo-18','604-gift-shop','p66','soul-boutique','island-problems','mellow','great-worn-vintage'],
+      extras:['journal-georgetown']},
+    {tag:'anchor', kind:'Shopping', label:'Gurney Plaza & Gurney Paragon', note:'Grab out (~15 min).', ids:['kens-apothecary','bookxcess-gurney']},
+    {tag:'coffee', kind:'Coffee', label:'Chapel Street Cafe', note:'On the way back. Closes 5pm.', ids:['chapel-street-cafe']},
+    {tag:'break', kind:'Hotel', label:'Hotel stop', note:'Freshen up before dinner.', ids:['citadines-connect-bertam']},
+    {tag:'anchor', kind:'Dinner', time:'7pm', label:'Curios-City', note:'Reservations required — book direct on +60 14-210 5236.', ids:['curios-city']},
+    {tag:'optional', kind:'Drinks · optional', time:'After dinner', label:'Good Friends Club', note:'Cocktails, on the way back to the hotel.', ids:['good-friends-club']}
+  ]},
+  { key:'day3', label:'Thu 12 Nov', dayIdx:4, stops:[
+    {tag:'anchor', kind:'Breakfast & city walk', label:'My Own Cafe', note:'Opens 10am Thursday. Then the Armenian St shops.', ids:['my-own-cafe'],
+      shops:['14-living-story','heritage-house-25','sukha','sum-concept-store','loka-made','maha-house','narrow-marrow','artlane'],
+      extras:['oak-wears']},
+    {tag:'coffee', kind:'Coffee', label:'Pause Mood', ids:['pause-mood']},
+    {tag:'anchor', kind:'Lunch', label:'Bao Teck Tea House', note:'Closes 3pm Thursday — go early.', ids:['bao-teck-tea-house'], extras:['kenyaku-store']},
+    {tag:'anchor', kind:'City walk', label:'Church St & Beach St', note:'BoysBaker closes 3pm — go straight after lunch.',
+      ids:[], shops:['church-st-boysbaker','jing-si-books-cafe','sixth-sense','nala-beach-street','warehouse-129','chew-jetty']},
+    {tag:'coffee', kind:'Coffee', label:'Norm Micro Roastery', note:'Next door to BoysBaker.', ids:['norm-micro-roastery']},
+    {tag:'break', kind:'Shopping', label:'Back toward the hotel', ids:[], shops:['a-puff-shop','suka-suka-store']},
+    {tag:'optional', kind:'Massage · optional', time:'Before dinner', label:'YU ZEN Wellness Center', ids:['yu-zen-wellness']},
+    {tag:'anchor', kind:'Dinner', label:'Deens Maju Nasi Kandar', ids:['deens-maju-nasi-kandar']}
+  ]},
+  { key:'day4', label:'Fri 13 Nov', dayIdx:5, stops:[
+    {tag:'meal', kind:'Breakfast', label:'Swatow Coffee', ids:['swatow-coffee']},
+    {tag:'go', kind:'Departure', time:'~10am', label:'Check out, head to the airport', ids:['citadines-connect-bertam','penang-airport']}
+  ]}
 ];
 
-// Every id scheduled on any day — a day's "nearby" pool never includes a place
-// that's the scheduled highlight of another day (keeps "optional extras" from
-// overlapping with the core plan).
-const ALL_SCHEDULED_IDS=new Set(DAY_SCHEDULE.flatMap(d=>d.sections.flatMap(s=>s.ids)));
-
-function getDayPool(day){
-  const scheduledIds=day.sections.flatMap(s=>s.ids);
-  const scheduledSet=new Set(scheduledIds);
-  const nearby=PLACES.filter(p=>!ALL_SCHEDULED_IDS.has(p.id) && day.nearbyAreas.includes(p.area));
-  return {scheduledIds,scheduledSet,nearby};
+// Every place shown on the active day's map: main stops, shops and extras, in plan order.
+function dayItems(day){
+  const seen=new Set(), items=[];
+  day.stops.forEach(s=>{
+    [['ids',false],['shops',false],['extras',true]].forEach(([k,nearby])=>{
+      (s[k]||[]).forEach(id=>{
+        if(seen.has(id)||MAP_SKIP.has(id)) return;
+        const p=PLACES.find(x=>x.id===id);
+        if(!p) return;
+        seen.add(id);
+        items.push({p,nearby});
+      });
+    });
+  });
+  return items;
 }
 
-/* ---- ANCHOR-BLOCK ELIGIBILITY ----
-   A scheduled place gets its own bottom-of-page anchor block when it's the
-   day's food/activity highlight. Base rule: type food or activity. Two
-   judgment-call overrides on top of that:
-   - ANCHOR_INCLUDE_EXTRA: cafe stops that are genuinely the day's sit-down
-     meal (a single dedicated breakfast/dessert stop), not one option among
-     many in a browsing block — auntie-star-coffee (breakfast, Day 2 & 4) and
-     narrow-marrow (the sole "finish Zone B" stop, Day 3). The 7-cafe
-     Day 2 "shopping & coffee" block is left out on purpose — those are
-     browsing options, not a single scheduled highlight.
-   - ANCHOR_EXCLUDE: places that are type food/activity but pure logistics —
-     penang-airport (Day 4 departure) shouldn't get a "what's nearby the
-     airport" block. */
-const ANCHOR_INCLUDE_EXTRA=new Set(['auntie-star-coffee','narrow-marrow']);
-const ANCHOR_EXCLUDE=new Set(['penang-airport']);
-function isAnchorPlace(p){
-  if(!p||ANCHOR_EXCLUDE.has(p.id)) return false;
-  if(p.type==='food'||p.type==='activity') return true;
-  return ANCHOR_INCLUDE_EXTRA.has(p.id);
+// Zooms the map to fit every place on the active day.
+function fitDay(){
+  if(!map) return;
+  const day=DAY_SCHEDULE.find(d=>d.key===activeDayKey);
+  const items=day?dayItems(day):[];
+  if(!items.length) return;
+  map.fitBounds(L.latLngBounds(items.map(it=>[it.p.lat,it.p.lng])),{padding:[30,30],maxZoom:17});
 }
-
-function dayCenter(day){
-  if(!day) return {lat:5.4156,lng:100.3292};
-  const pts=day.sections.flatMap(s=>s.ids).map(id=>PLACES.find(p=>p.id===id)).filter(Boolean);
-  if(!pts.length) return {lat:5.4156,lng:100.3292};
-  const lat=pts.reduce((a,p)=>a+p.lat,0)/pts.length;
-  const lng=pts.reduce((a,p)=>a+p.lng,0)/pts.length;
-  return {lat,lng};
-}
-
-/* ---- ROUTES (suggested walking-order chains, no times attached) ---- */
-const ROUTES=[
-  {key:'beach-st-linen',label:'Beach St linen walk',places:['loka-made','warehouse-129','sixth-sense','nala-beach-street']},
-  {key:'armenian-crafts',label:'Armenian St crafts loop',places:['14-living-story','heritage-house-25','sukha','artlane']},
-  {key:'hawker-south',label:'Hawker crawl south',places:['laksalicious','penang-road-famous-chendul','chong-charcoal-ckt','888-hokkien-mee']}
-];
-var activeRoute=null; // null or a ROUTES[].key
-var routeLine=null;
 
 /* ---- DAY LOGISTICS ----
    Fixed-time logistics events (flight/train departure or arrival, hotel
@@ -1190,13 +1152,13 @@ var routeLine=null;
      .tj-icon colour/svg styling, not a new icon set.
    - label / time: short strings, e.g. label:'Flight lands', time:'2:45pm'.
    Source: Transport tab — flight FRODW3 (SIN→PEN Tue 10 Nov 13:05→14:45,
-   PEN→SIN Fri 13 Nov 12:05→13:40), hotel Citadines Connect Bertam
+   PEN→SIN Fri 13 Nov 12:00→13:35), hotel Citadines Connect Bertam
    Georgetown (check-in Tue 10 Nov, check-out Fri 13 Nov). */
 const LOGISTICS=[
   {date:'Tue 10 Nov', icon:'flight', label:'Flight lands', time:'2:45pm'},
   {date:'Tue 10 Nov', icon:'hotel',  label:'Hotel check-in', time:'Citadines Connect Bertam Georgetown'},
   {date:'Fri 13 Nov', icon:'hotel',  label:'Hotel check-out', time:'Citadines Connect Bertam Georgetown'},
-  {date:'Fri 13 Nov', icon:'flight', label:'Flight departs', time:'12:05pm'}
+  {date:'Fri 13 Nov', icon:'flight', label:'Flight departs', time:'12pm'}
 ];
 
 const LOGISTICS_ICONS={
@@ -1266,37 +1228,8 @@ document.querySelectorAll('.seatmap-toggle').forEach(el=>{
   });
 });
 
-function renderChips(){
-  const tc=document.getElementById('type-chips');
-  tc.innerHTML=TYPE_CHIPS.map(c=>`<button class="chip${activeType===c.key?' active':''}" data-type="${c.key}">${c.label}</button>`).join('');
-  tc.querySelectorAll('.chip').forEach(b=>b.addEventListener('click',()=>{
-    activeType=b.getAttribute('data-type');
-    renderChips();
-    render();
-  }));
-
-  const rc=document.getElementById('route-chips');
-  const routeChipDefs=[{key:'',label:'Clear route'}].concat(ROUTES.map(r=>({key:r.key,label:r.label})));
-  rc.innerHTML=routeChipDefs.map(c=>`<button class="chip${(activeRoute||'')===c.key?' active':''}" data-route="${c.key}">${c.label}</button>`).join('');
-  rc.querySelectorAll('.chip').forEach(b=>b.addEventListener('click',()=>{
-    const v=b.getAttribute('data-route');
-    activeRoute=v===''?null:v;
-    renderChips();
-    render();
-  }));
-}
-
 /* ---- RENDERING ---- */
 const COLORS={food:"#C4622D",activity:"#2A6B5E",shop:"#9A6B10",cafe:"#6040A0",hotel:"#5A5550"};
-
-// Category grouping for anchor-block "nearby" sublists — order matches
-// TYPE_CHIPS (food, cafe, shop, activity), with hotel appended since it has
-// no chip but could theoretically appear in a nearby list. Labels match the
-// map legend's wording ("Shopping" for the shop type).
-const CATEGORY_ORDER=['food','cafe','shop','activity','hotel'];
-const CATEGORY_LABELS={food:'Food',cafe:'Cafe',shop:'Shopping',activity:'Activity',hotel:'Hotel'};
-// Collapsed by default; holds keys `${anchorId}::${type}` for open categories.
-var openCategories=new Set();
 
 function escapeHtml(s){
   return String(s||'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
@@ -1357,10 +1290,10 @@ function initMap(){
 function statusHtml(p,dIdx){
   const noteExcerpt=p.note.length>60?p.note.slice(0,60)+'…':p.note;
   const st=computeStatus(p,dIdx);
-  return `${escapeHtml(noteExcerpt)} · <span class="${st.cls}">${escapeHtml(st.text)}</span>`;
+  return `<span class="${st.cls}">${escapeHtml(st.text)}</span> · ${escapeHtml(noteExcerpt)}`;
 }
 
-// Anchor cards render the full note separately (see renderAnchorBlocks) —
+// Anchor cards render the full note separately (see renderAnchorCard) —
 // this shows just the status badge, so the note text isn't duplicated.
 function statusBadgeHtml(p,dIdx){
   const st=computeStatus(p,dIdx);
@@ -1441,37 +1374,8 @@ function panToPlace(id){
   map.panTo([p.lat,p.lng]);
 }
 
-// Map panel list: that day's place pool (scheduled + nearby), filtered only
-// by the type chips — no distance-band sorting, no time-of-day grouping.
-// Flat, alphabetical; nearby (unscheduled) places are dimmed via it.nearby,
-// same as before.
-function renderPoolList(items,dIdx){
-  const container=document.getElementById('panel-stops');
-  let html='';
-  items.forEach(it=>{ html+=renderRow(it,dIdx); });
-  container.innerHTML=html||'<div style="padding:20px 13px;font-size:12px;color:var(--muted)">No places match these filters.</div>';
-  attachRowHandlers(container);
-}
-
-// Route mode: shows the route's places in its own fixed order (not distance-bucketed).
-function renderRouteListUI(items,dIdx){
-  const container=document.getElementById('panel-stops');
-  let html=`<div class="sl">Route order</div>`;
-  items.forEach(it=>{ html+=renderRow(it,dIdx); });
-  container.innerHTML=html||'<div style="padding:20px 13px;font-size:12px;color:var(--muted)">No stops in this route.</div>';
-  attachRowHandlers(container);
-}
-
-// Draws the selected route's chain as an extra map layer (distinct from the anchor ring).
-function drawRouteLine(routePlaces){
-  if(!map) return;
-  if(routeLine){ map.removeLayer(routeLine); routeLine=null; }
-  if(!routePlaces.length) return;
-  routeLine=L.polyline(routePlaces.map(p=>[p.lat,p.lng]),{color:'#C4622D',weight:3,opacity:0.85}).addTo(map);
-}
-
 function scrollToRow(id){
-  const el=document.querySelector(`.si[data-id="${id}"]`);
+  const el=document.querySelector(`#day-plan [data-id="${id}"]`);
   if(el) el.scrollIntoView({behavior:'smooth',block:'nearest'});
 }
 
@@ -1490,154 +1394,85 @@ function renderMarkers(visible){
   });
 }
 
-// Below the map panel: one permanent "anchor block" per qualifying scheduled
-// food/activity place for the active day, in itinerary order — each showing
-// the place as a heading card, then every OTHER pool place (scheduled +
-// nearby) sorted by walking distance from that specific anchor, computed
-// fresh each render with the same hysteresis-bucketed engine used elsewhere
-// (no persisted previous-band state needed: these are static per-anchor
-// lists, not live-GPS-following, so there's nothing for hysteresis to smooth
-// over — computeBand(undefined,...) just applies the plain thresholds).
-function renderAnchorBlocks(day,dIdx){
-  const container=document.getElementById('anchor-blocks');
-  const pool=getDayPool(day);
-  const poolIds=new Set([...pool.scheduledIds,...pool.nearby.map(p=>p.id)]);
-  const poolPlaces=PLACES.filter(p=>poolIds.has(p.id));
+// Full card for an anchor stop's main place.
+function renderAnchorCard(p,dIdx,showName){
+  const photos=p.images&&p.images.length
+    ? `<div class="si-detail-photos">${p.images.slice(0,3).map(u=>`<img src="${u}" loading="lazy" alt="">`).join('')}</div>`
+    : '';
+  return `<div class="anchor-card" data-id="${p.id}">
+    ${showName?`<div class="anchor-card-name">${escapeHtml(p.name)}</div>`:''}
+    <div class="anchor-card-sub">${statusBadgeHtml(p,dIdx)}</div>
+    ${photos}
+    <div class="si-detail-note">${escapeHtml(p.note)}</div>
+    ${p.address?`<div class="si-detail-addr">${escapeHtml(p.address)}</div>`:''}
+    <a class="mb" href="${p.url}" target="_blank" onclick="event.stopPropagation()">Open in Maps</a>
+  </div>`;
+}
 
-  const anchorIds=[];
-  day.sections.forEach(sec=>{
-    sec.ids.forEach(id=>{
-      const p=PLACES.find(x=>x.id===id);
-      if(p && isAnchorPlace(p) && !anchorIds.includes(id)) anchorIds.push(id);
-    });
-  });
+// A shop/extra row, with walk time from the stop's main place when there is one.
+function walkItem(from,p,nearby){
+  if(!from) return {p,nearby};
+  const walkMeters=haversineMeters(from.lat,from.lng,p.lat,p.lng)*1.3;
+  return {p,walkMeters,walkMinutes:walkMeters/80,nearby};
+}
 
-  if(!anchorIds.length){ container.innerHTML=''; return; }
-
+// The day's stops in order: header (number, tag, time, label, note), the
+// main place(s), then the saved shops for that stop, then dimmed extras.
+function renderDayPlan(day,dIdx){
+  const container=document.getElementById('day-plan');
+  const find=id=>PLACES.find(x=>x.id===id);
   let html='';
-  anchorIds.forEach(id=>{
-    const anchor=PLACES.find(x=>x.id===id);
-    const others=poolPlaces.filter(p=>p.id!==id).map(p=>{
-      const meters=haversineMeters(anchor.lat,anchor.lng,p.lat,p.lng);
-      const walkMeters=meters*1.3;
-      const walkMinutes=walkMeters/80;
-      return {p,walkMeters,walkMinutes,nearby:!pool.scheduledSet.has(p.id)};
-    });
-    // Group by type instead of distance band; within each group, nearest
-    // first (reuses the same walkMeters computed above — the distance math
-    // itself is unchanged, only how it's used for grouping vs. sorting).
-    const byType={};
-    others.forEach(it=>{
-      const t=it.p.type;
-      (byType[t]=byType[t]||[]).push(it);
-    });
-    Object.keys(byType).forEach(t=>byType[t].sort((a,b)=>a.walkMeters-b.walkMeters));
-    const typeOrder=CATEGORY_ORDER.concat(Object.keys(byType).filter(t=>!CATEGORY_ORDER.includes(t)));
-
-    const photos=anchor.images&&anchor.images.length
-      ? `<div class="si-detail-photos">${anchor.images.slice(0,3).map(u=>`<img src="${u}" loading="lazy" alt="">`).join('')}</div>`
-      : '';
-    html+=`<div class="anchor-block">
-      <div class="anchor-card" data-id="${anchor.id}">
-        <div class="anchor-card-name">${escapeHtml(anchor.name)}</div>
-        <div class="anchor-card-sub">${statusBadgeHtml(anchor,dIdx)}</div>
-        ${photos}
-        <div class="si-detail-note">${escapeHtml(anchor.note)}</div>
-        ${anchor.hours?`<div class="si-detail-hours">${escapeHtml(anchor.hours)}</div>`:''}
-        ${anchor.address?`<div class="si-detail-addr">${escapeHtml(anchor.address)}</div>`:''}
-        <a class="mb" href="${anchor.url}" target="_blank" onclick="event.stopPropagation()">Open in Maps</a>
-      </div>
-      <div class="anchor-nearby-list">`;
-    typeOrder.forEach(t=>{
-      const g=byType[t];
-      if(!g||!g.length) return;
-      const catKey=`${anchor.id}::${t}`;
-      const isOpen=openCategories.has(catKey);
-      const label=CATEGORY_LABELS[t]||(t.charAt(0).toUpperCase()+t.slice(1));
-      html+=`<div class="cat-header${isOpen?' open':''}" data-cat="${catKey}">
-        <span class="cat-header-label">${escapeHtml(label)} (${g.length})</span>
-        <svg class="cat-chevron" viewBox="0 0 10 10" fill="none"><path d="M2 3l3 3 3-3" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
-      </div>
-      <div class="cat-list${isOpen?'':' collapsed'}">`;
-      g.forEach(it=>{ html+=renderRow(it,dIdx); });
-      html+='</div>';
-    });
-    html+='</div></div>';
+  day.stops.forEach((s,i)=>{
+    const main=(s.ids||[]).map(find).filter(Boolean);
+    const from=main.find(p=>!MAP_SKIP.has(p.id));
+    html+=`<div class="stop stop-${s.tag}">
+      <div class="stop-head">
+        <span class="stop-num">${i+1}</span>
+        <span class="stop-tag">${escapeHtml(s.kind||STOP_TAGS[s.tag]||'')}</span>
+        ${s.time?`<span class="stop-time">${escapeHtml(s.time)}</span>`:''}
+        <div class="stop-label">${escapeHtml(s.label)}</div>
+        ${s.note?`<div class="stop-note">${escapeHtml(s.note)}</div>`:''}
+      </div>`;
+    // A single main place is already named by the stop header, so its card skips the name.
+    main.forEach(p=>{ html+=s.tag==='anchor'?renderAnchorCard(p,dIdx,main.length>1):renderRow({p},dIdx); });
+    const shops=(s.shops||[]).map(find).filter(Boolean);
+    if(shops.length){
+      html+=`<div class="sl">${main.length?'Shops around here':'Stops'}</div>`;
+      shops.forEach(p=>{ html+=renderRow(walkItem(from,p,false),dIdx); });
+    }
+    const extras=(s.extras||[]).map(find).filter(Boolean);
+    if(extras.length){
+      html+='<div class="sl">Also saved nearby</div>';
+      extras.forEach(p=>{ html+=renderRow(walkItem(from,p,true),dIdx); });
+    }
+    html+='</div>';
   });
-
   container.innerHTML=html;
   attachRowHandlers(container);
   container.querySelectorAll('.anchor-card').forEach(el=>{
     el.addEventListener('click',()=>panToPlace(el.getAttribute('data-id')));
   });
-  container.querySelectorAll('.cat-header').forEach(el=>{
-    el.addEventListener('click',()=>{
-      const key=el.getAttribute('data-cat');
-      if(openCategories.has(key)) openCategories.delete(key); else openCategories.add(key);
-      render();
-    });
-  });
 }
 
-// Renders the active day tab: route mode (global, ignores day scoping) takes
-// priority; otherwise the type-filtered pool list. The bottom anchor blocks
-// render unconditionally after either, since they're independent of both the
-// route selector and the type-filter chips.
+// Renders the active day tab: map pins for that day's places only, the
+// fixed-time logistics strip, then the day plan.
 function render(){
   const day=DAY_SCHEDULE.find(d=>d.key===activeDayKey);
   if(!day) return;
-  const dIdx=day.dayIdx;
-
-  if(activeRoute){
-    const centerLL=dayCenter(day);
-    const route=ROUTES.find(r=>r.key===activeRoute);
-    const routeItems=(route?route.places:[]).map(id=>{
-      const p=PLACES.find(x=>x.id===id);
-      if(!p) return null;
-      const meters=haversineMeters(centerLL.lat,centerLL.lng,p.lat,p.lng);
-      return {p,walkMeters:meters*1.3,walkMinutes:(meters*1.3)/80,nearby:false};
-    }).filter(Boolean);
-    renderRouteListUI(routeItems,dIdx);
-    if(map){
-      renderMarkers(routeItems);
-      drawRouteLine(routeItems.map(it=>it.p));
-    }
-  } else {
-    if(routeLine){ if(map) map.removeLayer(routeLine); routeLine=null; }
-    // Map panel list is day-independent: browse the FULL place list by type,
-    // not just this day's scheduled+nearby pool (that pool is what the
-    // anchor blocks below use — this list is a separate "browse everything"
-    // view). nearby is always false here since there's no day-schedule
-    // concept in play; dIdx is still passed through so open/closed status
-    // reflects the currently active day's date.
-    const filterOk=p=>activeType==='all'||p.type===activeType;
-    const items=PLACES.filter(filterOk)
-      .map(p=>({p,nearby:false}))
-      .sort((a,b)=>a.p.name.localeCompare(b.p.name));
-    renderPoolList(items,dIdx);
-    if(map) renderMarkers(items);
-  }
-
+  if(map) renderMarkers(dayItems(day));
   renderDayLogistics(day);
-  renderAnchorBlocks(day,dIdx);
+  renderDayPlan(day,day.dayIdx);
 }
 
 var panelInitialized=false;
 
 function switchDayTab(key){
   activeDayKey=key;
-  activeType='all';
-  renderChips();
   initMap();
-  const day=DAY_SCHEDULE.find(d=>d.key===key);
-  if(map){
-    const c=dayCenter(day);
-    map.setView([c.lat,c.lng],15);
-    userPanned=false;
-    document.getElementById('recenter-btn').style.display='none';
-  }
+  userPanned=false;
+  document.getElementById('recenter-btn').style.display='none';
   render();
-  setTimeout(()=>{ if(map) map.invalidateSize(); },50);
+  setTimeout(()=>{ if(map){ map.invalidateSize(); fitDay(); } },50);
 }
 
 function switchTab(type,dayKey){
@@ -1656,7 +1491,6 @@ function switchTab(type,dayKey){
     if(!panelInitialized){
       panelInitialized=true;
       loadShortlist();
-      renderChips();
     }
     switchDayTab(dayKey);
   }
